@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import styles from "./BurgerIngredients.module.scss";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import data from "../../utils/data";
+import BurgerIngredientsType from "../BurgerIngredientsType/BurgerIngredientsType";
 
 const BurgerIngredients = () => {
   const dataCopy = structuredClone(data);
-  const [products, setProducts] = useState(dataCopy);
   const [activeTab, setActiveTab] = useState(1);
 
   const handleTabClick = (value: string) => {
@@ -29,36 +29,18 @@ const BurgerIngredients = () => {
         </ul>
       </nav>
       <div className={styles.tabContainer}>
-        <div className={styles.productTypeBlock}>
-          <h5 className={styles.productTypeTitle}>Булки</h5>
-          <ul className={styles.productTypeList}>
-            {products
-              .filter((v) => v.type === "bun")
-              .map((v) => {
-                return <li className={styles.productTypeItem}>{v.name}</li>;
-              })}
-          </ul>
-        </div>
-        <div className={styles.productTypeBlock}>
-          <h5 className={styles.productTypeTitle}>Соусы</h5>
-          <ul className={styles.productTypeList}>
-            {products
-              .filter((v) => v.type === "sauce")
-              .map((v) => {
-                return <li className={styles.productTypeItem}>{v.name}</li>;
-              })}
-          </ul>
-        </div>
-        <div className={styles.productTypeBlock}>
-          <h5 className={styles.productTypeTitle}>Начинки</h5>
-          <ul className={styles.productTypeList}>
-            {products
-              .filter((v) => v.type === "main")
-              .map((v) => {
-                return <li className={styles.productTypeItem}>{v.name}</li>;
-              })}
-          </ul>
-        </div>
+        <BurgerIngredientsType
+          title="Булки"
+          products={dataCopy.filter((v) => v.type === "bun")}
+        />
+        <BurgerIngredientsType
+          title="Соусы"
+          products={dataCopy.filter((v) => v.type === "sauce")}
+        />
+        <BurgerIngredientsType
+          title="Начинки"
+          products={dataCopy.filter((v) => v.type === "main")}
+        />
       </div>
     </div>
   );

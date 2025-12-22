@@ -12,19 +12,10 @@
 .tabContainer {
   flex: 1;
   overflow: auto;
+  margin-top: 40px;
+  margin-bottom: 52px;
 }
 
 .title {
   margin: 40px 0 20px 0;
-}
-
-.productTypeList {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 24px;
-}
-
-.productTypeItem {
-  width: 272px;
-  height: 208px;
 }
