@@ -12,25 +12,68 @@ const BurgerContstuctor = () => {
     <div className={styles.constructorContainer}>
       <div className={styles.constructorInnerContainer}>
         <ul className={styles.constructorList}>
-          <ConstructorElement
-            type="top"
-            isLocked={true}
-            text="Краторная булка N-200i (верх)"
-            price={200}
-            thumbnail={bun}
-          />
-          <ConstructorElement
-            text="Краторная булка N-200i (верх)"
-            price={50}
-            thumbnail={bun}
-          />
-          <ConstructorElement
-            type="bottom"
-            isLocked={true}
-            text="Краторная булка N-200i (низ)"
-            price={200}
-            thumbnail={bun}
-          />
+          <li>
+            <ConstructorElement
+              type="top"
+              isLocked={true}
+              text="Краторная булка N-200i (верх)"
+              price={200}
+              thumbnail={bun}
+            />
+          </li>
+          <div className={styles.constructorListScrollable}>
+            <li>
+              <ConstructorElement
+                text="Краторная булка N-200i (верх)"
+                price={50}
+                thumbnail={bun}
+              />
+            </li>
+            <li>
+              <ConstructorElement
+                text="Краторная булка N-200i (верх)"
+                price={50}
+                thumbnail={bun}
+              />
+            </li>
+            <li>
+              <ConstructorElement
+                text="Краторная булка N-200i (верх)"
+                price={50}
+                thumbnail={bun}
+              />
+            </li>
+            <li>
+              <ConstructorElement
+                text="Краторная булка N-200i (верх)"
+                price={50}
+                thumbnail={bun}
+              />
+            </li>
+            <li>
+              <ConstructorElement
+                text="Краторная булка N-200i (верх)"
+                price={50}
+                thumbnail={bun}
+              />
+            </li>
+            <li>
+              <ConstructorElement
+                text="Краторная булка N-200i (верх)"
+                price={50}
+                thumbnail={bun}
+              />
+            </li>
+          </div>
+          <li>
+            <ConstructorElement
+              type="bottom"
+              isLocked={true}
+              text="Краторная булка N-200i (низ)"
+              price={200}
+              thumbnail={bun}
+            />
+          </li>
         </ul>
         <div className={styles.totalBlock}>
           <span className={styles.totalText}>

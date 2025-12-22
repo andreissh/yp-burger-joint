@@ -1,9 +1,17 @@
 .ingredientsContainer {
   min-width: 600px;
+  max-height: calc(100vh - 88px);
+  display: flex;
+  flex-direction: column;
 }
 
 .tabsList {
   display: flex;
+}
+
+.tabContainer {
+  flex: 1;
+  overflow: auto;
 }
 
 .title {

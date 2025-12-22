@@ -11,8 +11,16 @@
 .constructorList {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 16px;
   margin-bottom: 40px;
+}
+
+.constructorListScrollable {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-height: 384px;
+  overflow: auto;
 }
 
 .totalBlock {
