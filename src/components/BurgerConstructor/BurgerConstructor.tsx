@@ -7,78 +7,82 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import bun from "../../assets/images/bun.svg";
 
+const elements = [
+  {
+    id: 1,
+    text: "Краторная булка N-200i",
+    price: 50,
+    thumbnail: bun,
+  },
+  {
+    id: 2,
+    text: "Краторная булка N-200i",
+    price: 50,
+    thumbnail: bun,
+  },
+  {
+    id: 3,
+    text: "Краторная булка N-200i",
+    price: 50,
+    thumbnail: bun,
+  },
+  {
+    id: 4,
+    text: "Краторная булка N-200i",
+    price: 50,
+    thumbnail: bun,
+  },
+  {
+    id: 5,
+    text: "Краторная булка N-200i",
+    price: 50,
+    thumbnail: bun,
+  },
+  {
+    id: 6,
+    text: "Краторная булка N-200i",
+    price: 50,
+    thumbnail: bun,
+  },
+];
+
 const BurgerContstuctor = () => {
   return (
     <div className={styles.constructorContainer}>
       <div className={styles.constructorInnerContainer}>
-        <ul className={styles.constructorList}>
-          <li>
-            <ConstructorElement
-              type="top"
-              isLocked={true}
-              text="Краторная булка N-200i (верх)"
-              price={200}
-              thumbnail={bun}
-            />
-          </li>
-          <div className={styles.constructorListScrollable}>
-            <li>
-              <ConstructorElement
-                text="Краторная булка N-200i (верх)"
-                price={50}
-                thumbnail={bun}
-              />
-            </li>
-            <li>
-              <ConstructorElement
-                text="Краторная булка N-200i (верх)"
-                price={50}
-                thumbnail={bun}
-              />
-            </li>
-            <li>
-              <ConstructorElement
-                text="Краторная булка N-200i (верх)"
-                price={50}
-                thumbnail={bun}
-              />
-            </li>
-            <li>
-              <ConstructorElement
-                text="Краторная булка N-200i (верх)"
-                price={50}
-                thumbnail={bun}
-              />
-            </li>
-            <li>
-              <ConstructorElement
-                text="Краторная булка N-200i (верх)"
-                price={50}
-                thumbnail={bun}
-              />
-            </li>
-            <li>
-              <ConstructorElement
-                text="Краторная булка N-200i (верх)"
-                price={50}
-                thumbnail={bun}
-              />
-            </li>
-          </div>
-          <li>
-            <ConstructorElement
-              type="bottom"
-              isLocked={true}
-              text="Краторная булка N-200i (низ)"
-              price={200}
-              thumbnail={bun}
-            />
-          </li>
-        </ul>
+        <div className={styles.constructorList}>
+          <ConstructorElement
+            type="top"
+            isLocked={true}
+            text="Краторная булка N-200i (верх)"
+            price={200}
+            thumbnail={bun}
+          />
+          <ul className={styles.constructorListScrollable}>
+            {elements.map((el) => (
+              <li key={el.id}>
+                <ConstructorElement
+                  text={el.text}
+                  price={el.price}
+                  thumbnail={el.thumbnail}
+                />
+              </li>
+            ))}
+          </ul>
+          <ConstructorElement
+            type="bottom"
+            isLocked={true}
+            text="Краторная булка N-200i (низ)"
+            price={200}
+            thumbnail={bun}
+          />
+        </div>
         <div className={styles.totalBlock}>
-          <span className={styles.totalText}>
+          <span className={`${styles.totalText} iceland-regular`}>
             610
-            <CurrencyIcon type="primary" />
+            <span style={{ scale: "1.4" }}>
+              <CurrencyIcon type="primary" />
+            </span>
           </span>
           <Button htmlType="button" type="primary" size="large">
             Оформить заказ

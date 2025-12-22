@@ -2,7 +2,13 @@ import React, { useState } from "react";
 import styles from "./BurgerIngredients.module.scss";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import data from "../../utils/data";
-import BurgerIngredientsType from "../BurgerIngredientsType/BurgerIngredientsType";
+import BurgerIngredientsType from "./BurgerIngredientsType/BurgerIngredientsType";
+
+const tabs = [
+  { id: 1, title: "Булки" },
+  { id: 2, title: "Соусы" },
+  { id: 3, title: "Начинки" },
+];
 
 const BurgerIngredients = () => {
   const dataCopy = structuredClone(data);
@@ -14,23 +20,25 @@ const BurgerIngredients = () => {
 
   return (
     <div className={styles.ingredientsContainer}>
-      <h2 className={styles.title}>Соберите бургер</h2>
+      <h1 className={styles.title}>Соберите бургер</h1>
       <nav className={styles.tabs}>
         <ul className={styles.tabsList}>
-          <Tab active={activeTab === 1} value="1" onClick={handleTabClick}>
-            Булки
-          </Tab>
-          <Tab active={activeTab === 2} value="2" onClick={handleTabClick}>
-            Соусы
-          </Tab>
-          <Tab active={activeTab === 3} value="3" onClick={handleTabClick}>
-            Начинки
-          </Tab>
+          {tabs.map((tab) => (
+            <Tab
+              active={activeTab === tab.id}
+              value={`${tab.id}`}
+              onClick={handleTabClick}
+              key={tab.id}
+            >
+              {tab.title}
+            </Tab>
+          ))}
         </ul>
       </nav>
       <div className={styles.tabContainer}>
         <BurgerIngredientsType
           title="Булки"
+          titleStyle={{ marginTop: 0 }}
           products={dataCopy.filter((v) => v.type === "bun")}
         />
         <BurgerIngredientsType

@@ -1,5 +1,18 @@
 @import "normalize.css";
 
+* {
+  scrollbar-width: thin;
+}
+
+body {
+  font-family: "JetBrains Mono", monospace;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 16px;
+  line-height: 24px;
+}
+
 ul {
   margin: 0;
   padding: 0;
@@ -7,4 +20,14 @@ ul {
 
 li {
   list-style: none;
+}
+
+h1 {
+  font-size: 36px;
+  line-height: 40px;
+}
+
+h2 {
+  font-size: 24px;
+  line-height: 30px;
 }

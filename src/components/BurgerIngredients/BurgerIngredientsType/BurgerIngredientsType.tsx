@@ -2,16 +2,18 @@ import React from "react";
 import styles from "./BurgerIngredientsType.module.scss";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 
-const BurgerIngredientsType = ({ title, products }) => {
+const BurgerIngredientsType = ({ title, titleStyle = {}, products }) => {
   return (
     <div className={styles.productTypeBlock}>
-      <h5 className={styles.productTypeTitle}>{title}</h5>
+      <h2 className={styles.productTypeTitle} style={titleStyle}>
+        {title}
+      </h2>
       <ul className={styles.productTypeList}>
         {products.map((v) => {
           return (
-            <li className={styles.productTypeItem}>
+            <li className={styles.productTypeItem} key={v._id}>
               <img className={styles.itemImg} src={v.image} alt={v.name} />
-              <span className={styles.itemPrice}>
+              <span className={`${styles.itemPrice} iceland-regular`}>
                 {v.price}
                 <CurrencyIcon type="primary" />
               </span>

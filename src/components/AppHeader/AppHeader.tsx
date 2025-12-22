@@ -13,8 +13,10 @@ const AppHeader = () => {
       <div className={styles.headerContainer}>
         <div className={styles.leftTabs}>
           <div className={styles.tab}>
-            <BurgerIcon type="secondary" />
-            <span className={styles.tabTitle}>Конструктор</span>
+            <BurgerIcon type="primary" />
+            <span className={`${styles.tabTitle} ${styles.tabTitleActive}`}>
+              Конструктор
+            </span>
           </div>
           <div className={styles.tab}>
             <ListIcon type="secondary" />

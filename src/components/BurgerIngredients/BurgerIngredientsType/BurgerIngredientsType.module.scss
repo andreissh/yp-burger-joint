@@ -1,7 +1,13 @@
 .productTypeList {
   display: flex;
   flex-wrap: wrap;
-  gap: 24px;
+  column-gap: 24px;
+  row-gap: 32px;
+  margin-left: 16px;
+}
+
+.productTypeTitle {
+  margin: 40px 0 24px 0;
 }
 
 .productTypeItem {
@@ -22,6 +28,8 @@
   gap: 8px;
   margin-top: 8px;
   margin-bottom: 8px;
+  font-size: 28px;
+  line-height: 24px;
 }
 
 .itemName {
