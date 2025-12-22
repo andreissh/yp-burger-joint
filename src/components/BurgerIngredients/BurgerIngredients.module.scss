@@ -1,0 +1,22 @@
+.ingredientsContainer {
+  min-width: 600px;
+}
+
+.tabsList {
+  display: flex;
+}
+
+.title {
+  margin: 40px 0 20px 0;
+}
+
+.productTypeList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.productTypeItem {
+  width: 272px;
+  height: 208px;
+}

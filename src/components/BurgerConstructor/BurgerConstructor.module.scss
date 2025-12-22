@@ -1,0 +1,29 @@
+.constructorContainer {
+  min-width: 600px;
+  margin-top: 100px;
+}
+
+.constructorInnerContainer {
+  max-width: 536px;
+  margin: 0 auto;
+}
+
+.constructorList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 40px;
+}
+
+.totalBlock {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 40px;
+}
+
+.totalText {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
