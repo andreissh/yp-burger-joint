@@ -13,6 +13,7 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import SortableItem from "./SortableItem/SortableItem";
+import Scrollbars from "rc-scrollbars";
 
 const data = [
   {
@@ -89,17 +90,19 @@ const BurgerContstuctor = () => {
               items={elements.map((el) => el.id)}
               strategy={verticalListSortingStrategy}
             >
-              <ul className={styles.constructorListScrollable}>
-                {elements.map((el) => (
-                  <SortableItem key={el.id} id={el.id}>
-                    <ConstructorElement
-                      text={el.text}
-                      price={el.price}
-                      thumbnail={el.thumbnail}
-                    />
-                  </SortableItem>
-                ))}
-              </ul>
+              <Scrollbars style={{ width: "100%", height: 384 }}>
+                <ul className={styles.constructorListScrollable}>
+                  {elements.map((el) => (
+                    <SortableItem key={el.id} id={el.id}>
+                      <ConstructorElement
+                        text={el.text}
+                        price={el.price}
+                        thumbnail={el.thumbnail}
+                      />
+                    </SortableItem>
+                  ))}
+                </ul>
+              </Scrollbars>
             </SortableContext>
           </DndContext>
           <div className={styles.constructorItem}>

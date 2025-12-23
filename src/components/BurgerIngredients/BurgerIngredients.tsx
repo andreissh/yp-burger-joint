@@ -3,6 +3,7 @@ import styles from "./BurgerIngredients.module.scss";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import data from "../../utils/data";
 import BurgerIngredientsType from "./BurgerIngredientsType/BurgerIngredientsType";
+import Scrollbars from "rc-scrollbars";
 
 const tabs = [
   { id: 1, title: "Булки" },
@@ -36,19 +37,21 @@ const BurgerIngredients = () => {
         </ul>
       </nav>
       <div className={styles.tabContainer}>
-        <BurgerIngredientsType
-          title="Булки"
-          titleStyle={{ marginTop: 0 }}
-          products={dataCopy.filter((v) => v.type === "bun")}
-        />
-        <BurgerIngredientsType
-          title="Соусы"
-          products={dataCopy.filter((v) => v.type === "sauce")}
-        />
-        <BurgerIngredientsType
-          title="Начинки"
-          products={dataCopy.filter((v) => v.type === "main")}
-        />
+        <Scrollbars style={{ width: "100%", height: "100%" }}>
+          <BurgerIngredientsType
+            title="Булки"
+            titleStyle={{ marginTop: 0 }}
+            products={dataCopy.filter((v) => v.type === "bun")}
+          />
+          <BurgerIngredientsType
+            title="Соусы"
+            products={dataCopy.filter((v) => v.type === "sauce")}
+          />
+          <BurgerIngredientsType
+            title="Начинки"
+            products={dataCopy.filter((v) => v.type === "main")}
+          />
+        </Scrollbars>
       </div>
     </div>
   );
