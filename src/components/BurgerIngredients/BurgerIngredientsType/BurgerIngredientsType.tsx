@@ -1,8 +1,15 @@
 import React from "react";
 import styles from "./BurgerIngredientsType.module.scss";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import type { DataProps } from "../../types/types";
 
-const BurgerIngredientsType = ({ title, titleStyle = {}, products }) => {
+type Props = {
+  title: string;
+  titleStyle?: React.CSSProperties;
+  products: DataProps[];
+};
+
+const BurgerIngredientsType = ({ title, titleStyle = {}, products }: Props) => {
   return (
     <div className={styles.productTypeBlock}>
       <h2 className={styles.productTypeTitle} style={titleStyle}>

@@ -5,7 +5,12 @@ import data from "../../utils/data";
 import BurgerIngredientsType from "./BurgerIngredientsType/BurgerIngredientsType";
 import Scrollbars from "rc-scrollbars";
 
-const tabs = [
+type TabsProps = {
+  id: number;
+  title: string;
+};
+
+const tabs: TabsProps[] = [
   { id: 1, title: "Булки" },
   { id: 2, title: "Соусы" },
   { id: 3, title: "Начинки" },

@@ -6,7 +6,7 @@ import {
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import bun from "../../assets/images/bun.svg";
-import { closestCenter, DndContext } from "@dnd-kit/core";
+import { closestCenter, DndContext, type DragEndEvent } from "@dnd-kit/core";
 import {
   arrayMove,
   SortableContext,
@@ -57,7 +57,7 @@ const data = [
 const BurgerContstuctor = () => {
   const dataCopy = structuredClone(data);
   const [elements, setElements] = useState(dataCopy);
-  const handleDragEnd = (event) => {
+  const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
 
     if (!over || active.id === over.id) return;
