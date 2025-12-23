@@ -1,0 +1,38 @@
+.item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding-left: 32px;
+}
+
+.dragHandle {
+  position: absolute;
+  left: 0;
+  width: 12px;
+  height: 18px;
+  cursor: grab;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 2px;
+}
+
+.dragHandle::before {
+  content: "";
+  width: 4px;
+  height: 4px;
+  background-color: #8585ad;
+  border-radius: 50%;
+  box-shadow: 0 7px 0 #8585ad, 0 14px 0 #8585ad, 8px 0 0 #8585ad,
+    8px 7px 0 #8585ad, 8px 14px 0 #8585ad;
+}
+
+.dragHandle:active {
+  cursor: grabbing;
+}
+
+.dragHandle:hover::before {
+  background-color: #f2f2f3;
+  box-shadow: 0 7px 0 #f2f2f3, 0 14px 0 #f2f2f3, 8px 0 0 #f2f2f3,
+    8px 7px 0 #f2f2f3, 8px 14px 0 #f2f2f3;
+}

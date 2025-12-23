@@ -4,7 +4,7 @@
 }
 
 .constructorInnerContainer {
-  max-width: 536px;
+  max-width: 568px;
   margin: 0 auto;
 }
 
@@ -13,6 +13,10 @@
   flex-direction: column;
   gap: 16px;
   margin-bottom: 40px;
+}
+
+.constructorItem {
+  margin-left: 32px;
 }
 
 .constructorListScrollable {
