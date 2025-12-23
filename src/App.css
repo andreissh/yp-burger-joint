@@ -11,6 +11,12 @@
   margin: 0 auto;
 }
 
+@media (max-width: 1240px) {
+  .page-content {
+    flex-direction: column;
+  }
+}
+
 .iceland-regular {
   font-family: "Iceland", sans-serif;
   font-weight: 400;

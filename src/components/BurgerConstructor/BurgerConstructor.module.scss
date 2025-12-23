@@ -3,6 +3,12 @@
   margin-top: 100px;
 }
 
+@media (max-width: 1240px) {
+  .constructorContainer {
+    margin-bottom: 40px;
+  }
+}
+
 .constructorInnerContainer {
   max-width: 584px;
   margin: 0 auto;

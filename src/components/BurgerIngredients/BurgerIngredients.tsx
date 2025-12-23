@@ -42,7 +42,7 @@ const BurgerIngredients = () => {
         </ul>
       </nav>
       <div className={styles.tabContainer}>
-        <Scrollbars style={{ width: "100%", height: "100%" }}>
+        <Scrollbars style={{ width: "100%", height: 520 }}>
           <BurgerIngredientsType
             title="Булки"
             titleStyle={{ marginTop: 0 }}
