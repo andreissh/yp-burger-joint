@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./AppHeader.module.scss";
 import {
   BurgerIcon,
@@ -6,6 +6,7 @@ import {
   Logo,
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import logoMobile from "../../assets/images/logo-mobile.svg";
 
 const AppHeader = () => {
   const [burgerMenuActive, setBurgerMenuActive] = useState(false);
@@ -13,6 +14,14 @@ const AppHeader = () => {
   const handleBurgerMenuClick = () => {
     setBurgerMenuActive(!burgerMenuActive);
   };
+
+  useEffect(() => {
+    document.body.classList.toggle("no-scroll", burgerMenuActive);
+
+    return () => {
+      document.body.classList.remove("no-scroll");
+    };
+  }, [burgerMenuActive]);
 
   return (
     <div className={styles.headerWrapper}>
@@ -31,6 +40,11 @@ const AppHeader = () => {
         </div>
         <div className={styles.logoWrapper}>
           <Logo className={styles.logo} />
+          <img
+            className={styles.logoMobile}
+            src={logoMobile}
+            alt="logo-mobile"
+          />
         </div>
         <div className={styles.rightTabs}>
           <div className={styles.tab}>

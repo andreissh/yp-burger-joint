@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./BurgerIngredientsType.module.scss";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import type { DataProps } from "../../types/types";
@@ -10,6 +10,18 @@ type Props = {
 };
 
 const BurgerIngredientsType = ({ title, titleStyle = {}, products }: Props) => {
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 640);
+
+  useEffect(() => {
+    const onResize = () => {
+      setIsMobile(window.innerWidth <= 640);
+    };
+
+    window.addEventListener("resize", onResize);
+
+    return () => window.removeEventListener("resize", onResize);
+  }, [isMobile]);
+
   return (
     <div className={styles.productTypeBlock}>
       <h2 className={styles.productTypeTitle} style={titleStyle}>
@@ -19,7 +31,13 @@ const BurgerIngredientsType = ({ title, titleStyle = {}, products }: Props) => {
         {products.map((v) => {
           return (
             <li className={styles.productTypeItem} key={v._id}>
-              <img className={styles.itemImg} src={v.image} alt={v.name} />
+              <div className={styles.itemImgWrapper}>
+                <img
+                  className={styles.itemImg}
+                  src={isMobile ? v.image_mobile : v.image}
+                  alt={v.name}
+                />
+              </div>
               <span className={`${styles.itemPrice} iceland-regular`}>
                 {v.price}
                 <CurrencyIcon type="primary" />

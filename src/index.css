@@ -1,9 +1,5 @@
 @import "normalize.css";
 
-* {
-  scrollbar-width: thin;
-}
-
 body {
   font-family: "JetBrains Mono", monospace;
   font-optical-sizing: auto;

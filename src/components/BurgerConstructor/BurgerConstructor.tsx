@@ -118,7 +118,7 @@ const BurgerContstuctor = () => {
         <div className={styles.totalBlock}>
           <span className={`${styles.totalText} iceland-regular`}>
             610
-            <span style={{ scale: "1.4" }}>
+            <span className={styles.totalIconWrapper}>
               <CurrencyIcon type="primary" />
             </span>
           </span>
