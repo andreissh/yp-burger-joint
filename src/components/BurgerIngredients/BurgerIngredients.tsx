@@ -2,19 +2,9 @@ import React, { useState } from "react";
 import styles from "./BurgerIngredients.module.scss";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import data from "../../utils/data";
-import BurgerIngredientsType from "./BurgerIngredientsType/BurgerIngredientsType";
+import BurgerIngredientsList from "./BurgerIngredientsList/BurgerIngredientsList";
 import Scrollbars from "rc-scrollbars";
-
-type TabsProps = {
-  id: number;
-  title: string;
-};
-
-const tabs: TabsProps[] = [
-  { id: 1, title: "Булки" },
-  { id: 2, title: "Соусы" },
-  { id: 3, title: "Начинки" },
-];
+import { burgerIngredientsTabs } from "../../utils/utils";
 
 const BurgerIngredients = () => {
   const dataCopy = structuredClone(data);
@@ -25,11 +15,11 @@ const BurgerIngredients = () => {
   };
 
   return (
-    <div className={styles.ingredientsContainer}>
+    <section className={styles.ingredientsContainer}>
       <h1 className={styles.title}>Соберите бургер</h1>
       <nav className={styles.tabs}>
         <ul className={styles.tabsList}>
-          {tabs.map((tab) => (
+          {burgerIngredientsTabs.map((tab) => (
             <Tab
               active={activeTab === tab.id}
               value={`${tab.id}`}
@@ -43,22 +33,22 @@ const BurgerIngredients = () => {
       </nav>
       <div className={styles.tabContainer}>
         <Scrollbars style={{ width: "100%", height: 520 }}>
-          <BurgerIngredientsType
+          <BurgerIngredientsList
             title="Булки"
             titleStyle={{ marginTop: 0 }}
             products={dataCopy.filter((v) => v.type === "bun")}
           />
-          <BurgerIngredientsType
+          <BurgerIngredientsList
             title="Соусы"
             products={dataCopy.filter((v) => v.type === "sauce")}
           />
-          <BurgerIngredientsType
+          <BurgerIngredientsList
             title="Начинки"
             products={dataCopy.filter((v) => v.type === "main")}
           />
         </Scrollbars>
       </div>
-    </div>
+    </section>
   );
 };
 

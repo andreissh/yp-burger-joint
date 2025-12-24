@@ -14,48 +14,10 @@ import {
 } from "@dnd-kit/sortable";
 import SortableItem from "./SortableItem/SortableItem";
 import Scrollbars from "rc-scrollbars";
-
-const data = [
-  {
-    id: 1,
-    text: "Краторная булка N-200i",
-    price: 450,
-    thumbnail: bun,
-  },
-  {
-    id: 2,
-    text: "Краторная булка N-200i",
-    price: 350,
-    thumbnail: bun,
-  },
-  {
-    id: 3,
-    text: "Краторная булка N-200i",
-    price: 500,
-    thumbnail: bun,
-  },
-  {
-    id: 4,
-    text: "Краторная булка N-200i",
-    price: 50,
-    thumbnail: bun,
-  },
-  {
-    id: 5,
-    text: "Краторная булка N-200i",
-    price: 250,
-    thumbnail: bun,
-  },
-  {
-    id: 6,
-    text: "Краторная булка N-200i",
-    price: 150,
-    thumbnail: bun,
-  },
-];
+import { burgerConstructorData } from "../../utils/utils";
 
 const BurgerContstuctor = () => {
-  const dataCopy = structuredClone(data);
+  const dataCopy = structuredClone(burgerConstructorData);
   const [elements, setElements] = useState(dataCopy);
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;

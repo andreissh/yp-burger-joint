@@ -1,6 +1,7 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import styles from "./SortableItem.module.scss";
+import { DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 
 type Props = {
   id: number;
@@ -18,7 +19,9 @@ function SortableItem({ id, children }: Props) {
 
   return (
     <li ref={setNodeRef} style={style} className={styles.item}>
-      <span className={styles.dragHandle} {...attributes} {...listeners} />
+      <span className={styles.dragHandle} {...attributes} {...listeners}>
+        <DragIcon type="primary" />
+      </span>
       {children}
     </li>
   );

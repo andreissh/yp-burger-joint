@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import styles from "./BurgerIngredientsType.module.scss";
+import styles from "./BurgerIngredientsList.module.scss";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import type { DataProps } from "../../types/types";
 
@@ -9,7 +9,7 @@ type Props = {
   products: DataProps[];
 };
 
-const BurgerIngredientsType = ({ title, titleStyle = {}, products }: Props) => {
+const BurgerIngredientsList = ({ title, titleStyle = {}, products }: Props) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 640);
 
   useEffect(() => {
@@ -52,4 +52,4 @@ const BurgerIngredientsType = ({ title, titleStyle = {}, products }: Props) => {
   );
 };
 
-export default BurgerIngredientsType;
+export default BurgerIngredientsList;

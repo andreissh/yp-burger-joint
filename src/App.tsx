@@ -7,10 +7,10 @@ function App() {
   return (
     <div className="page-wrapper">
       <AppHeader />
-      <div className="page-content">
+      <main className="page-content">
         <BurgerIngredients />
         <BurgerConstructor />
-      </div>
+      </main>
     </div>
   );
 }

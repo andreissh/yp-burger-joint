@@ -12,3 +12,8 @@ export type DataProps = {
   image_large: string;
   __v: number;
 };
+
+export type BurgerIngredientsTabsProps = {
+  id: number;
+  title: string;
+};

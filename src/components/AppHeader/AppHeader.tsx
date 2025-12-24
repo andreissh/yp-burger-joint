@@ -24,19 +24,19 @@ const AppHeader = () => {
   }, [burgerMenuActive]);
 
   return (
-    <div className={styles.headerWrapper}>
-      <div className={styles.headerContainer}>
+    <header className={styles.headerWrapper}>
+      <nav className={styles.headerContainer}>
         <div className={styles.leftTabs}>
-          <div className={styles.tab}>
+          <a className={styles.tab} href="#">
             <BurgerIcon type="primary" />
             <span className={`${styles.tabTitle} ${styles.tabTitleActive}`}>
               Конструктор
             </span>
-          </div>
-          <div className={styles.tab}>
+          </a>
+          <a className={styles.tab} href="#">
             <ListIcon type="secondary" />
             <span className={styles.tabTitle}>Лента заказов</span>
-          </div>
+          </a>
         </div>
         <div className={styles.logoWrapper}>
           <Logo className={styles.logo} />
@@ -47,10 +47,10 @@ const AppHeader = () => {
           />
         </div>
         <div className={styles.rightTabs}>
-          <div className={styles.tab}>
+          <a className={styles.tab} href="#">
             <ProfileIcon type="secondary" />
             <span className={styles.tabTitle}>Личный кабинет</span>
-          </div>
+          </a>
           <span
             className={`${styles.burgerMenu} ${
               burgerMenuActive ? styles.active : ""
@@ -62,7 +62,7 @@ const AppHeader = () => {
             <span className={styles.burgerMenuBottom}></span>
           </span>
         </div>
-      </div>
+      </nav>
       <ul
         className={`${styles.headerDropdownList} ${
           burgerMenuActive ? styles.active : ""
@@ -83,7 +83,7 @@ const AppHeader = () => {
           <span className={styles.tabTitle}>Лента заказов</span>
         </li>
       </ul>
-    </div>
+    </header>
   );
 };
 
