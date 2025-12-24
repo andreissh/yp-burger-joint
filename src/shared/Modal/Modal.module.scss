@@ -1,0 +1,11 @@
+.modalWrapper {
+  display: flex;
+  flex-direction: column;
+  background-color: #1c1c21;
+  border-radius: 16px;
+  padding: 40px;
+  max-width: 90%;
+  max-height: 90vh;
+  width: 720px;
+  animation: slideUp 0.3s ease-out;
+}

@@ -5,7 +5,7 @@ import data from "../../utils/data";
 import BurgerIngredientsList from "./BurgerIngredientsList/BurgerIngredientsList";
 import Scrollbars from "rc-scrollbars";
 import { burgerIngredientsTabs } from "../../utils/utils";
-import type { DataOrderProps, DataProps } from "../types/types";
+import type { DataOrderProps, DataProps } from "../../types/types";
 
 type Props = {
   activeOrder: DataOrderProps[];

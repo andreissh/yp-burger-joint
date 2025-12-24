@@ -13,7 +13,7 @@ import {
 } from "@dnd-kit/sortable";
 import SortableItem from "./SortableItem/SortableItem";
 import Scrollbars from "rc-scrollbars";
-import type { DataOrderProps, DataProps } from "../types/types";
+import type { DataOrderProps, DataProps } from "../../types/types";
 
 type Props = {
   activeOrder: DataOrderProps[];

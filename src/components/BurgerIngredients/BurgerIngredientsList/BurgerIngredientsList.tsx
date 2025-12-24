@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./BurgerIngredientsList.module.scss";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import type { DataOrderProps, DataProps } from "../../types/types";
+import type { DataOrderProps, DataProps } from "../../../types/types";
 
 type Props = {
   title: string;

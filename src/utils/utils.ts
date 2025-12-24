@@ -1,4 +1,4 @@
-import type { BurgerIngredientsTabsProps } from "../components/types/types";
+import type { BurgerIngredientsTabsProps } from "../types/types";
 
 export const burgerIngredientsTabs: BurgerIngredientsTabsProps[] = [
   { id: 1, title: "Булки" },

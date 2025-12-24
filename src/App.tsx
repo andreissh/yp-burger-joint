@@ -3,7 +3,7 @@ import "./App.css";
 import AppHeader from "./components/AppHeader/AppHeader";
 import BurgerConstructor from "./components/BurgerConstructor/BurgerConstructor";
 import BurgerIngredients from "./components/BurgerIngredients/BurgerIngredients";
-import type { DataOrderProps, DataProps } from "./components/types/types";
+import type { DataOrderProps, DataProps } from "./types/types";
 import { v4 as uuidv4 } from "uuid";
 import data from "./utils/data";
 

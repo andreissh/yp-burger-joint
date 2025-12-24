@@ -1,4 +1,4 @@
-import type { DataProps } from "../components/types/types";
+import type { DataProps } from "../types/types";
 
 const data: DataProps[] = [
   {
