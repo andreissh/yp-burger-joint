@@ -5,7 +5,6 @@ import {
   ConstructorElement,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import bun from "../../assets/images/bun.svg";
 import { closestCenter, DndContext, type DragEndEvent } from "@dnd-kit/core";
 import {
   arrayMove,
@@ -14,14 +13,19 @@ import {
 } from "@dnd-kit/sortable";
 import SortableItem from "./SortableItem/SortableItem";
 import Scrollbars from "rc-scrollbars";
-import type { DataOrderProps } from "../types/types";
+import type { DataOrderProps, DataProps } from "../types/types";
 
 type Props = {
   activeOrder: DataOrderProps[];
   setActiveOrder: React.Dispatch<React.SetStateAction<DataOrderProps[]>>;
+  constructorBun: DataProps;
 };
 
-const BurgerContstuctor = ({ activeOrder, setActiveOrder }: Props) => {
+const BurgerContstuctor = ({
+  activeOrder,
+  setActiveOrder,
+  constructorBun,
+}: Props) => {
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
 
@@ -42,9 +46,9 @@ const BurgerContstuctor = ({ activeOrder, setActiveOrder }: Props) => {
             <ConstructorElement
               type="top"
               isLocked={true}
-              text="Краторная булка N-200i (верх)"
-              price={200}
-              thumbnail={bun}
+              text={constructorBun.name}
+              price={constructorBun.price}
+              thumbnail={constructorBun.image}
             />
           </div>
           <DndContext
@@ -74,9 +78,9 @@ const BurgerContstuctor = ({ activeOrder, setActiveOrder }: Props) => {
             <ConstructorElement
               type="bottom"
               isLocked={true}
-              text="Краторная булка N-200i (низ)"
-              price={200}
-              thumbnail={bun}
+              text={constructorBun.name}
+              price={constructorBun.price}
+              thumbnail={constructorBun.image}
             />
           </div>
         </div>
