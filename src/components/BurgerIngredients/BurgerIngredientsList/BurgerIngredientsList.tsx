@@ -1,15 +1,23 @@
 import React, { useEffect, useState } from "react";
 import styles from "./BurgerIngredientsList.module.scss";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import type { DataProps } from "../../types/types";
+import type { DataOrderProps, DataProps } from "../../types/types";
 
 type Props = {
   title: string;
   titleStyle?: React.CSSProperties;
   products: DataProps[];
+  activeOrder: DataOrderProps[];
+  onActiveOrder: (arg: DataProps) => void;
 };
 
-const BurgerIngredientsList = ({ title, titleStyle = {}, products }: Props) => {
+const BurgerIngredientsList = ({
+  title,
+  titleStyle = {},
+  products,
+  activeOrder,
+  onActiveOrder,
+}: Props) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 640);
 
   useEffect(() => {
@@ -30,7 +38,11 @@ const BurgerIngredientsList = ({ title, titleStyle = {}, products }: Props) => {
       <ul className={styles.productTypeList}>
         {products.map((v) => {
           return (
-            <li className={styles.productTypeItem} key={v._id}>
+            <li
+              className={styles.productTypeItem}
+              key={v._id}
+              onClick={() => onActiveOrder(v)}
+            >
               <div className={styles.itemImgWrapper}>
                 <img
                   className={styles.itemImg}
@@ -43,7 +55,11 @@ const BurgerIngredientsList = ({ title, titleStyle = {}, products }: Props) => {
                 <CurrencyIcon type="primary" />
               </span>
               <span className={styles.itemName}>{v.name}</span>
-              {/* <span className={styles.itemCounter}>1</span> */}
+              {activeOrder.filter((item) => item._id === v._id).length ? (
+                <span className={styles.itemCounter}>
+                  {activeOrder.filter((item) => item._id === v._id).length}
+                </span>
+              ) : null}
             </li>
           );
         })}

@@ -4,7 +4,7 @@ import styles from "./SortableItem.module.scss";
 import { DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 
 type Props = {
-  id: number;
+  id: string;
   children: React.ReactNode;
 };
 

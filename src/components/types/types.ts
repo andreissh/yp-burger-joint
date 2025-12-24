@@ -17,3 +17,5 @@ export type BurgerIngredientsTabsProps = {
   id: number;
   title: string;
 };
+
+export type DataOrderProps = DataProps & { uuid: string };

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./BurgerConstructor.module.scss";
 import {
   Button,
@@ -14,19 +14,22 @@ import {
 } from "@dnd-kit/sortable";
 import SortableItem from "./SortableItem/SortableItem";
 import Scrollbars from "rc-scrollbars";
-import { burgerConstructorData } from "../../utils/utils";
+import type { DataOrderProps } from "../types/types";
 
-const BurgerContstuctor = () => {
-  const dataCopy = structuredClone(burgerConstructorData);
-  const [elements, setElements] = useState(dataCopy);
+type Props = {
+  activeOrder: DataOrderProps[];
+  setActiveOrder: React.Dispatch<React.SetStateAction<DataOrderProps[]>>;
+};
+
+const BurgerContstuctor = ({ activeOrder, setActiveOrder }: Props) => {
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
 
     if (!over || active.id === over.id) return;
 
-    setElements((items) => {
-      const oldIndex = items.findIndex((i) => i.id === active.id);
-      const newIndex = items.findIndex((i) => i.id === over.id);
+    setActiveOrder((items) => {
+      const oldIndex = items.findIndex((i) => i.uuid === active.id);
+      const newIndex = items.findIndex((i) => i.uuid === over.id);
       return arrayMove(items, oldIndex, newIndex);
     });
   };
@@ -49,17 +52,17 @@ const BurgerContstuctor = () => {
             onDragEnd={handleDragEnd}
           >
             <SortableContext
-              items={elements.map((el) => el.id)}
+              items={activeOrder.map((el) => el.uuid)}
               strategy={verticalListSortingStrategy}
             >
               <Scrollbars style={{ width: "100%", height: 384 }}>
                 <ul className={styles.constructorListScrollable}>
-                  {elements.map((el) => (
-                    <SortableItem key={el.id} id={el.id}>
+                  {activeOrder.map((el) => (
+                    <SortableItem key={el.uuid} id={el.uuid}>
                       <ConstructorElement
-                        text={el.text}
+                        text={el.name}
                         price={el.price}
-                        thumbnail={el.thumbnail}
+                        thumbnail={el.image}
                       />
                     </SortableItem>
                   ))}
