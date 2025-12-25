@@ -7,5 +7,52 @@
   max-width: 90%;
   max-height: 90vh;
   width: 720px;
+  min-height: 538px;
   animation: slideUp 0.3s ease-out;
+}
+
+@media (max-width: 1280px) {
+  .modalWrapper {
+    width: 480px;
+  }
+}
+
+@media (max-width: 640px) {
+  .modalWrapper {
+    width: 320px;
+  }
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+}
+
+.closeIcon {
+  position: relative;
+  width: 18px;
+  height: 18px;
+  margin-left: auto;
+  cursor: pointer;
+
+  &::before,
+  &::after {
+    position: absolute;
+    top: 8px;
+    content: "";
+    width: 18px;
+    height: 2px;
+    background-color: #f2f2f3;
+    border-radius: 12px;
+  }
+
+  &::before {
+    transform: rotate(45deg);
+  }
+
+  &::after {
+    transform: rotate(-45deg);
+  }
 }
