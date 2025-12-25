@@ -1,0 +1,29 @@
+.ingredientsContainer {
+  min-width: 600px;
+  max-height: calc(100vh - 88px);
+  display: flex;
+  flex-direction: column;
+}
+
+.tabsList {
+  display: flex;
+}
+
+.tabContainer {
+  flex: 1;
+  overflow: auto;
+  margin-top: 40px;
+  margin-bottom: 52px;
+}
+
+.title {
+  margin: 40px 0 20px 0;
+}
+
+@media (max-width: 640px) {
+  .title {
+    font-size: 28px;
+    line-height: 32px;
+    text-align: center;
+  }
+}
