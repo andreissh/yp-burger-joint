@@ -1,7 +1,7 @@
 .modalWrapper {
   display: flex;
   flex-direction: column;
-  background-color: #1c1c21;
+  background-color: var(--bg-color-primary);
   border-radius: 16px;
   padding: 40px;
   max-width: 90%;
@@ -44,7 +44,7 @@
     content: "";
     width: 18px;
     height: 2px;
-    background-color: #f2f2f3;
+    background-color: var(--bg-color-white);
     border-radius: 12px;
   }
 
