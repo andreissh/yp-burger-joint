@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import styles from "./BurgerIngredientsList.module.scss";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import type { DataOrderProps, DataProps } from "../../../types/types";
+import type { IngredientOrder, Ingredient } from "../../../types/types";
 
 type Props = {
   title: string;
   titleStyle?: React.CSSProperties;
-  products: DataProps[];
-  activeOrder: DataOrderProps[];
-  onActiveOrder: (arg: DataProps) => void;
+  products: Ingredient[];
+  activeOrder: IngredientOrder[];
+  onActiveOrder: (arg: Ingredient) => void;
 };
 
 const BurgerIngredientsList = ({

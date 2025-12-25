@@ -13,12 +13,12 @@ import {
 } from "@dnd-kit/sortable";
 import SortableItem from "./SortableItem/SortableItem";
 import Scrollbars from "rc-scrollbars";
-import type { DataOrderProps, DataProps } from "../../types/types";
+import type { IngredientOrder, Ingredient } from "../../types/types";
 
 type Props = {
-  activeOrder: DataOrderProps[];
-  setActiveOrder: React.Dispatch<React.SetStateAction<DataOrderProps[]>>;
-  constructorBun: DataProps;
+  activeOrder: IngredientOrder[];
+  setActiveOrder: React.Dispatch<React.SetStateAction<IngredientOrder[]>>;
+  constructorBun: Ingredient | null;
 };
 
 const BurgerContstuctor = ({
@@ -43,13 +43,15 @@ const BurgerContstuctor = ({
       <div className={styles.constructorInnerContainer}>
         <div className={styles.constructorList}>
           <div className={styles.constructorItem}>
-            <ConstructorElement
-              type="top"
-              isLocked={true}
-              text={constructorBun.name}
-              price={constructorBun.price}
-              thumbnail={constructorBun.image}
-            />
+            {constructorBun && (
+              <ConstructorElement
+                type="top"
+                isLocked={true}
+                text={constructorBun.name}
+                price={constructorBun.price}
+                thumbnail={constructorBun.image}
+              />
+            )}
           </div>
           <DndContext
             collisionDetection={closestCenter}
@@ -75,13 +77,15 @@ const BurgerContstuctor = ({
             </SortableContext>
           </DndContext>
           <div className={styles.constructorItem}>
-            <ConstructorElement
-              type="bottom"
-              isLocked={true}
-              text={constructorBun.name}
-              price={constructorBun.price}
-              thumbnail={constructorBun.image}
-            />
+            {constructorBun && (
+              <ConstructorElement
+                type="bottom"
+                isLocked={true}
+                text={constructorBun.name}
+                price={constructorBun.price}
+                thumbnail={constructorBun.image}
+              />
+            )}
           </div>
         </div>
         <div className={styles.totalBlock}>

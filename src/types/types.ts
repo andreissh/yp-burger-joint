@@ -1,4 +1,4 @@
-export type DataProps = {
+export type Ingredient = {
   _id: string;
   name: string;
   type: string;
@@ -13,9 +13,15 @@ export type DataProps = {
   __v: number;
 };
 
-export type BurgerIngredientsTabsProps = {
+export type BurgerIngredientsTab = {
   id: number;
   title: string;
 };
 
-export type DataOrderProps = DataProps & { uuid: string };
+export type IngredientOrder = Ingredient & { uuid: string };
+
+export type ApiResponse<T> = {
+  success: boolean;
+  data: T;
+  message?: string;
+};

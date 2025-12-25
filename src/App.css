@@ -44,3 +44,10 @@
   background-color: #8585ad !important;
   border-radius: 0 !important;
 }
+
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}

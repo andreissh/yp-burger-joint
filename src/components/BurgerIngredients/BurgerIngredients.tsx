@@ -1,19 +1,22 @@
 import React, { useState } from "react";
 import styles from "./BurgerIngredients.module.scss";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
-import data from "../../utils/data";
 import BurgerIngredientsList from "./BurgerIngredientsList/BurgerIngredientsList";
 import Scrollbars from "rc-scrollbars";
 import { burgerIngredientsTabs } from "../../utils/utils";
-import type { DataOrderProps, DataProps } from "../../types/types";
+import type { IngredientOrder, Ingredient } from "../../types/types";
 
 type Props = {
-  activeOrder: DataOrderProps[];
-  onActiveOrder: (arg: DataProps) => void;
+  ingredients: Ingredient[];
+  activeOrder: IngredientOrder[];
+  onActiveOrder: (arg: Ingredient) => void;
 };
 
-const BurgerIngredients = ({ activeOrder, onActiveOrder }: Props) => {
-  const dataCopy = structuredClone(data);
+const BurgerIngredients = ({
+  ingredients,
+  activeOrder,
+  onActiveOrder,
+}: Props) => {
   const [activeTab, setActiveTab] = useState(1);
 
   const handleTabClick = (value: string) => {
@@ -42,19 +45,19 @@ const BurgerIngredients = ({ activeOrder, onActiveOrder }: Props) => {
           <BurgerIngredientsList
             title="Булки"
             titleStyle={{ marginTop: 0 }}
-            products={dataCopy.filter((v) => v.type === "bun")}
+            products={ingredients.filter((v) => v.type === "bun")}
             activeOrder={activeOrder}
             onActiveOrder={onActiveOrder}
           />
           <BurgerIngredientsList
             title="Соусы"
-            products={dataCopy.filter((v) => v.type === "sauce")}
+            products={ingredients.filter((v) => v.type === "sauce")}
             activeOrder={activeOrder}
             onActiveOrder={onActiveOrder}
           />
           <BurgerIngredientsList
             title="Начинки"
-            products={dataCopy.filter((v) => v.type === "main")}
+            products={ingredients.filter((v) => v.type === "main")}
             activeOrder={activeOrder}
             onActiveOrder={onActiveOrder}
           />
