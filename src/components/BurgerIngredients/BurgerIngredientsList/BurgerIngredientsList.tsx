@@ -93,7 +93,7 @@ const BurgerIngredientsList = ({
       </div>
 
       {isModalOpen && (
-        <Modal onClose={handleModalClose}>
+        <Modal title="Детали ингредиента" onClose={handleModalClose}>
           <IngredientDetails />
         </Modal>
       )}
