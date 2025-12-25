@@ -25,11 +25,15 @@ const BurgerIngredientsList = ({
 }: Props) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 640);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentIngredient, setCurrentIngredient] = useState<Ingredient | null>(
+    null
+  );
 
   const handleModalOpen = () => setIsModalOpen(true);
   const handleModalClose = () => setIsModalOpen(false);
 
-  const handleIngredientClick = () => {
+  const handleIngredientClick = (ingredient: Ingredient) => {
+    setCurrentIngredient(ingredient);
     handleModalOpen();
   };
 
@@ -55,7 +59,7 @@ const BurgerIngredientsList = ({
               <li
                 className={styles.productTypeItem}
                 key={v._id}
-                onClick={handleIngredientClick}
+                onClick={() => handleIngredientClick(v)}
               >
                 <div className={styles.itemImgWrapper}>
                   <img
@@ -94,7 +98,7 @@ const BurgerIngredientsList = ({
 
       {isModalOpen && (
         <Modal title="Детали ингредиента" onClose={handleModalClose}>
-          <IngredientDetails />
+          <IngredientDetails ingredient={currentIngredient} />
         </Modal>
       )}
     </>
