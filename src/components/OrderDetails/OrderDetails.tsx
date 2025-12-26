@@ -10,7 +10,7 @@ const OrderDetails = () => {
       <img
         className={styles.orderAccepted}
         src={orderAccepted}
-        alt="order accepted"
+        alt="order accepted checkmark"
       />
       <span className={styles.orderInProcessTitle}>
         Ваш заказ начали готовить

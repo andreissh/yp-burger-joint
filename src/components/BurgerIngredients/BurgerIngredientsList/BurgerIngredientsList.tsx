@@ -7,6 +7,7 @@ import {
 import type { IngredientOrder, Ingredient } from "../../../types/types";
 import Modal from "../../../shared/Modal/Modal";
 import IngredientDetails from "../../IngredientDetails/IngredientDetails";
+import { useModal } from "../../../hooks/useModal";
 
 type Props = {
   title: string;
@@ -24,17 +25,14 @@ const BurgerIngredientsList = ({
   onActiveOrder,
 }: Props) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 640);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentIngredient, setCurrentIngredient] = useState<Ingredient | null>(
     null
   );
-
-  const handleModalOpen = () => setIsModalOpen(true);
-  const handleModalClose = () => setIsModalOpen(false);
+  const { isModalOpen, openModal, closeModal } = useModal();
 
   const handleIngredientClick = (ingredient: Ingredient) => {
     setCurrentIngredient(ingredient);
-    handleModalOpen();
+    openModal();
   };
 
   useEffect(() => {
@@ -97,7 +95,7 @@ const BurgerIngredientsList = ({
       </div>
 
       {isModalOpen && (
-        <Modal title="Детали ингредиента" onClose={handleModalClose}>
+        <Modal title="Детали ингредиента" onClose={closeModal}>
           <IngredientDetails ingredient={currentIngredient} />
         </Modal>
       )}

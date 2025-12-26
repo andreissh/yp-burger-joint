@@ -43,7 +43,7 @@ const AppHeader = () => {
           <img
             className={styles.logoMobile}
             src={logoMobile}
-            alt="logo-mobile"
+            alt="stellar burger mobile logo"
           />
         </div>
         <div className={styles.rightTabs}>

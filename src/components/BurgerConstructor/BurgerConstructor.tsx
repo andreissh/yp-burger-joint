@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./BurgerConstructor.module.scss";
 import {
   Button,
@@ -16,6 +16,7 @@ import Scrollbars from "rc-scrollbars";
 import type { IngredientOrder, Ingredient } from "../../types/types";
 import Modal from "../../shared/Modal/Modal";
 import OrderDetails from "../OrderDetails/OrderDetails";
+import { useModal } from "../../hooks/useModal";
 
 type Props = {
   activeOrder: IngredientOrder[];
@@ -28,7 +29,7 @@ const BurgerContstuctor = ({
   setActiveOrder,
   constructorBun,
 }: Props) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { isModalOpen, openModal, closeModal } = useModal();
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
@@ -40,13 +41,6 @@ const BurgerContstuctor = ({
       const newIndex = items.findIndex((i) => i.uuid === over.id);
       return arrayMove(items, oldIndex, newIndex);
     });
-  };
-
-  const handleModalOpen = () => setIsModalOpen(true);
-  const handleModalClose = () => setIsModalOpen(false);
-
-  const handleMakeOrderClick = () => {
-    handleModalOpen();
   };
 
   return (
@@ -111,7 +105,7 @@ const BurgerContstuctor = ({
               htmlType="button"
               type="primary"
               size="large"
-              onClick={handleMakeOrderClick}
+              onClick={openModal}
             >
               Оформить заказ
             </Button>
@@ -120,7 +114,7 @@ const BurgerContstuctor = ({
       </div>
 
       {isModalOpen && (
-        <Modal onClose={handleModalClose}>
+        <Modal onClose={closeModal}>
           <OrderDetails />
         </Modal>
       )}

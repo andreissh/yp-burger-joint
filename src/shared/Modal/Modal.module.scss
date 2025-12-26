@@ -29,29 +29,15 @@
   padding: 12px 0;
 }
 
+.title {
+  font-size: 36px;
+  line-height: 40px;
+}
+
 .closeIcon {
-  position: relative;
-  width: 18px;
-  height: 18px;
+  display: flex;
+  width: 24px;
+  height: 24px;
   margin-left: auto;
   cursor: pointer;
-
-  &::before,
-  &::after {
-    position: absolute;
-    top: 8px;
-    content: "";
-    width: 18px;
-    height: 2px;
-    background-color: var(--bg-color-white);
-    border-radius: 12px;
-  }
-
-  &::before {
-    transform: rotate(45deg);
-  }
-
-  &::after {
-    transform: rotate(-45deg);
-  }
 }

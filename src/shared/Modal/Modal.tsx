@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
 import styles from "./Modal.module.scss";
 import ModalOverlay from "./ModalOverlay/ModalOverlay";
+import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 
 type Props = {
   title?: string;
@@ -45,8 +46,10 @@ const Modal = ({ title, children, onClose }: Props) => {
       <div className={styles.modalWrapper}>
         <div className={styles.modalContainer}>
           <div className={styles.modalHeader}>
-            {title && <h1 className={styles.title}>{title}</h1>}
-            <span className={styles.closeIcon} onClick={onClose} />
+            {title && <h2 className={styles.title}>{title}</h2>}
+            <span className={styles.closeIcon}>
+              <CloseIcon type="primary" onClick={onClose} />
+            </span>
           </div>
           <div className={styles.modalBody}>{children}</div>
         </div>

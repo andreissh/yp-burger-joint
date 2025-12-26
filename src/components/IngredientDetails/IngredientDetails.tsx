@@ -21,7 +21,7 @@ const IngredientDetails = ({ ingredient }: Props) => {
   return (
     <div className={styles.detailsContainer}>
       <div className={styles.detailsImgWrapper}>
-        <img className={styles.detailsImg} src={image} alt="ingredient" />
+        <img className={styles.detailsImg} src={image} alt={name} />
       </div>
       <h2 className={styles.detailsTitle}>{name}</h2>
       <div className={styles.detailsInfoBlock}>

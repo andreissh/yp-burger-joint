@@ -12,6 +12,7 @@ function App() {
   const [activeOrder, setActiveOrder] = useState<IngredientOrder[]>([]);
   const [constructorBun, setConstructorBun] = useState<Ingredient | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState("");
 
   const handleActiveOrder = (item: Ingredient) => {
     if (item.type === "bun") {
@@ -32,7 +33,7 @@ function App() {
         setIngredients(response.data);
         setConstructorBun(defaultBun);
       } catch (err) {
-        throw new Error(`${(err as Error).message}`);
+        setIsError((err as Error).message);
       } finally {
         setIsLoading(false);
       }
@@ -42,7 +43,15 @@ function App() {
   }, []);
 
   if (isLoading) {
-    return <div className="loader">Loading ingredients...</div>;
+    return <div className="loader">Загрузка ингредиентов...</div>;
+  }
+
+  if (isError) {
+    return (
+      <div className="load-error">
+        Произошла ошибка при загрузке данных. Попробуйте перезагрузить страницу.
+      </div>
+    );
   }
 
   return (

@@ -45,7 +45,8 @@
   border-radius: 0 !important;
 }
 
-.loader {
+.loader,
+.load-error {
   display: flex;
   justify-content: center;
   align-items: center;
