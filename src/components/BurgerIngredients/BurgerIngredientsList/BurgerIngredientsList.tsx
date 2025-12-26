@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styles from "./BurgerIngredientsList.module.scss";
 import {
   Button,
@@ -8,6 +8,7 @@ import type { IngredientOrder, Ingredient } from "../../../types/types";
 import Modal from "../../../shared/Modal/Modal";
 import IngredientDetails from "../../IngredientDetails/IngredientDetails";
 import { useModal } from "../../../hooks/useModal";
+import { useMediaQuery } from "usehooks-ts";
 
 type Props = {
   title: string;
@@ -24,7 +25,7 @@ const BurgerIngredientsList = ({
   activeOrder,
   onActiveOrder,
 }: Props) => {
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 640);
+  const isMobile = useMediaQuery("(max-width: 640px)");
   const [currentIngredient, setCurrentIngredient] = useState<Ingredient | null>(
     null
   );
@@ -34,16 +35,6 @@ const BurgerIngredientsList = ({
     setCurrentIngredient(ingredient);
     openModal();
   };
-
-  useEffect(() => {
-    const onResize = () => {
-      setIsMobile(window.innerWidth <= 640);
-    };
-
-    window.addEventListener("resize", onResize);
-
-    return () => window.removeEventListener("resize", onResize);
-  }, [isMobile]);
 
   return (
     <>
