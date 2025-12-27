@@ -13,12 +13,15 @@ import {
 } from "@dnd-kit/sortable";
 import SortableItem from "./SortableItem/SortableItem";
 import Scrollbars from "rc-scrollbars";
-import type { DataOrderProps, DataProps } from "../types/types";
+import type { IngredientOrder, Ingredient } from "../../types/types";
+import Modal from "../../shared/Modal/Modal";
+import OrderDetails from "../OrderDetails/OrderDetails";
+import { useModal } from "../../hooks/useModal";
 
 type Props = {
-  activeOrder: DataOrderProps[];
-  setActiveOrder: React.Dispatch<React.SetStateAction<DataOrderProps[]>>;
-  constructorBun: DataProps;
+  activeOrder: IngredientOrder[];
+  setActiveOrder: React.Dispatch<React.SetStateAction<IngredientOrder[]>>;
+  constructorBun: Ingredient | null;
 };
 
 const BurgerContstuctor = ({
@@ -26,6 +29,8 @@ const BurgerContstuctor = ({
   setActiveOrder,
   constructorBun,
 }: Props) => {
+  const { isModalOpen, openModal, closeModal } = useModal();
+
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
 
@@ -39,64 +44,81 @@ const BurgerContstuctor = ({
   };
 
   return (
-    <div className={styles.constructorContainer}>
-      <div className={styles.constructorInnerContainer}>
-        <div className={styles.constructorList}>
-          <div className={styles.constructorItem}>
-            <ConstructorElement
-              type="top"
-              isLocked={true}
-              text={constructorBun.name}
-              price={constructorBun.price}
-              thumbnail={constructorBun.image}
-            />
-          </div>
-          <DndContext
-            collisionDetection={closestCenter}
-            onDragEnd={handleDragEnd}
-          >
-            <SortableContext
-              items={activeOrder.map((el) => el.uuid)}
-              strategy={verticalListSortingStrategy}
+    <>
+      <div className={styles.constructorContainer}>
+        <div className={styles.constructorInnerContainer}>
+          <div className={styles.constructorList}>
+            <div className={styles.constructorItem}>
+              {constructorBun && (
+                <ConstructorElement
+                  type="top"
+                  isLocked={true}
+                  text={`${constructorBun.name} (верх)`}
+                  price={constructorBun.price}
+                  thumbnail={constructorBun.image}
+                />
+              )}
+            </div>
+            <DndContext
+              collisionDetection={closestCenter}
+              onDragEnd={handleDragEnd}
             >
-              <Scrollbars style={{ width: "100%", height: 384 }}>
-                <ul className={styles.constructorListScrollable}>
-                  {activeOrder.map((el) => (
-                    <SortableItem key={el.uuid} id={el.uuid}>
-                      <ConstructorElement
-                        text={el.name}
-                        price={el.price}
-                        thumbnail={el.image}
-                      />
-                    </SortableItem>
-                  ))}
-                </ul>
-              </Scrollbars>
-            </SortableContext>
-          </DndContext>
-          <div className={styles.constructorItem}>
-            <ConstructorElement
-              type="bottom"
-              isLocked={true}
-              text={constructorBun.name}
-              price={constructorBun.price}
-              thumbnail={constructorBun.image}
-            />
+              <SortableContext
+                items={activeOrder.map((el) => el.uuid)}
+                strategy={verticalListSortingStrategy}
+              >
+                <Scrollbars style={{ width: "100%", height: 384 }}>
+                  <ul className={styles.constructorListScrollable}>
+                    {activeOrder.map((el) => (
+                      <SortableItem key={el.uuid} id={el.uuid}>
+                        <ConstructorElement
+                          text={el.name}
+                          price={el.price}
+                          thumbnail={el.image}
+                        />
+                      </SortableItem>
+                    ))}
+                  </ul>
+                </Scrollbars>
+              </SortableContext>
+            </DndContext>
+            <div className={styles.constructorItem}>
+              {constructorBun && (
+                <ConstructorElement
+                  type="bottom"
+                  isLocked={true}
+                  text={`${constructorBun.name} (низ)`}
+                  price={constructorBun.price}
+                  thumbnail={constructorBun.image}
+                />
+              )}
+            </div>
           </div>
-        </div>
-        <div className={styles.totalBlock}>
-          <span className={`${styles.totalText} iceland-regular`}>
-            610
-            <span className={styles.totalIconWrapper}>
-              <CurrencyIcon type="primary" />
+          <div className={styles.totalBlock}>
+            <span className={`${styles.totalText} iceland-regular`}>
+              610
+              <span className={styles.totalIconWrapper}>
+                <CurrencyIcon type="primary" />
+              </span>
             </span>
-          </span>
-          <Button htmlType="button" type="primary" size="large">
-            Оформить заказ
-          </Button>
+            <Button
+              htmlType="button"
+              type="primary"
+              size="large"
+              onClick={openModal}
+            >
+              Оформить заказ
+            </Button>
+          </div>
         </div>
       </div>
-    </div>
+
+      {isModalOpen && (
+        <Modal onClose={closeModal}>
+          <OrderDetails />
+        </Modal>
+      )}
+    </>
   );
 };
 

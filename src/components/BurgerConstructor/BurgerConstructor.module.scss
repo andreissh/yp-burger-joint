@@ -5,6 +5,7 @@
 
 @media (max-width: 1280px) {
   .constructorContainer {
+    margin-top: 0;
     margin-bottom: 40px;
   }
 }
@@ -44,7 +45,7 @@
     position: fixed;
     bottom: 0;
     left: 0;
-    background-color: #1c1c21;
+    background-color: var(--bg-color-primary);
     padding: 16px 8px;
     width: calc(100% - 16px);
   }

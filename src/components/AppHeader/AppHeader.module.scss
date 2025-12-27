@@ -1,5 +1,5 @@
 .headerWrapper {
-  background-color: #1c1c21;
+  background-color: var(--bg-color-primary);
 }
 
 .headerContainer {
@@ -59,11 +59,11 @@
 }
 
 .tabTitle {
-  color: #8585ad;
+  color: var(--fg-color-secondary);
 }
 
 .tabTitleActive {
-  color: #f2f2f3;
+  color: var(--fg-color-primary);
 }
 
 .burgerMenu {
@@ -100,7 +100,7 @@
     position: absolute;
     top: 0;
     right: 0;
-    background-color: #f2f2f3;
+    background-color: var(--bg-color-white);
     width: 18px;
     height: 2px;
     border-radius: 10px;

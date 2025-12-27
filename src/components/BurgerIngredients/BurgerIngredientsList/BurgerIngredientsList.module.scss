@@ -73,8 +73,13 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background-color: #4c4cff;
+  background-color: var(--bg-color-blue);
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.addIngredientBtn {
+  display: flex;
+  justify-self: center;
 }
