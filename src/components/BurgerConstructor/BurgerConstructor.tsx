@@ -13,34 +13,34 @@ import {
 } from "@dnd-kit/sortable";
 import SortableItem from "./SortableItem/SortableItem";
 import Scrollbars from "rc-scrollbars";
-import type { IngredientOrder, Ingredient } from "../../types/types";
 import Modal from "../../shared/Modal/Modal";
 import OrderDetails from "../OrderDetails/OrderDetails";
 import { useModal } from "../../hooks/useModal";
+import { useDispatch } from "react-redux";
+import { useAppSelector } from "../../services/hooks";
+import { shuffleIngredients } from "../../services/slices/ingredientsOrderSlice";
 
-type Props = {
-  activeOrder: IngredientOrder[];
-  setActiveOrder: React.Dispatch<React.SetStateAction<IngredientOrder[]>>;
-  constructorBun: Ingredient | null;
-};
-
-const BurgerContstuctor = ({
-  activeOrder,
-  setActiveOrder,
-  constructorBun,
-}: Props) => {
+const BurgerConstructor = () => {
   const { isModalOpen, openModal, closeModal } = useModal();
+  const dispatch = useDispatch();
+  const { data: activeOrder } = useAppSelector(
+    (state) => state.ingredientsOrder,
+  );
+  const constructorBun = activeOrder.find((item) => item.type === "bun");
+  const constructorIngredients = activeOrder.filter(
+    (item) => item.type !== "bun",
+  );
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
 
     if (!over || active.id === over.id) return;
 
-    setActiveOrder((items) => {
-      const oldIndex = items.findIndex((i) => i.uuid === active.id);
-      const newIndex = items.findIndex((i) => i.uuid === over.id);
-      return arrayMove(items, oldIndex, newIndex);
-    });
+    const oldIndex = activeOrder.findIndex((i) => i.uuid === active.id);
+    const newIndex = activeOrder.findIndex((i) => i.uuid === over.id);
+    const activeOrderShuffled = arrayMove(activeOrder, oldIndex, newIndex);
+
+    dispatch(shuffleIngredients(activeOrderShuffled));
   };
 
   return (
@@ -64,12 +64,12 @@ const BurgerContstuctor = ({
               onDragEnd={handleDragEnd}
             >
               <SortableContext
-                items={activeOrder.map((el) => el.uuid)}
+                items={constructorIngredients.map((el) => el.uuid)}
                 strategy={verticalListSortingStrategy}
               >
                 <Scrollbars style={{ width: "100%", height: 384 }}>
                   <ul className={styles.constructorListScrollable}>
-                    {activeOrder.map((el) => (
+                    {constructorIngredients.map((el) => (
                       <SortableItem key={el.uuid} id={el.uuid}>
                         <ConstructorElement
                           text={el.name}
@@ -122,4 +122,4 @@ const BurgerContstuctor = ({
   );
 };
 
-export default BurgerContstuctor;
+export default BurgerConstructor;

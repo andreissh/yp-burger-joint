@@ -4,20 +4,16 @@ import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import BurgerIngredientsList from "./BurgerIngredientsList/BurgerIngredientsList";
 import Scrollbars from "rc-scrollbars";
 import { burgerIngredientsTabs } from "../../utils/utils";
-import type { IngredientOrder, Ingredient } from "../../types/types";
+import type { IngredientOrder } from "../../types/types";
+import { useAppSelector } from "../../services/hooks";
 
 type Props = {
-  ingredients: Ingredient[];
-  activeOrder: IngredientOrder[];
-  onActiveOrder: (arg: Ingredient) => void;
+  onActiveOrder: (arg: IngredientOrder) => void;
 };
 
-const BurgerIngredients = ({
-  ingredients,
-  activeOrder,
-  onActiveOrder,
-}: Props) => {
+const BurgerIngredients = ({ onActiveOrder }: Props) => {
   const [activeTab, setActiveTab] = useState(1);
+  const { data: ingredients } = useAppSelector((state) => state.ingredients);
 
   const handleTabClick = (value: string) => {
     setActiveTab(+value);
@@ -46,19 +42,16 @@ const BurgerIngredients = ({
             title="Булки"
             titleStyle={{ marginTop: 0 }}
             products={ingredients.filter((v) => v.type === "bun")}
-            activeOrder={activeOrder}
             onActiveOrder={onActiveOrder}
           />
           <BurgerIngredientsList
             title="Соусы"
             products={ingredients.filter((v) => v.type === "sauce")}
-            activeOrder={activeOrder}
             onActiveOrder={onActiveOrder}
           />
           <BurgerIngredientsList
             title="Начинки"
             products={ingredients.filter((v) => v.type === "main")}
-            activeOrder={activeOrder}
             onActiveOrder={onActiveOrder}
           />
         </Scrollbars>

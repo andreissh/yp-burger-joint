@@ -4,7 +4,7 @@ const baseUrl = "https://norma.education-services.ru/api";
 
 export const fetchApi = async <T>(
   endpoint: string,
-  options: RequestInit = {}
+  options: RequestInit = {},
 ): Promise<ApiResponse<T>> => {
   const response = await fetch(`${baseUrl}${endpoint}`, {
     headers: {
@@ -20,7 +20,7 @@ export const fetchApi = async <T>(
     }));
 
     throw new Error(
-      error.message || `Request failed with status ${response.status}`
+      error.message || `Request failed with status ${response.status}`,
     );
   }
 

@@ -4,32 +4,35 @@ import {
   Button,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import type { IngredientOrder, Ingredient } from "../../../types/types";
+import type { Ingredient, IngredientOrder } from "../../../types/types";
 import Modal from "../../../shared/Modal/Modal";
 import IngredientDetails from "../../IngredientDetails/IngredientDetails";
 import { useModal } from "../../../hooks/useModal";
 import { useMediaQuery } from "usehooks-ts";
+import { useAppSelector } from "../../../services/hooks";
+import { v4 as uuidv4 } from "uuid";
 
 type Props = {
   title: string;
   titleStyle?: React.CSSProperties;
   products: Ingredient[];
-  activeOrder: IngredientOrder[];
-  onActiveOrder: (arg: Ingredient) => void;
+  onActiveOrder: (arg: IngredientOrder) => void;
 };
 
 const BurgerIngredientsList = ({
   title,
   titleStyle = {},
   products,
-  activeOrder,
   onActiveOrder,
 }: Props) => {
   const isMobile = useMediaQuery("(max-width: 640px)");
   const [currentIngredient, setCurrentIngredient] = useState<Ingredient | null>(
-    null
+    null,
   );
   const { isModalOpen, openModal, closeModal } = useModal();
+  const { data: activeOrder } = useAppSelector(
+    (state) => state.ingredientsOrder,
+  );
 
   const handleIngredientClick = (ingredient: Ingredient) => {
     setCurrentIngredient(ingredient);
@@ -62,9 +65,15 @@ const BurgerIngredientsList = ({
                   <CurrencyIcon type="primary" />
                 </span>
                 <span className={styles.itemName}>{v.name}</span>
-                {activeOrder.filter((item) => item._id === v._id).length ? (
+                {activeOrder.filter(
+                  (item) => item._id === v._id && item.type !== "bun",
+                ).length ? (
                   <span className={styles.itemCounter}>
-                    {activeOrder.filter((item) => item._id === v._id).length}
+                    {
+                      activeOrder.filter(
+                        (item) => item._id === v._id && item.type !== "bun",
+                      ).length
+                    }
                   </span>
                 ) : null}
                 <Button
@@ -74,7 +83,7 @@ const BurgerIngredientsList = ({
                   extraClass={styles.addIngredientBtn}
                   onClick={(e) => {
                     e.stopPropagation();
-                    onActiveOrder(v);
+                    onActiveOrder({ ...v, uuid: uuidv4() });
                   }}
                 >
                   {v.type === "bun" ? "Выбрать" : "Добавить"}
