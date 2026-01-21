@@ -11,6 +11,7 @@ import { useModal } from "../../../hooks/useModal";
 import { useMediaQuery } from "usehooks-ts";
 import { useAppSelector } from "../../../services/hooks";
 import { v4 as uuidv4 } from "uuid";
+import DraggableIngredient from "./DraggableIngredient/DraggableIngredient";
 
 type Props = {
   title: string;
@@ -48,10 +49,10 @@ const BurgerIngredientsList = ({
         <ul className={styles.productTypeList}>
           {products.map((v) => {
             return (
-              <li
-                className={styles.productTypeItem}
+              <DraggableIngredient
                 key={v._id}
-                onClick={() => handleIngredientClick(v)}
+                ingredient={v}
+                onIngredientClick={handleIngredientClick}
               >
                 <div className={styles.itemImgWrapper}>
                   <img
@@ -88,7 +89,7 @@ const BurgerIngredientsList = ({
                 >
                   {v.type === "bun" ? "Выбрать" : "Добавить"}
                 </Button>
-              </li>
+              </DraggableIngredient>
             );
           })}
         </ul>

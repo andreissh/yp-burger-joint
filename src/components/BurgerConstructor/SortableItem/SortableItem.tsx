@@ -3,14 +3,13 @@ import { useDrag, useDrop } from "react-dnd";
 import styles from "./SortableItem.module.scss";
 import { DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useAppSelector } from "../../../services/hooks";
+import { SORT_INGREDIENTS } from "../../../shared/constants";
 
 type Props = {
   id: string;
   moveItem: (dragIndex: number, hoverIndex: number) => void;
   children: React.ReactNode;
 };
-
-const ItemType = "INGREDIENT";
 
 function SortableItem({ id, moveItem, children }: Props) {
   const ref = useRef<HTMLLIElement>(null);
@@ -19,7 +18,7 @@ function SortableItem({ id, moveItem, children }: Props) {
   );
 
   const [, drop] = useDrop({
-    accept: ItemType,
+    accept: SORT_INGREDIENTS,
     hover(item: { id: string }) {
       if (!ref.current) return;
 
@@ -33,7 +32,7 @@ function SortableItem({ id, moveItem, children }: Props) {
   });
 
   const [{ isDragging }, drag] = useDrag({
-    type: ItemType,
+    type: SORT_INGREDIENTS,
     item: { id },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),

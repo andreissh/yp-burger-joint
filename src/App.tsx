@@ -11,6 +11,8 @@ import {
   addIngredient,
   removeIngredient,
 } from "./services/slices/ingredientsOrderSlice";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 function App() {
   const {
@@ -62,8 +64,10 @@ function App() {
     <div className="page-wrapper">
       <AppHeader />
       <main className="page-content">
-        <BurgerIngredients onActiveOrder={handleActiveOrder} />
-        <BurgerConstructor />
+        <DndProvider backend={HTML5Backend}>
+          <BurgerIngredients onActiveOrder={handleActiveOrder} />
+          <BurgerConstructor onActiveOrder={handleActiveOrder} />
+        </DndProvider>
       </main>
     </div>
   );

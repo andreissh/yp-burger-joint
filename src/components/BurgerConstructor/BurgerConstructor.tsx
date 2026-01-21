@@ -13,10 +13,16 @@ import { useModal } from "../../hooks/useModal";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../services/hooks";
 import { shuffleIngredients } from "../../services/slices/ingredientsOrderSlice";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
+import { useDrop } from "react-dnd";
+import { DND_INGREDIENT } from "../../shared/constants";
+import { v4 as uuidv4 } from "uuid";
+import type { Ingredient, IngredientOrder } from "../../types/types";
 
-const BurgerConstructor = () => {
+type Props = {
+  onActiveOrder: (arg: IngredientOrder) => void;
+};
+
+const BurgerConstructor = ({ onActiveOrder }: Props) => {
   const { isModalOpen, openModal, closeModal } = useModal();
   const dispatch = useDispatch();
   const { data: activeOrder } = useAppSelector(
@@ -26,6 +32,14 @@ const BurgerConstructor = () => {
   const constructorIngredients = activeOrder.filter(
     (item) => item.type !== "bun",
   );
+
+  const [, drop] = useDrop(() => ({
+    accept: DND_INGREDIENT,
+    drop: (ingredient: Ingredient) => {
+      const ingredientOrder = { ...ingredient, uuid: uuidv4() };
+      onActiveOrder(ingredientOrder);
+    },
+  }));
 
   const moveItem = useCallback(
     (dragIndex: number, hoverIndex: number) => {
@@ -41,7 +55,7 @@ const BurgerConstructor = () => {
     <>
       <div className={styles.constructorContainer}>
         <div className={styles.constructorInnerContainer}>
-          <div className={styles.constructorList}>
+          <div className={styles.constructorList} ref={drop}>
             <div className={styles.constructorItem}>
               {constructorBun && (
                 <ConstructorElement
@@ -53,25 +67,19 @@ const BurgerConstructor = () => {
                 />
               )}
             </div>
-            <DndProvider backend={HTML5Backend}>
-              <Scrollbars style={{ width: "100%", height: 384 }}>
-                <ul className={styles.constructorListScrollable}>
-                  {constructorIngredients.map((el) => (
-                    <SortableItem
-                      key={el.uuid}
-                      id={el.uuid}
-                      moveItem={moveItem}
-                    >
-                      <ConstructorElement
-                        text={el.name}
-                        price={el.price}
-                        thumbnail={el.image}
-                      />
-                    </SortableItem>
-                  ))}
-                </ul>
-              </Scrollbars>
-            </DndProvider>
+            <Scrollbars style={{ width: "100%", height: 384 }}>
+              <ul className={styles.constructorListScrollable}>
+                {constructorIngredients.map((el) => (
+                  <SortableItem key={el.uuid} id={el.uuid} moveItem={moveItem}>
+                    <ConstructorElement
+                      text={el.name}
+                      price={el.price}
+                      thumbnail={el.image}
+                    />
+                  </SortableItem>
+                ))}
+              </ul>
+            </Scrollbars>
             <div className={styles.constructorItem}>
               {constructorBun && (
                 <ConstructorElement
