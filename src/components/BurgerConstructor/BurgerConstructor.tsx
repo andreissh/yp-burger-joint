@@ -1,16 +1,10 @@
-import React from "react";
+import React, { useCallback } from "react";
 import styles from "./BurgerConstructor.module.scss";
 import {
   Button,
   ConstructorElement,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { closestCenter, DndContext, type DragEndEvent } from "@dnd-kit/core";
-import {
-  arrayMove,
-  SortableContext,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
 import SortableItem from "./SortableItem/SortableItem";
 import Scrollbars from "rc-scrollbars";
 import Modal from "../../shared/Modal/Modal";
@@ -19,6 +13,8 @@ import { useModal } from "../../hooks/useModal";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../services/hooks";
 import { shuffleIngredients } from "../../services/slices/ingredientsOrderSlice";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 const BurgerConstructor = () => {
   const { isModalOpen, openModal, closeModal } = useModal();
@@ -31,17 +27,15 @@ const BurgerConstructor = () => {
     (item) => item.type !== "bun",
   );
 
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
-
-    if (!over || active.id === over.id) return;
-
-    const oldIndex = activeOrder.findIndex((i) => i.uuid === active.id);
-    const newIndex = activeOrder.findIndex((i) => i.uuid === over.id);
-    const activeOrderShuffled = arrayMove(activeOrder, oldIndex, newIndex);
-
-    dispatch(shuffleIngredients(activeOrderShuffled));
-  };
+  const moveItem = useCallback(
+    (dragIndex: number, hoverIndex: number) => {
+      const newOrder = [...activeOrder];
+      const [dragged] = newOrder.splice(dragIndex, 1);
+      newOrder.splice(hoverIndex, 0, dragged);
+      dispatch(shuffleIngredients(newOrder));
+    },
+    [activeOrder, dispatch],
+  );
 
   return (
     <>
@@ -59,29 +53,25 @@ const BurgerConstructor = () => {
                 />
               )}
             </div>
-            <DndContext
-              collisionDetection={closestCenter}
-              onDragEnd={handleDragEnd}
-            >
-              <SortableContext
-                items={constructorIngredients.map((el) => el.uuid)}
-                strategy={verticalListSortingStrategy}
-              >
-                <Scrollbars style={{ width: "100%", height: 384 }}>
-                  <ul className={styles.constructorListScrollable}>
-                    {constructorIngredients.map((el) => (
-                      <SortableItem key={el.uuid} id={el.uuid}>
-                        <ConstructorElement
-                          text={el.name}
-                          price={el.price}
-                          thumbnail={el.image}
-                        />
-                      </SortableItem>
-                    ))}
-                  </ul>
-                </Scrollbars>
-              </SortableContext>
-            </DndContext>
+            <DndProvider backend={HTML5Backend}>
+              <Scrollbars style={{ width: "100%", height: 384 }}>
+                <ul className={styles.constructorListScrollable}>
+                  {constructorIngredients.map((el) => (
+                    <SortableItem
+                      key={el.uuid}
+                      id={el.uuid}
+                      moveItem={moveItem}
+                    >
+                      <ConstructorElement
+                        text={el.name}
+                        price={el.price}
+                        thumbnail={el.image}
+                      />
+                    </SortableItem>
+                  ))}
+                </ul>
+              </Scrollbars>
+            </DndProvider>
             <div className={styles.constructorItem}>
               {constructorBun && (
                 <ConstructorElement
