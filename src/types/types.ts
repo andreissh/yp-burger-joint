@@ -16,6 +16,7 @@ export type Ingredient = {
 export type BurgerIngredientsTab = {
   id: number;
   title: string;
+  type: string;
 };
 
 export type IngredientOrder = Ingredient & { uuid: string };

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./BurgerIngredients.module.scss";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import BurgerIngredientsList from "./BurgerIngredientsList/BurgerIngredientsList";
@@ -14,10 +14,69 @@ type Props = {
 const BurgerIngredients = ({ onActiveOrder }: Props) => {
   const [activeTab, setActiveTab] = useState(1);
   const { data: ingredients } = useAppSelector((state) => state.ingredients);
+  const sections = burgerIngredientsTabs.map((tab) => ({
+    ...tab,
+    products: ingredients.filter((i) => i.type === tab.type),
+  }));
+  const scrollContainerRef = useRef<Scrollbars | null>(null);
+  const sectionRefs = useRef<Record<number, HTMLDivElement | null>>({});
+  const visibleSectionsRef = useRef(
+    new Map<number, IntersectionObserverEntry>(),
+  );
 
   const handleTabClick = (value: string) => {
-    setActiveTab(+value);
+    const id = Number(value);
+    setActiveTab(id);
+
+    const container = scrollContainerRef.current?.view;
+    const section = sectionRefs.current[id];
+    if (container && section) {
+      const offset = section.offsetTop;
+      container.scrollTo({
+        top: offset,
+        behavior: "smooth",
+      });
+    }
   };
+
+  useEffect(() => {
+    const root = document.querySelector(".rc-scrollbars-view");
+    if (!root) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          const id = Number(entry.target.getAttribute("data-tab-id"));
+
+          if (entry.isIntersecting) {
+            visibleSectionsRef.current.set(id, entry);
+          } else {
+            visibleSectionsRef.current.delete(id);
+          }
+        }
+
+        const sorted = Array.from(visibleSectionsRef.current.values()).sort(
+          (a, b) => {
+            const aTop = Math.abs(a.boundingClientRect.top);
+            const bTop = Math.abs(b.boundingClientRect.top);
+            return aTop - bTop;
+          },
+        );
+
+        if (sorted.length > 0) {
+          const id = Number(sorted[0].target.getAttribute("data-tab-id"));
+          setActiveTab(id);
+        }
+      },
+      { root },
+    );
+
+    Object.values(sectionRefs.current).forEach((el) => {
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, [ingredients]);
 
   return (
     <section className={styles.ingredientsContainer}>
@@ -37,23 +96,26 @@ const BurgerIngredients = ({ onActiveOrder }: Props) => {
         </ul>
       </nav>
       <div className={styles.tabContainer}>
-        <Scrollbars style={{ width: "100%", height: 520 }}>
-          <BurgerIngredientsList
-            title="Булки"
-            titleStyle={{ marginTop: 0 }}
-            products={ingredients.filter((v) => v.type === "bun")}
-            onActiveOrder={onActiveOrder}
-          />
-          <BurgerIngredientsList
-            title="Соусы"
-            products={ingredients.filter((v) => v.type === "sauce")}
-            onActiveOrder={onActiveOrder}
-          />
-          <BurgerIngredientsList
-            title="Начинки"
-            products={ingredients.filter((v) => v.type === "main")}
-            onActiveOrder={onActiveOrder}
-          />
+        <Scrollbars
+          style={{ width: "100%", height: 520 }}
+          ref={scrollContainerRef}
+        >
+          {sections.map((section) => {
+            return (
+              <div
+                key={section.id}
+                ref={(el) => (sectionRefs.current[section.id] = el)}
+                data-tab-id={section.id}
+              >
+                <BurgerIngredientsList
+                  title={section.title}
+                  titleStyle={section.type === "bun" ? { marginTop: 0 } : {}}
+                  products={section.products}
+                  onActiveOrder={onActiveOrder}
+                />
+              </div>
+            );
+          })}
         </Scrollbars>
       </div>
     </section>
