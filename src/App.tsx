@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import "./App.css";
 import AppHeader from "./components/AppHeader/AppHeader";
 import BurgerConstructor from "./components/BurgerConstructor/BurgerConstructor";
@@ -24,12 +24,15 @@ function App() {
   const { data: activeOrder } = useAppSelector(
     (state) => state.ingredientsOrder,
   );
+  const activeOrderRef = useRef(activeOrder);
 
   const handleActiveOrder = (item: IngredientOrder) => {
+    const currentOrder = activeOrderRef.current;
+
     if (item.type === "bun") {
-      const buns = activeOrder.filter((item) => item.type === "bun");
+      const buns = currentOrder.filter((item) => item.type === "bun");
       buns.forEach((bun) => {
-        dispatch(removeIngredient(bun));
+        dispatch(removeIngredient(bun.uuid));
         dispatch(addIngredient(item));
       });
     } else {
@@ -47,6 +50,10 @@ function App() {
     const defaultBun = ingredients.find((item) => item.type === "bun");
     if (defaultBun) dispatch(addIngredient({ ...defaultBun, uuid: uuidv4() }));
   }, [ingredients, dispatch]);
+
+  useEffect(() => {
+    activeOrderRef.current = activeOrder;
+  }, [activeOrder]);
 
   if (loading) {
     return <div className="loader">Загрузка ингредиентов...</div>;

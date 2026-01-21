@@ -12,7 +12,10 @@ import OrderDetails from "../OrderDetails/OrderDetails";
 import { useModal } from "../../hooks/useModal";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../services/hooks";
-import { shuffleIngredients } from "../../services/slices/ingredientsOrderSlice";
+import {
+  removeIngredient,
+  shuffleIngredients,
+} from "../../services/slices/ingredientsOrderSlice";
 import { useDrop } from "react-dnd";
 import { DND_INGREDIENT } from "../../shared/constants";
 import { v4 as uuidv4 } from "uuid";
@@ -36,8 +39,7 @@ const BurgerConstructor = ({ onActiveOrder }: Props) => {
   const [, drop] = useDrop(() => ({
     accept: DND_INGREDIENT,
     drop: (ingredient: Ingredient) => {
-      const ingredientOrder = { ...ingredient, uuid: uuidv4() };
-      onActiveOrder(ingredientOrder);
+      onActiveOrder({ ...ingredient, uuid: uuidv4() });
     },
   }));
 
@@ -50,6 +52,10 @@ const BurgerConstructor = ({ onActiveOrder }: Props) => {
     },
     [activeOrder, dispatch],
   );
+
+  const handleDeleteIngredient = (uuid: string) => {
+    dispatch(removeIngredient(uuid));
+  };
 
   return (
     <>
@@ -75,6 +81,7 @@ const BurgerConstructor = ({ onActiveOrder }: Props) => {
                       text={el.name}
                       price={el.price}
                       thumbnail={el.image}
+                      handleClose={() => handleDeleteIngredient(el.uuid)}
                     />
                   </SortableItem>
                 ))}

@@ -17,10 +17,8 @@ export const ingredientsOrderSlice = createSlice({
     addIngredient(state, action: PayloadAction<IngredientOrder>) {
       state.data.push(action.payload);
     },
-    removeIngredient(state, action: PayloadAction<IngredientOrder>) {
-      state.data = state.data.filter(
-        (item) => item.uuid !== action.payload.uuid,
-      );
+    removeIngredient(state, action: PayloadAction<string>) {
+      state.data = state.data.filter((item) => item.uuid !== action.payload);
     },
     shuffleIngredients(state, action: PayloadAction<IngredientOrder[]>) {
       state.data = action.payload;
