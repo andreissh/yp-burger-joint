@@ -1,15 +1,14 @@
 import React from "react";
 import styles from "./IngredientDetails.module.scss";
-import type { Ingredient } from "../../types/types";
 import { useMediaQuery } from "usehooks-ts";
+import { useAppSelector } from "../../services/hooks";
 
-type Props = {
-  ingredient: Ingredient | null;
-};
-
-const IngredientDetails = ({ ingredient }: Props) => {
+const IngredientDetails = () => {
   const isMobile = useMediaQuery("(max-width: 640px)");
   const isLargeDesktop = useMediaQuery("(min-width: 1280px)");
+  const { data: ingredient } = useAppSelector(
+    (store) => store.ingredientCurrent,
+  );
 
   if (!ingredient) return;
 

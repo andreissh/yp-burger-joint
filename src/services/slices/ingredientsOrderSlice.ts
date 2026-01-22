@@ -1,32 +1,38 @@
 import { createSlice } from "@reduxjs/toolkit";
-import type { PayloadAction } from "@reduxjs/toolkit";
-import type { IngredientOrder } from "../../types/types";
+import type { OrderResponse } from "../../types/types";
+import { fetchIngredientsOrder } from "../middlewares/ingredientsOrderMiddleware";
 
 type IngredientsOrderState = {
-  data: IngredientOrder[];
+  data: OrderResponse | null;
+  loading: boolean;
+  error: string | null;
 };
 
 const initialState: IngredientsOrderState = {
-  data: [],
+  data: null,
+  loading: false,
+  error: null,
 };
 
 export const ingredientsOrderSlice = createSlice({
   name: "ingredientsOrder",
   initialState,
-  reducers: {
-    addIngredient(state, action: PayloadAction<IngredientOrder>) {
-      state.data.push(action.payload);
-    },
-    removeIngredient(state, action: PayloadAction<string>) {
-      state.data = state.data.filter((item) => item.uuid !== action.payload);
-    },
-    shuffleIngredients(state, action: PayloadAction<IngredientOrder[]>) {
-      state.data = action.payload;
-    },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchIngredientsOrder.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchIngredientsOrder.fulfilled, (state, action) => {
+        state.loading = false;
+        state.data = action.payload;
+      })
+      .addCase(fetchIngredientsOrder.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload ?? "Unknown error";
+      });
   },
 });
-
-export const { addIngredient, removeIngredient, shuffleIngredients } =
-  ingredientsOrderSlice.actions;
 
 export default ingredientsOrderSlice.reducer;

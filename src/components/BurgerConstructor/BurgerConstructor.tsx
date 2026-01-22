@@ -10,51 +10,66 @@ import Scrollbars from "rc-scrollbars";
 import Modal from "../../shared/Modal/Modal";
 import OrderDetails from "../OrderDetails/OrderDetails";
 import { useModal } from "../../hooks/useModal";
-import { useDispatch } from "react-redux";
-import { useAppSelector } from "../../services/hooks";
+import { useAppDispatch, useAppSelector } from "../../services/hooks";
 import {
   removeIngredient,
   shuffleIngredients,
-} from "../../services/slices/ingredientsOrderSlice";
+} from "../../services/slices/ingredientsSelectedSlice";
 import { useDrop } from "react-dnd";
 import { DND_INGREDIENT } from "../../shared/constants";
 import { v4 as uuidv4 } from "uuid";
-import type { Ingredient, IngredientOrder } from "../../types/types";
+import type { Ingredient, IngredientSelected } from "../../types/types";
+import { fetchIngredientsOrder } from "../../services/middlewares/ingredientsOrderMiddleware";
 
 type Props = {
-  onActiveOrder: (arg: IngredientOrder) => void;
+  onIngredientsSelectedChange: (arg: IngredientSelected) => void;
 };
 
-const BurgerConstructor = ({ onActiveOrder }: Props) => {
+const BurgerConstructor = ({ onIngredientsSelectedChange }: Props) => {
   const { isModalOpen, openModal, closeModal } = useModal();
-  const dispatch = useDispatch();
-  const { data: activeOrder } = useAppSelector(
-    (state) => state.ingredientsOrder,
+  const dispatch = useAppDispatch();
+  const { data: ingredientsSelected } = useAppSelector(
+    (state) => state.ingredientsSelected,
   );
-  const constructorBun = activeOrder.find((item) => item.type === "bun");
-  const constructorIngredients = activeOrder.filter(
+  const constructorBun = ingredientsSelected.find(
+    (item) => item.type === "bun",
+  );
+  const constructorIngredients = ingredientsSelected.filter(
     (item) => item.type !== "bun",
   );
+  const totalCost = ingredientsSelected.reduce((a, c) => a + c.price, 0);
 
   const [, drop] = useDrop(() => ({
     accept: DND_INGREDIENT,
     drop: (ingredient: Ingredient) => {
-      onActiveOrder({ ...ingredient, uuid: uuidv4() });
+      onIngredientsSelectedChange({ ...ingredient, uuid: uuidv4() });
     },
   }));
 
   const moveItem = useCallback(
     (dragIndex: number, hoverIndex: number) => {
-      const newOrder = [...activeOrder];
+      const newOrder = [...ingredientsSelected];
       const [dragged] = newOrder.splice(dragIndex, 1);
       newOrder.splice(hoverIndex, 0, dragged);
       dispatch(shuffleIngredients(newOrder));
     },
-    [activeOrder, dispatch],
+    [ingredientsSelected, dispatch],
   );
 
   const handleDeleteIngredient = (uuid: string) => {
     dispatch(removeIngredient(uuid));
+  };
+
+  const handleSendOrder = async () => {
+    const ingredientsSelectedIds = {
+      ingredients: ingredientsSelected.map((order) => order._id),
+    };
+    try {
+      dispatch(fetchIngredientsOrder(ingredientsSelectedIds));
+      openModal();
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
@@ -101,7 +116,7 @@ const BurgerConstructor = ({ onActiveOrder }: Props) => {
           </div>
           <div className={styles.totalBlock}>
             <span className={`${styles.totalText} iceland-regular`}>
-              610
+              {totalCost}
               <span className={styles.totalIconWrapper}>
                 <CurrencyIcon type="primary" />
               </span>
@@ -110,7 +125,7 @@ const BurgerConstructor = ({ onActiveOrder }: Props) => {
               htmlType="button"
               type="primary"
               size="large"
-              onClick={openModal}
+              onClick={handleSendOrder}
             >
               Оформить заказ
             </Button>

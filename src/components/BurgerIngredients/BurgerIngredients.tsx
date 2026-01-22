@@ -3,18 +3,18 @@ import styles from "./BurgerIngredients.module.scss";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import BurgerIngredientsList from "./BurgerIngredientsList/BurgerIngredientsList";
 import Scrollbars from "rc-scrollbars";
-import { burgerIngredientsTabs } from "../../utils/utils";
-import type { IngredientOrder } from "../../types/types";
+import { ingredientsTabs } from "../../utils/utils";
+import type { IngredientSelected } from "../../types/types";
 import { useAppSelector } from "../../services/hooks";
 
 type Props = {
-  onActiveOrder: (arg: IngredientOrder) => void;
+  onIngredientsSelectedChange: (arg: IngredientSelected) => void;
 };
 
-const BurgerIngredients = ({ onActiveOrder }: Props) => {
+const BurgerIngredients = ({ onIngredientsSelectedChange }: Props) => {
   const [activeTab, setActiveTab] = useState(1);
   const { data: ingredients } = useAppSelector((state) => state.ingredients);
-  const sections = burgerIngredientsTabs.map((tab) => ({
+  const sections = ingredientsTabs.map((tab) => ({
     ...tab,
     products: ingredients.filter((i) => i.type === tab.type),
   }));
@@ -83,7 +83,7 @@ const BurgerIngredients = ({ onActiveOrder }: Props) => {
       <h1 className={styles.title}>Соберите бургер</h1>
       <nav className={styles.tabs}>
         <ul className={styles.tabsList}>
-          {burgerIngredientsTabs.map((tab) => (
+          {ingredientsTabs.map((tab) => (
             <Tab
               active={activeTab === tab.id}
               value={`${tab.id}`}
@@ -111,7 +111,7 @@ const BurgerIngredients = ({ onActiveOrder }: Props) => {
                   title={section.title}
                   titleStyle={section.type === "bun" ? { marginTop: 0 } : {}}
                   products={section.products}
-                  onActiveOrder={onActiveOrder}
+                  onIngredientsSelectedChange={onIngredientsSelectedChange}
                 />
               </div>
             );

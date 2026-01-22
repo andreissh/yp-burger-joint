@@ -1,43 +1,50 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./BurgerIngredientsList.module.scss";
 import {
   Button,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import type { Ingredient, IngredientOrder } from "../../../types/types";
+import type { Ingredient, IngredientSelected } from "../../../types/types";
 import Modal from "../../../shared/Modal/Modal";
 import IngredientDetails from "../../IngredientDetails/IngredientDetails";
 import { useModal } from "../../../hooks/useModal";
 import { useMediaQuery } from "usehooks-ts";
-import { useAppSelector } from "../../../services/hooks";
+import { useAppDispatch, useAppSelector } from "../../../services/hooks";
 import { v4 as uuidv4 } from "uuid";
 import DraggableIngredient from "./DraggableIngredient/DraggableIngredient";
+import {
+  addIngredient,
+  removeIngredient,
+} from "../../../services/slices/ingredientCurrentSlice";
 
 type Props = {
   title: string;
   titleStyle?: React.CSSProperties;
   products: Ingredient[];
-  onActiveOrder: (arg: IngredientOrder) => void;
+  onIngredientsSelectedChange: (arg: IngredientSelected) => void;
 };
 
 const BurgerIngredientsList = ({
   title,
   titleStyle = {},
   products,
-  onActiveOrder,
+  onIngredientsSelectedChange,
 }: Props) => {
   const isMobile = useMediaQuery("(max-width: 640px)");
-  const [currentIngredient, setCurrentIngredient] = useState<Ingredient | null>(
-    null,
-  );
   const { isModalOpen, openModal, closeModal } = useModal();
-  const { data: activeOrder } = useAppSelector(
-    (state) => state.ingredientsOrder,
+  const { data: ingredientsSelected } = useAppSelector(
+    (state) => state.ingredientsSelected,
   );
+  const dispatch = useAppDispatch();
 
   const handleIngredientClick = (ingredient: Ingredient) => {
-    setCurrentIngredient(ingredient);
+    dispatch(addIngredient(ingredient));
     openModal();
+  };
+
+  const handleCloseModal = () => {
+    dispatch(removeIngredient());
+    closeModal();
   };
 
   return (
@@ -66,12 +73,12 @@ const BurgerIngredientsList = ({
                   <CurrencyIcon type="primary" />
                 </span>
                 <span className={styles.itemName}>{v.name}</span>
-                {activeOrder.filter(
+                {ingredientsSelected.filter(
                   (item) => item._id === v._id && item.type !== "bun",
                 ).length ? (
                   <span className={styles.itemCounter}>
                     {
-                      activeOrder.filter(
+                      ingredientsSelected.filter(
                         (item) => item._id === v._id && item.type !== "bun",
                       ).length
                     }
@@ -84,7 +91,7 @@ const BurgerIngredientsList = ({
                   extraClass={styles.addIngredientBtn}
                   onClick={(e) => {
                     e.stopPropagation();
-                    onActiveOrder({ ...v, uuid: uuidv4() });
+                    onIngredientsSelectedChange({ ...v, uuid: uuidv4() });
                   }}
                 >
                   {v.type === "bun" ? "Выбрать" : "Добавить"}
@@ -96,8 +103,8 @@ const BurgerIngredientsList = ({
       </div>
 
       {isModalOpen && (
-        <Modal title="Детали ингредиента" onClose={closeModal}>
-          <IngredientDetails ingredient={currentIngredient} />
+        <Modal title="Детали ингредиента" onClose={handleCloseModal}>
+          <IngredientDetails />
         </Modal>
       )}
     </>

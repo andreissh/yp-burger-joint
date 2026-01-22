@@ -3,14 +3,14 @@ import "./App.css";
 import AppHeader from "./components/AppHeader/AppHeader";
 import BurgerConstructor from "./components/BurgerConstructor/BurgerConstructor";
 import BurgerIngredients from "./components/BurgerIngredients/BurgerIngredients";
-import type { IngredientOrder } from "./types/types";
+import type { IngredientSelected } from "./types/types";
 import { v4 as uuidv4 } from "uuid";
 import { useAppDispatch, useAppSelector } from "./services/hooks";
 import { fetchIngredients } from "./services/middlewares/ingredientsMiddleware";
 import {
   addIngredient,
   removeIngredient,
-} from "./services/slices/ingredientsOrderSlice";
+} from "./services/slices/ingredientsSelectedSlice";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
@@ -21,13 +21,13 @@ function App() {
     error,
   } = useAppSelector((state) => state.ingredients);
   const dispatch = useAppDispatch();
-  const { data: activeOrder } = useAppSelector(
-    (state) => state.ingredientsOrder,
+  const { data: ingredientsSelected } = useAppSelector(
+    (state) => state.ingredientsSelected,
   );
-  const activeOrderRef = useRef(activeOrder);
+  const ingredientsSelectedRef = useRef(ingredientsSelected);
 
-  const handleActiveOrder = (item: IngredientOrder) => {
-    const currentOrder = activeOrderRef.current;
+  const handleIngredientsSelectedChange = (item: IngredientSelected) => {
+    const currentOrder = ingredientsSelectedRef.current;
 
     if (item.type === "bun") {
       const buns = currentOrder.filter((item) => item.type === "bun");
@@ -52,8 +52,8 @@ function App() {
   }, [ingredients, dispatch]);
 
   useEffect(() => {
-    activeOrderRef.current = activeOrder;
-  }, [activeOrder]);
+    ingredientsSelectedRef.current = ingredientsSelected;
+  }, [ingredientsSelected]);
 
   if (loading) {
     return <div className="loader">Загрузка ингредиентов...</div>;
@@ -72,8 +72,12 @@ function App() {
       <AppHeader />
       <main className="page-content">
         <DndProvider backend={HTML5Backend}>
-          <BurgerIngredients onActiveOrder={handleActiveOrder} />
-          <BurgerConstructor onActiveOrder={handleActiveOrder} />
+          <BurgerIngredients
+            onIngredientsSelectedChange={handleIngredientsSelectedChange}
+          />
+          <BurgerConstructor
+            onIngredientsSelectedChange={handleIngredientsSelectedChange}
+          />
         </DndProvider>
       </main>
     </div>

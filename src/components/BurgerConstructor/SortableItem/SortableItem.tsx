@@ -13,8 +13,8 @@ type Props = {
 
 function SortableItem({ id, moveItem, children }: Props) {
   const ref = useRef<HTMLLIElement>(null);
-  const { data: activeOrder } = useAppSelector(
-    (store) => store.ingredientsOrder,
+  const { data: ingredientsSelected } = useAppSelector(
+    (store) => store.ingredientsSelected,
   );
 
   const [, drop] = useDrop({
@@ -22,8 +22,10 @@ function SortableItem({ id, moveItem, children }: Props) {
     hover(item: { id: string }) {
       if (!ref.current) return;
 
-      const dragIndex = activeOrder.findIndex((i) => i.uuid === item.id);
-      const hoverIndex = activeOrder.findIndex((i) => i.uuid === id);
+      const dragIndex = ingredientsSelected.findIndex(
+        (i) => i.uuid === item.id,
+      );
+      const hoverIndex = ingredientsSelected.findIndex((i) => i.uuid === id);
 
       if (dragIndex === hoverIndex) return;
 
@@ -31,11 +33,11 @@ function SortableItem({ id, moveItem, children }: Props) {
     },
   });
 
-  const [{ isDragging }, drag] = useDrag({
+  const [{ opacity }, drag] = useDrag({
     type: SORT_INGREDIENTS,
     item: { id },
     collect: (monitor) => ({
-      isDragging: monitor.isDragging(),
+      opacity: monitor.isDragging() ? 0.5 : 1,
     }),
   });
 
@@ -46,11 +48,7 @@ function SortableItem({ id, moveItem, children }: Props) {
   }, [drag, drop]);
 
   return (
-    <li
-      ref={ref}
-      className={styles.item}
-      style={{ opacity: isDragging ? 0.5 : 1 }}
-    >
+    <li ref={ref} className={styles.item} style={{ opacity }}>
       <span className={styles.dragHandle}>
         <DragIcon type="primary" />
       </span>

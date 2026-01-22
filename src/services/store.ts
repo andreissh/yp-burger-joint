@@ -1,15 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
 import ingredientsReducer from "./slices/ingredientsSlice";
-import ingredientsOrderReducer from "./slices/ingredientsOrderSlice";
+import ingredientsSelectedReducer from "./slices/ingredientsSelectedSlice";
 import ingredientCurrentReducer from "./slices/ingredientCurrentSlice";
-import ingredientOrderedReducer from "./slices/ingredientOrderedSlice";
+import ingredientsOrderReducer from "./slices/ingredientsOrderSlice";
 
 export const store = configureStore({
   reducer: {
     ingredients: ingredientsReducer,
     ingredientsOrder: ingredientsOrderReducer,
     ingredientCurrent: ingredientCurrentReducer,
-    ingredientOrdered: ingredientOrderedReducer,
+    ingredientsSelected: ingredientsSelectedReducer,
   },
 });
 
