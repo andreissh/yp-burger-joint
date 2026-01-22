@@ -1,4 +1,4 @@
-import React from "react";
+import React, { type SyntheticEvent } from "react";
 import styles from "./BurgerIngredientsList.module.scss";
 import {
   Button,
@@ -47,6 +47,14 @@ const BurgerIngredientsList = ({
     closeModal();
   };
 
+  const handleAddIngredientClick = (e: SyntheticEvent, v: Ingredient) => {
+    e.stopPropagation();
+    if (v.type !== "bun") {
+      if (!ingredientsSelected.length) return;
+    }
+    onIngredientsSelectedChange({ ...v, uuid: uuidv4() });
+  };
+
   return (
     <>
       <div className={styles.productTypeBlock}>
@@ -89,10 +97,7 @@ const BurgerIngredientsList = ({
                   type="secondary"
                   size="small"
                   extraClass={styles.addIngredientBtn}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onIngredientsSelectedChange({ ...v, uuid: uuidv4() });
-                  }}
+                  onClick={(e) => handleAddIngredientClick(e, v)}
                 >
                   {v.type === "bun" ? "Выбрать" : "Добавить"}
                 </Button>

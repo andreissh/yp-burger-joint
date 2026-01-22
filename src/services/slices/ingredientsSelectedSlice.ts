@@ -23,10 +23,17 @@ export const ingredientsSelectedSlice = createSlice({
     shuffleIngredients(state, action: PayloadAction<IngredientSelected[]>) {
       state.data = action.payload;
     },
+    removeAllIngredients(state) {
+      state.data = [];
+    },
   },
 });
 
-export const { addIngredient, removeIngredient, shuffleIngredients } =
-  ingredientsSelectedSlice.actions;
+export const {
+  addIngredient,
+  removeIngredient,
+  shuffleIngredients,
+  removeAllIngredients,
+} = ingredientsSelectedSlice.actions;
 
 export default ingredientsSelectedSlice.reducer;

@@ -33,7 +33,7 @@ export const ingredientsSlice = createSlice({
       })
       .addCase(fetchIngredients.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload ?? "Unknown error";
+        state.error = action.error.message ?? "Unknown error";
       });
   },
 });

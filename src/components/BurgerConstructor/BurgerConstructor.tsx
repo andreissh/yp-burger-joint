@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import styles from "./BurgerConstructor.module.scss";
 import {
   Button,
@@ -12,6 +12,7 @@ import OrderDetails from "../OrderDetails/OrderDetails";
 import { useModal } from "../../hooks/useModal";
 import { useAppDispatch, useAppSelector } from "../../services/hooks";
 import {
+  removeAllIngredients,
   removeIngredient,
   shuffleIngredients,
 } from "../../services/slices/ingredientsSelectedSlice";
@@ -38,10 +39,14 @@ const BurgerConstructor = ({ onIngredientsSelectedChange }: Props) => {
     (item) => item.type !== "bun",
   );
   const totalCost = ingredientsSelected.reduce((a, c) => a + c.price, 0);
+  const selectedRef = useRef(ingredientsSelected);
 
   const [, drop] = useDrop(() => ({
     accept: DND_INGREDIENT,
     drop: (ingredient: Ingredient) => {
+      if (ingredient.type !== "bun") {
+        if (!selectedRef.current.length) return;
+      }
       onIngredientsSelectedChange({ ...ingredient, uuid: uuidv4() });
     },
   }));
@@ -65,54 +70,75 @@ const BurgerConstructor = ({ onIngredientsSelectedChange }: Props) => {
       ingredients: ingredientsSelected.map((order) => order._id),
     };
     try {
-      dispatch(fetchIngredientsOrder(ingredientsSelectedIds));
+      const res = await dispatch(fetchIngredientsOrder(ingredientsSelectedIds));
+      if (fetchIngredientsOrder.rejected.match(res)) {
+        console.error("Error: ", res.error);
+        return;
+      }
+      dispatch(removeAllIngredients());
       openModal();
     } catch (err) {
       console.error(err);
     }
   };
 
+  useEffect(() => {
+    selectedRef.current = ingredientsSelected;
+  }, [ingredientsSelected]);
+
   return (
     <>
       <div className={styles.constructorContainer}>
         <div className={styles.constructorInnerContainer}>
           <div className={styles.constructorList} ref={drop}>
-            <div className={styles.constructorItem}>
-              {constructorBun && (
-                <ConstructorElement
-                  type="top"
-                  isLocked={true}
-                  text={`${constructorBun.name} (верх)`}
-                  price={constructorBun.price}
-                  thumbnail={constructorBun.image}
-                />
-              )}
-            </div>
-            <Scrollbars style={{ width: "100%", height: 384 }}>
-              <ul className={styles.constructorListScrollable}>
-                {constructorIngredients.map((el) => (
-                  <SortableItem key={el.uuid} id={el.uuid} moveItem={moveItem}>
+            {ingredientsSelected.length ? (
+              <>
+                <div className={styles.constructorItem}>
+                  {constructorBun && (
                     <ConstructorElement
-                      text={el.name}
-                      price={el.price}
-                      thumbnail={el.image}
-                      handleClose={() => handleDeleteIngredient(el.uuid)}
+                      type="top"
+                      isLocked={true}
+                      text={`${constructorBun.name} (верх)`}
+                      price={constructorBun.price}
+                      thumbnail={constructorBun.image}
                     />
-                  </SortableItem>
-                ))}
-              </ul>
-            </Scrollbars>
-            <div className={styles.constructorItem}>
-              {constructorBun && (
-                <ConstructorElement
-                  type="bottom"
-                  isLocked={true}
-                  text={`${constructorBun.name} (низ)`}
-                  price={constructorBun.price}
-                  thumbnail={constructorBun.image}
-                />
-              )}
-            </div>
+                  )}
+                </div>
+                <Scrollbars style={{ width: "100%", height: 384 }}>
+                  <ul className={styles.constructorListScrollable}>
+                    {constructorIngredients.map((el) => (
+                      <SortableItem
+                        key={el.uuid}
+                        id={el.uuid}
+                        moveItem={moveItem}
+                      >
+                        <ConstructorElement
+                          text={el.name}
+                          price={el.price}
+                          thumbnail={el.image}
+                          handleClose={() => handleDeleteIngredient(el.uuid)}
+                        />
+                      </SortableItem>
+                    ))}
+                  </ul>
+                </Scrollbars>
+                <div className={styles.constructorItem}>
+                  {constructorBun && (
+                    <ConstructorElement
+                      type="bottom"
+                      isLocked={true}
+                      text={`${constructorBun.name} (низ)`}
+                      price={constructorBun.price}
+                      thumbnail={constructorBun.image}
+                    />
+                  )}
+                </div>
+              </>
+            ) : (
+              <div className={styles.constructorListTemplate}>
+                Сначала выберите булку, затем ингредиенты для заказа
+              </div>
+            )}
           </div>
           <div className={styles.totalBlock}>
             <span className={`${styles.totalText} iceland-regular`}>
@@ -126,6 +152,7 @@ const BurgerConstructor = ({ onIngredientsSelectedChange }: Props) => {
               type="primary"
               size="large"
               onClick={handleSendOrder}
+              disabled={!ingredientsSelected.length}
             >
               Оформить заказ
             </Button>

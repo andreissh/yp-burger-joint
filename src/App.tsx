@@ -4,7 +4,6 @@ import AppHeader from "./components/AppHeader/AppHeader";
 import BurgerConstructor from "./components/BurgerConstructor/BurgerConstructor";
 import BurgerIngredients from "./components/BurgerIngredients/BurgerIngredients";
 import type { IngredientSelected } from "./types/types";
-import { v4 as uuidv4 } from "uuid";
 import { useAppDispatch, useAppSelector } from "./services/hooks";
 import { fetchIngredients } from "./services/middlewares/ingredientsMiddleware";
 import {
@@ -15,11 +14,7 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
 function App() {
-  const {
-    data: ingredients,
-    loading,
-    error,
-  } = useAppSelector((state) => state.ingredients);
+  const { loading, error } = useAppSelector((state) => state.ingredients);
   const dispatch = useAppDispatch();
   const { data: ingredientsSelected } = useAppSelector(
     (state) => state.ingredientsSelected,
@@ -31,10 +26,16 @@ function App() {
 
     if (item.type === "bun") {
       const buns = currentOrder.filter((item) => item.type === "bun");
-      buns.forEach((bun) => {
-        dispatch(removeIngredient(bun.uuid));
-        dispatch(addIngredient(item));
-      });
+      if (buns.length) {
+        buns.forEach((bun) => {
+          dispatch(removeIngredient(bun.uuid));
+          dispatch(addIngredient(item));
+        });
+      } else {
+        for (let i = 0; i < 2; i++) {
+          dispatch(addIngredient(item));
+        }
+      }
     } else {
       dispatch(addIngredient(item));
     }
@@ -43,13 +44,6 @@ function App() {
   useEffect(() => {
     dispatch(fetchIngredients());
   }, [dispatch]);
-
-  useEffect(() => {
-    if (!ingredients.length) return;
-
-    const defaultBun = ingredients.find((item) => item.type === "bun");
-    if (defaultBun) dispatch(addIngredient({ ...defaultBun, uuid: uuidv4() }));
-  }, [ingredients, dispatch]);
 
   useEffect(() => {
     ingredientsSelectedRef.current = ingredientsSelected;
