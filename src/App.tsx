@@ -1,52 +1,59 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 import "./App.css";
 import AppHeader from "./components/AppHeader/AppHeader";
 import BurgerConstructor from "./components/BurgerConstructor/BurgerConstructor";
 import BurgerIngredients from "./components/BurgerIngredients/BurgerIngredients";
-import type { IngredientOrder, Ingredient } from "./types/types";
-import { v4 as uuidv4 } from "uuid";
-import { getIngredients } from "./api/api";
+import type { IngredientSelected } from "./types/types";
+import { useAppDispatch, useAppSelector } from "./services/hooks";
+import { fetchIngredients } from "./services/middlewares/ingredientsMiddleware";
+import {
+  addIngredient,
+  removeIngredient,
+} from "./services/slices/ingredientsSelectedSlice";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 function App() {
-  const [ingredients, setIngredients] = useState<Ingredient[]>([]);
-  const [activeOrder, setActiveOrder] = useState<IngredientOrder[]>([]);
-  const [constructorBun, setConstructorBun] = useState<Ingredient | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isError, setIsError] = useState("");
+  const { loading, error } = useAppSelector((state) => state.ingredients);
+  const dispatch = useAppDispatch();
+  const { data: ingredientsSelected } = useAppSelector(
+    (state) => state.ingredientsSelected,
+  );
+  const ingredientsSelectedRef = useRef(ingredientsSelected);
 
-  const handleActiveOrder = (item: Ingredient) => {
+  const handleIngredientsSelectedChange = (item: IngredientSelected) => {
+    const currentOrder = ingredientsSelectedRef.current;
+
     if (item.type === "bun") {
-      setConstructorBun(item);
+      const buns = currentOrder.filter((item) => item.type === "bun");
+      if (buns.length) {
+        buns.forEach((bun) => {
+          dispatch(removeIngredient(bun.uuid));
+          dispatch(addIngredient(item));
+        });
+      } else {
+        for (let i = 0; i < 2; i++) {
+          dispatch(addIngredient(item));
+        }
+      }
     } else {
-      setActiveOrder((prev) => [...prev, { ...item, uuid: uuidv4() }]);
+      dispatch(addIngredient(item));
     }
   };
 
   useEffect(() => {
-    const getData = async () => {
-      setIsLoading(true);
-      try {
-        const response = await getIngredients();
-        const defaultBun = response.data.find((v) => v.type === "bun");
-        if (!defaultBun) return;
+    dispatch(fetchIngredients());
+  }, [dispatch]);
 
-        setIngredients(response.data);
-        setConstructorBun(defaultBun);
-      } catch (err) {
-        setIsError((err as Error).message);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  useEffect(() => {
+    ingredientsSelectedRef.current = ingredientsSelected;
+  }, [ingredientsSelected]);
 
-    getData();
-  }, []);
-
-  if (isLoading) {
+  if (loading) {
     return <div className="loader">Загрузка ингредиентов...</div>;
   }
 
-  if (isError) {
+  if (error) {
     return (
       <div className="load-error">
         Произошла ошибка при загрузке данных. Попробуйте перезагрузить страницу.
@@ -58,16 +65,14 @@ function App() {
     <div className="page-wrapper">
       <AppHeader />
       <main className="page-content">
-        <BurgerIngredients
-          ingredients={ingredients}
-          activeOrder={activeOrder}
-          onActiveOrder={handleActiveOrder}
-        />
-        <BurgerConstructor
-          activeOrder={activeOrder}
-          setActiveOrder={setActiveOrder}
-          constructorBun={constructorBun}
-        />
+        <DndProvider backend={HTML5Backend}>
+          <BurgerIngredients
+            onIngredientsSelectedChange={handleIngredientsSelectedChange}
+          />
+          <BurgerConstructor
+            onIngredientsSelectedChange={handleIngredientsSelectedChange}
+          />
+        </DndProvider>
       </main>
     </div>
   );
