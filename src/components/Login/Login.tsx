@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import styles from "./Signin.module.scss";
+import styles from "./Login.module.scss";
 import {
   Button,
   EmailInput,
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
-const Signin = () => {
+const Login = () => {
   const [isPassIconVisible, setIsPassIconVisible] = useState(true);
 
   const changeIcon = () => {
@@ -60,4 +60,4 @@ const Signin = () => {
   );
 };
 
-export default Signin;
+export default Login;
