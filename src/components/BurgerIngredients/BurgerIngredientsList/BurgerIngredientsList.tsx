@@ -6,7 +6,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import type { Ingredient, IngredientSelected } from "../../../types/types";
 import Modal from "../../../shared/Modal/Modal";
-import IngredientDetails from "../../IngredientDetails/IngredientDetails";
+import IngredientDetails from "../../../shared/IngredientDetails/IngredientDetails";
 import { useModal } from "../../../hooks/useModal";
 import { useMediaQuery } from "usehooks-ts";
 import { useAppDispatch, useAppSelector } from "../../../services/hooks";
