@@ -1,16 +1,14 @@
 import React from "react";
+import { Provider } from "react-redux";
+import { store } from "./services/store";
+import Router from "./router/Router";
 import "./App.css";
-import AppHeader from "./components/AppHeader/AppHeader";
-import { Outlet } from "react-router";
 
 function App() {
   return (
-    <div className="page-wrapper">
-      <AppHeader />
-      <main className="page-content">
-        <Outlet />
-      </main>
-    </div>
+    <Provider store={store}>
+      <Router />
+    </Provider>
   );
 }
 

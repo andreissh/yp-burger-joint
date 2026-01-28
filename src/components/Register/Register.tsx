@@ -5,12 +5,26 @@ import {
   EmailInput,
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import { useNavigate } from "react-router";
+import { useAppDispatch } from "../../services/hooks";
+import { setIsAuth } from "../../services/slices/authSlice";
 
 const Register = () => {
   const [isPassIconVisible, setIsPassIconVisible] = useState(true);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const changeIcon = () => {
     setIsPassIconVisible(!isPassIconVisible);
+  };
+
+  const handleRegisterClick = () => {
+    dispatch(setIsAuth(true));
+    navigate("/");
+  };
+
+  const handleLoginClick = () => {
+    navigate("/login");
   };
 
   return (
@@ -48,6 +62,7 @@ const Register = () => {
         </form>
         <Button
           htmlType="button"
+          onClick={handleRegisterClick}
           type="primary"
           size="large"
           extraClass={styles.signupBtn}
@@ -55,10 +70,16 @@ const Register = () => {
           Зарегистрироваться
         </Button>
         <span className={styles.signupText}>
-          Уже зарегистрированы?{" "}
-          <a href="#" className={styles.signinLink}>
+          Уже зарегистрированы?
+          <Button
+            htmlType="button"
+            onClick={handleLoginClick}
+            type="secondary"
+            size="small"
+            extraClass={styles.signinLink}
+          >
             Войти
-          </a>
+          </Button>
         </span>
       </div>
     </div>

@@ -4,12 +4,22 @@ import {
   Button,
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import { useNavigate } from "react-router";
 
 const ResetPassword = () => {
   const [isPassIconVisible, setIsPassIconVisible] = useState(true);
+  const navigate = useNavigate();
 
   const changeIcon = () => {
     setIsPassIconVisible(!isPassIconVisible);
+  };
+
+  const handleSaveClick = () => {
+    navigate("/login");
+  };
+
+  const handleLoginClick = () => {
+    navigate("/login");
   };
 
   return (
@@ -44,6 +54,7 @@ const ResetPassword = () => {
         </form>
         <Button
           htmlType="button"
+          onClick={handleSaveClick}
           type="primary"
           size="large"
           extraClass={styles.saveBtn}
@@ -51,10 +62,16 @@ const ResetPassword = () => {
           Сохранить
         </Button>
         <span className={styles.signinText}>
-          Вспомнили пароль?{" "}
-          <a href="#" className={styles.signinLink}>
+          Вспомнили пароль?
+          <Button
+            htmlType="button"
+            onClick={handleLoginClick}
+            type="secondary"
+            size="small"
+            extraClass={styles.signinLink}
+          >
             Войти
-          </a>
+          </Button>
         </span>
       </div>
     </div>

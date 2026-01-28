@@ -5,12 +5,30 @@ import {
   EmailInput,
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import { useAppDispatch } from "../../services/hooks";
+import { setIsAuth } from "../../services/slices/authSlice";
+import { useNavigate } from "react-router";
 
 const Login = () => {
   const [isPassIconVisible, setIsPassIconVisible] = useState(true);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const changeIcon = () => {
     setIsPassIconVisible(!isPassIconVisible);
+  };
+
+  const handleLoginClick = () => {
+    dispatch(setIsAuth(true));
+    navigate("/", { replace: true });
+  };
+
+  const handleRegisterClick = () => {
+    navigate("/register");
+  };
+
+  const handlePassRecoverClick = () => {
+    navigate("/forgot-password");
   };
 
   return (
@@ -37,6 +55,7 @@ const Login = () => {
         </form>
         <Button
           htmlType="button"
+          onClick={handleLoginClick}
           type="primary"
           size="large"
           extraClass={styles.signinBtn}
@@ -44,16 +63,28 @@ const Login = () => {
           Войти
         </Button>
         <span className={styles.signupText}>
-          Вы - новый пользователь?{" "}
-          <a href="#" className={styles.signupLink}>
+          Вы - новый пользователь?
+          <Button
+            htmlType="button"
+            onClick={handleRegisterClick}
+            type="secondary"
+            size="small"
+            extraClass={styles.signupLink}
+          >
             Зарегистрироваться
-          </a>
+          </Button>
         </span>
         <span className={styles.recoverText}>
-          Забыли пароль?{" "}
-          <a href="#" className={styles.resetPassLink}>
+          Забыли пароль?
+          <Button
+            htmlType="button"
+            onClick={handlePassRecoverClick}
+            type="secondary"
+            size="small"
+            extraClass={styles.resetPassLink}
+          >
             Восстановить пароль
-          </a>
+          </Button>
         </span>
       </div>
     </div>

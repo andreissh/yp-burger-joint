@@ -4,8 +4,19 @@ import {
   Button,
   EmailInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import { useNavigate } from "react-router";
 
 const ForgotPassword = () => {
+  const navigate = useNavigate();
+
+  const handleRecoverClick = () => {
+    navigate("/reset-password");
+  };
+
+  const handleLoginClick = () => {
+    navigate("/login");
+  };
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.container}>
@@ -22,6 +33,7 @@ const ForgotPassword = () => {
         </form>
         <Button
           htmlType="button"
+          onClick={handleRecoverClick}
           type="primary"
           size="large"
           extraClass={styles.resetBtn}
@@ -29,10 +41,16 @@ const ForgotPassword = () => {
           Восстановить
         </Button>
         <span className={styles.signinText}>
-          Вспомнили пароль?{" "}
-          <a href="#" className={styles.signinLink}>
+          Вспомнили пароль?
+          <Button
+            htmlType="button"
+            onClick={handleLoginClick}
+            type="secondary"
+            size="small"
+            extraClass={styles.signinLink}
+          >
             Войти
-          </a>
+          </Button>
         </span>
       </div>
     </div>
