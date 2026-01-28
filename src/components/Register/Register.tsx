@@ -59,16 +59,16 @@ const Register = () => {
               placeholder="Пароль"
             />
           </label>
+          <Button
+            htmlType="button"
+            onClick={handleRegisterClick}
+            type="primary"
+            size="large"
+            extraClass={styles.signupBtn}
+          >
+            Зарегистрироваться
+          </Button>
         </form>
-        <Button
-          htmlType="button"
-          onClick={handleRegisterClick}
-          type="primary"
-          size="large"
-          extraClass={styles.signupBtn}
-        >
-          Зарегистрироваться
-        </Button>
         <span className={styles.signupText}>
           Уже зарегистрированы?
           <Button

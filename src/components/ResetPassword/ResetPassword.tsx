@@ -1,20 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./ResetPassword.module.scss";
 import {
   Button,
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useNavigate } from "react-router";
+import { useResetPassword } from "../../hooks/useResetPassword";
 
 const ResetPassword = () => {
   const [isPassIconVisible, setIsPassIconVisible] = useState(true);
   const navigate = useNavigate();
+  const { checkResetPasswordAccess, disallowResetPassword } =
+    useResetPassword();
 
   const changeIcon = () => {
     setIsPassIconVisible(!isPassIconVisible);
   };
 
-  const handleSaveClick = () => {
+  const handleSaveSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    disallowResetPassword();
     navigate("/login");
   };
 
@@ -22,11 +27,19 @@ const ResetPassword = () => {
     navigate("/login");
   };
 
+  useEffect(() => {
+    checkResetPasswordAccess();
+
+    return () => {
+      disallowResetPassword();
+    };
+  }, [checkResetPasswordAccess, disallowResetPassword]);
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.container}>
         <h2 className={styles.header}>Восстановление пароля</h2>
-        <form className={styles.resetForm}>
+        <form className={styles.resetForm} onSubmit={handleSaveSubmit}>
           <label htmlFor="newPass" className={styles.newPassLabel}>
             <Input
               icon={isPassIconVisible ? "ShowIcon" : "HideIcon"}
@@ -51,16 +64,15 @@ const ResetPassword = () => {
               value=""
             />
           </label>
+          <Button
+            htmlType="submit"
+            type="primary"
+            size="large"
+            extraClass={styles.saveBtn}
+          >
+            Сохранить
+          </Button>
         </form>
-        <Button
-          htmlType="button"
-          onClick={handleSaveClick}
-          type="primary"
-          size="large"
-          extraClass={styles.saveBtn}
-        >
-          Сохранить
-        </Button>
         <span className={styles.signinText}>
           Вспомнили пароль?
           <Button

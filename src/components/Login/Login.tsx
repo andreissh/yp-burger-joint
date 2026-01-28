@@ -7,20 +7,23 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useAppDispatch } from "../../services/hooks";
 import { setIsAuth } from "../../services/slices/authSlice";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 
 const Login = () => {
   const [isPassIconVisible, setIsPassIconVisible] = useState(true);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from || "/";
 
   const changeIcon = () => {
     setIsPassIconVisible(!isPassIconVisible);
   };
 
-  const handleLoginClick = () => {
+  const handleLoginSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
     dispatch(setIsAuth(true));
-    navigate("/", { replace: true });
+    navigate(from, { replace: true });
   };
 
   const handleRegisterClick = () => {
@@ -35,7 +38,7 @@ const Login = () => {
     <div className={styles.wrapper}>
       <div className={styles.container}>
         <h2 className={styles.header}>Вход</h2>
-        <form className={styles.signinForm}>
+        <form className={styles.signinForm} onSubmit={handleLoginSubmit}>
           <label htmlFor="email" className={styles.emailLabel}>
             <EmailInput value="" onChange={console.log} id="email" />
           </label>
@@ -52,16 +55,15 @@ const Login = () => {
               placeholder="Пароль"
             />
           </label>
+          <Button
+            htmlType="submit"
+            type="primary"
+            size="large"
+            extraClass={styles.signinBtn}
+          >
+            Войти
+          </Button>
         </form>
-        <Button
-          htmlType="button"
-          onClick={handleLoginClick}
-          type="primary"
-          size="large"
-          extraClass={styles.signinBtn}
-        >
-          Войти
-        </Button>
         <span className={styles.signupText}>
           Вы - новый пользователь?
           <Button

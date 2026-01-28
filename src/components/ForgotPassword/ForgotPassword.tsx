@@ -5,11 +5,15 @@ import {
   EmailInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useNavigate } from "react-router";
+import { useResetPassword } from "../../hooks/useResetPassword";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
+  const { allowResetPassword } = useResetPassword();
 
-  const handleRecoverClick = () => {
+  const handleRecoverSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    allowResetPassword();
     navigate("/reset-password");
   };
 
@@ -21,7 +25,7 @@ const ForgotPassword = () => {
     <div className={styles.wrapper}>
       <div className={styles.container}>
         <h2 className={styles.header}>Восстановление пароля</h2>
-        <form className={styles.resetForm}>
+        <form className={styles.resetForm} onSubmit={handleRecoverSubmit}>
           <label htmlFor="email" className={styles.emailLabel}>
             <EmailInput
               value=""
@@ -30,16 +34,15 @@ const ForgotPassword = () => {
               placeholder="Укажите e-mail"
             />
           </label>
+          <Button
+            htmlType="submit"
+            type="primary"
+            size="large"
+            extraClass={styles.resetBtn}
+          >
+            Восстановить
+          </Button>
         </form>
-        <Button
-          htmlType="button"
-          onClick={handleRecoverClick}
-          type="primary"
-          size="large"
-          extraClass={styles.resetBtn}
-        >
-          Восстановить
-        </Button>
         <span className={styles.signinText}>
           Вспомнили пароль?
           <Button

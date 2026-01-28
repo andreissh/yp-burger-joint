@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import type { OrderResponse } from "../../types/types";
-import { getOrder } from "../../api/api";
+import { getOrder } from "../../api/getOrder";
 
 export const fetchIngredientsOrder = createAsyncThunk<
   OrderResponse,
