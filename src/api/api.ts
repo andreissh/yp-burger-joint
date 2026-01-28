@@ -1,5 +1,3 @@
-import type { ApiResponse, Ingredient, OrderResponse } from "../types/types";
-
 const baseUrl = "https://norma.education-services.ru/api";
 
 export const fetchApi = async <T>(
@@ -25,17 +23,4 @@ export const fetchApi = async <T>(
   }
 
   return response.json();
-};
-
-export const getIngredients = async (): Promise<ApiResponse<Ingredient[]>> => {
-  return fetchApi("/ingredients");
-};
-
-export const getOrder = async (data: {
-  ingredients: string[];
-}): Promise<OrderResponse> => {
-  return fetchApi("/orders", {
-    method: "POST",
-    body: JSON.stringify(data),
-  });
 };

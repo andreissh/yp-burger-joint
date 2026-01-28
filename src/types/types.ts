@@ -34,3 +34,60 @@ export type OrderResponse = {
   };
   success: boolean;
 };
+
+export type ForgotPasswordResponse = {
+  success: string;
+  message: string;
+};
+
+export type ResetPasswordResponse = {
+  success: string;
+  message: string;
+};
+
+export type CreateUserResponse = {
+  success: boolean;
+  user: {
+    email: string;
+    name: string;
+  };
+  accessToken: string;
+  refreshToken: string;
+};
+
+export type AuthUserResponse = {
+  success: boolean;
+  user: {
+    email: string;
+    name: string;
+  };
+  accessToken: string;
+  refreshToken: string;
+};
+
+export type LogoutResponse = {
+  success: string;
+  message: string;
+};
+
+export type TokenResponse = {
+  success: boolean;
+  accessToken: string;
+  refreshToken: string;
+};
+
+export type UserInfo = {
+  success: string;
+  user: {
+    email: string;
+    name: string;
+  };
+};
+
+export type UserInfoUpdate = {
+  success: string;
+  user: {
+    email: string;
+    name: string;
+  };
+};
