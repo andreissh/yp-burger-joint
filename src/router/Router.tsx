@@ -5,7 +5,6 @@ import Register from "../components/Register/Register";
 import ForgotPassword from "../components/ForgotPassword/ForgotPassword";
 import ResetPassword from "../components/ResetPassword/ResetPassword";
 import Constructor from "../components/Constructor/Constructor";
-import IngredientPage from "../components/IngredientPage/IngredientPage";
 import Profile from "../components/Profile/Profile";
 import AppLayout from "../layout/AppLayout/AppLayout";
 import AuthLayout from "../layout/AuthLayout/AuthLayout";
@@ -32,7 +31,7 @@ const Router = () => {
               <ProtectedRouteElement element={<Profile />} onlyAuth={true} />
             }
           ></Route>
-          <Route path="ingredients/:id" element={<IngredientPage />}></Route>
+          <Route path="ingredients/:id" element={<Constructor />}></Route>
         </Route>
 
         <Route element={<AuthLayout />}>

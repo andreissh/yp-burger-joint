@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./Constructor.module.scss";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
@@ -11,6 +11,8 @@ import {
   removeIngredient,
 } from "../../services/slices/ingredientsSelectedSlice";
 import { fetchIngredients } from "../../services/middlewares/ingredientsMiddleware";
+import { useParams } from "react-router";
+import IngredientPage from "../IngredientPage/IngredientPage";
 
 const Constructor = () => {
   const { loading, error } = useAppSelector((state) => state.ingredients);
@@ -19,6 +21,10 @@ const Constructor = () => {
     (state) => state.ingredientsSelected,
   );
   const ingredientsSelectedRef = useRef(ingredientsSelected);
+  const [isIngredientModalOpen, setIsIngredientModalOpen] = useState(
+    localStorage.getItem("isIngredientModalOpen"),
+  );
+  const params = useParams();
 
   const handleIngredientsSelectedChange = (item: IngredientSelected) => {
     const currentOrder = ingredientsSelectedRef.current;
@@ -48,6 +54,13 @@ const Constructor = () => {
     ingredientsSelectedRef.current = ingredientsSelected;
   }, [ingredientsSelected]);
 
+  useEffect(() => {
+    if (!isIngredientModalOpen) {
+      localStorage.setItem("isIngredientModalOpen", "false");
+      setIsIngredientModalOpen("false");
+    }
+  }, [isIngredientModalOpen]);
+
   if (loading) {
     return <div className="loader">Загрузка ингредиентов...</div>;
   }
@@ -58,6 +71,10 @@ const Constructor = () => {
         Произошла ошибка при загрузке данных. Попробуйте перезагрузить страницу.
       </div>
     );
+  }
+
+  if (params.id && isIngredientModalOpen !== "true") {
+    return <IngredientPage />;
   }
 
   return (

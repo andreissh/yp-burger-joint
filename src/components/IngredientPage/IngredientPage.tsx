@@ -3,14 +3,18 @@ import styles from "./IngredientPage.module.scss";
 import IngredientDetails from "../../shared/IngredientDetails/IngredientDetails";
 import { useAppDispatch, useAppSelector } from "../../services/hooks";
 import { addIngredient } from "../../services/slices/ingredientCurrentSlice";
+import { useParams } from "react-router";
 
 const IngredientPage = () => {
   const { data: ingredients } = useAppSelector((store) => store.ingredients);
   const dispatch = useAppDispatch();
+  const { id } = useParams();
 
   useEffect(() => {
-    dispatch(addIngredient(ingredients[0]));
-  }, [dispatch, ingredients]);
+    const ingredient = ingredients.find((ingredient) => ingredient._id === id);
+    if (!ingredient) return;
+    dispatch(addIngredient(ingredient));
+  }, [dispatch, id, ingredients]);
 
   return (
     <div className={styles.container}>

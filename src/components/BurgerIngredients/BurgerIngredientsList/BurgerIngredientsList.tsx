@@ -1,4 +1,4 @@
-import React, { type SyntheticEvent } from "react";
+import React, { useEffect, type SyntheticEvent } from "react";
 import styles from "./BurgerIngredientsList.module.scss";
 import {
   Button,
@@ -16,6 +16,7 @@ import {
   addIngredient,
   removeIngredient,
 } from "../../../services/slices/ingredientCurrentSlice";
+import { useNavigate, useParams } from "react-router";
 
 type Props = {
   title: string;
@@ -32,18 +33,25 @@ const BurgerIngredientsList = ({
 }: Props) => {
   const isMobile = useMediaQuery("(max-width: 640px)");
   const { isModalOpen, openModal, closeModal } = useModal();
+  const { data: ingredients } = useAppSelector((state) => state.ingredients);
   const { data: ingredientsSelected } = useAppSelector(
     (state) => state.ingredientsSelected,
   );
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const params = useParams();
+  const isIngredientModalOpen = localStorage.getItem("isIngredientModalOpen");
 
   const handleIngredientClick = (ingredient: Ingredient) => {
     dispatch(addIngredient(ingredient));
-    openModal();
+    localStorage.setItem("isIngredientModalOpen", "true");
+    navigate(`/ingredients/${ingredient._id}`);
   };
 
   const handleCloseModal = () => {
     dispatch(removeIngredient());
+    localStorage.setItem("isIngredientModalOpen", "false");
+    navigate("/");
     closeModal();
   };
 
@@ -54,6 +62,17 @@ const BurgerIngredientsList = ({
     }
     onIngredientsSelectedChange({ ...v, uuid: uuidv4() });
   };
+
+  useEffect(() => {
+    if (params.id && isIngredientModalOpen === "true") {
+      const ingredient = ingredients.find(
+        (ingredient) => ingredient._id === params.id,
+      );
+      if (!ingredient) return;
+      dispatch(addIngredient(ingredient));
+      openModal();
+    }
+  }, [dispatch, ingredients, isIngredientModalOpen, openModal, params.id]);
 
   return (
     <>
