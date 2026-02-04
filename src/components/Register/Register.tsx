@@ -7,52 +7,81 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useNavigate } from "react-router";
 import { useAppDispatch } from "../../services/hooks";
-import { setIsAuth } from "../../services/slices/authSlice";
+import { registerUser } from "../../services/thunks/registerThunk";
+import { loginSuccess, setIsAuth } from "../../services/slices/authSlice";
 
 const Register = () => {
   const [isPassIconVisible, setIsPassIconVisible] = useState(true);
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
+  const handleLoginClick = () => {
+    navigate("/login");
+  };
+
+  const handleNameChange = (e: any) => {
+    setForm({ ...form, name: e.target.value });
+  };
+
+  const handleEmailChange = (e: any) => {
+    setForm({ ...form, email: e.target.value });
+  };
+
+  const handlePasswordChange = (e: any) => {
+    setForm({ ...form, password: e.target.value });
+  };
 
   const changeIcon = () => {
     setIsPassIconVisible(!isPassIconVisible);
   };
 
-  const handleRegisterClick = () => {
-    dispatch(setIsAuth(true));
-    navigate("/");
-  };
+  const handleRegisterClick = async (e: any) => {
+    e.preventDefault();
 
-  const handleLoginClick = () => {
-    navigate("/login");
+    try {
+      const res = await dispatch(registerUser(form)).unwrap();
+      dispatch(loginSuccess(res));
+      navigate("/");
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.container}>
         <h2 className={styles.header}>Регистрация</h2>
-        <form className={styles.signupForm}>
-          <label htmlFor="login" className={styles.loginLabel}>
+        <form className={styles.signupForm} onSubmit={handleRegisterClick}>
+          <label htmlFor="name" className={styles.loginLabel}>
             <Input
               type="text"
-              id="login"
-              value=""
-              onChange={console.log}
+              id="name"
+              value={form.name}
+              onChange={handleNameChange}
               onPointerEnterCapture={console.log}
               onPointerLeaveCapture={console.log}
               placeholder="Имя"
             />
           </label>
           <label htmlFor="email" className={styles.emailLabel}>
-            <EmailInput value="" onChange={console.log} id="email" />
+            <EmailInput
+              value={form.email}
+              onChange={handleEmailChange}
+              id="email"
+            />
           </label>
           <label htmlFor="pass" className={styles.passLabel}>
             <Input
               type="text"
               id="pass"
-              value=""
+              value={form.password}
               icon={isPassIconVisible ? "ShowIcon" : "HideIcon"}
-              onChange={console.log}
+              onChange={handlePasswordChange}
               onIconClick={changeIcon}
               onPointerEnterCapture={console.log}
               onPointerLeaveCapture={console.log}
@@ -60,8 +89,7 @@ const Register = () => {
             />
           </label>
           <Button
-            htmlType="button"
-            onClick={handleRegisterClick}
+            htmlType="submit"
             type="primary"
             size="large"
             extraClass={styles.signupBtn}

@@ -55,6 +55,12 @@ export type CreateUserResponse = {
   refreshToken: string;
 };
 
+export type RegisterUserRequest = {
+  email: string;
+  password: string;
+  name: string;
+};
+
 export type AuthUserResponse = {
   success: boolean;
   user: {

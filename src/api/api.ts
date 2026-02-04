@@ -9,7 +9,7 @@ export const fetchApi = async <T>(
   const response = await fetch(`${baseUrl}${endpoint}`, {
     headers: {
       "Content-Type": "application/json",
-      ...(accessToken && { Authorization: `Bearer ${accessToken}` }),
+      ...(accessToken && { Authorization: `${accessToken}` }),
       ...options.headers,
     },
     ...options,

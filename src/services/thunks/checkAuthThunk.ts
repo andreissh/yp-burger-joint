@@ -19,10 +19,7 @@ export const checkAuth = createAsyncThunk(
         body: JSON.stringify({ token: refreshToken }),
       });
 
-      localStorage.setItem("accessToken", response.accessToken);
-      localStorage.setItem("refreshToken", response.refreshToken);
-
-      dispatch(loginSuccess());
+      dispatch(loginSuccess(response));
 
       return response;
     } catch (error: any) {

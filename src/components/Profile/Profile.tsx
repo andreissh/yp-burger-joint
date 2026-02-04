@@ -1,8 +1,20 @@
 import React from "react";
 import styles from "./Profile.module.scss";
 import { Input } from "@ya.praktikum/react-developer-burger-ui-components";
+import { useAppDispatch } from "../../services/hooks";
+import { logout } from "../../services/slices/authSlice";
 
 const Profile = () => {
+  const dispatch = useAppDispatch();
+
+  const handleLogoutClick = () => {
+    try {
+      dispatch(logout());
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.container}>
@@ -19,7 +31,11 @@ const Profile = () => {
               </a>
             </li>
             <li className={styles.tabsItem}>
-              <a href="#" className={styles.tabsLink}>
+              <a
+                href="#"
+                className={styles.tabsLink}
+                onClick={handleLogoutClick}
+              >
                 Выход
               </a>
             </li>

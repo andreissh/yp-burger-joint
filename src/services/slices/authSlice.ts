@@ -17,8 +17,10 @@ export const authSlice = createSlice({
     setIsAuth(state, action: PayloadAction<boolean>) {
       state.isAuth = action.payload;
     },
-    loginSuccess(state) {
+    loginSuccess(state, action) {
       state.isAuth = true;
+      localStorage.setItem("refreshToken", action.payload.refreshToken);
+      localStorage.setItem("accessToken", action.payload.accessToken);
     },
     logout(state) {
       state.isAuth = false;

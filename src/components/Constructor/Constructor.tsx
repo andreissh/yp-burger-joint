@@ -16,8 +16,6 @@ import IngredientPage from "../IngredientPage/IngredientPage";
 import { getUserInfo } from "../../api/getUserInfo";
 import { setIsAuth } from "../../services/slices/authSlice";
 
-const accessToken = "";
-
 const Constructor = () => {
   const { loading, error } = useAppSelector((state) => state.ingredients);
   const { isAuth } = useAppSelector((state) => state.auth);
@@ -30,6 +28,7 @@ const Constructor = () => {
     localStorage.getItem("isIngredientModalOpen"),
   );
   const params = useParams();
+  const accessToken = localStorage.getItem("accessToken");
 
   const handleIngredientsSelectedChange = (item: IngredientSelected) => {
     const currentOrder = ingredientsSelectedRef.current;
@@ -55,15 +54,12 @@ const Constructor = () => {
     const getUserData = async () => {
       try {
         await getUserInfo(accessToken);
-        dispatch(setIsAuth(true));
       } catch (err) {
         console.error(err);
-        dispatch(setIsAuth(false));
-        return;
       }
     };
     getUserData();
-  }, [dispatch]);
+  }, [accessToken, dispatch]);
 
   useEffect(() => {
     if (isAuth) {

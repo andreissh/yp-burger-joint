@@ -6,24 +6,32 @@ import {
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useAppDispatch } from "../../services/hooks";
-import { setIsAuth } from "../../services/slices/authSlice";
-import { useLocation, useNavigate } from "react-router";
+import { loginSuccess } from "../../services/slices/authSlice";
+import { useNavigate } from "react-router";
+import { authUser } from "../../api/login";
 
 const Login = () => {
   const [isPassIconVisible, setIsPassIconVisible] = useState(true);
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+  });
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
-  const from = location.state?.from || "/";
 
   const changeIcon = () => {
     setIsPassIconVisible(!isPassIconVisible);
   };
 
-  const handleLoginSubmit = (e: React.FormEvent) => {
+  const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch(setIsAuth(true));
-    navigate(from, { replace: true });
+    try {
+      const res = await authUser(form);
+      dispatch(loginSuccess(res));
+      navigate("/");
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const handleRegisterClick = () => {
@@ -34,21 +42,33 @@ const Login = () => {
     navigate("/forgot-password");
   };
 
+  const handleEmailChange = (e: any) => {
+    setForm({ ...form, email: e.target.value });
+  };
+
+  const handlePasswordChange = (e: any) => {
+    setForm({ ...form, password: e.target.value });
+  };
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.container}>
         <h2 className={styles.header}>Вход</h2>
         <form className={styles.signinForm} onSubmit={handleLoginSubmit}>
           <label htmlFor="email" className={styles.emailLabel}>
-            <EmailInput value="" onChange={console.log} id="email" />
+            <EmailInput
+              value={form.email}
+              onChange={handleEmailChange}
+              id="email"
+            />
           </label>
           <label htmlFor="pass" className={styles.passLabel}>
             <Input
               type="text"
               id="pass"
-              value=""
+              value={form.password}
               icon={isPassIconVisible ? "ShowIcon" : "HideIcon"}
-              onChange={console.log}
+              onChange={handlePasswordChange}
               onIconClick={changeIcon}
               onPointerEnterCapture={console.log}
               onPointerLeaveCapture={console.log}
