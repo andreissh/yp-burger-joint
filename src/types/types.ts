@@ -70,6 +70,10 @@ export type LogoutResponse = {
   message: string;
 };
 
+export type TokenRequest = {
+  token: string | null;
+};
+
 export type TokenResponse = {
   success: boolean;
   accessToken: string;

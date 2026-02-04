@@ -10,12 +10,17 @@ import {
   addIngredient,
   removeIngredient,
 } from "../../services/slices/ingredientsSelectedSlice";
-import { fetchIngredients } from "../../services/middlewares/ingredientsMiddleware";
+import { fetchIngredients } from "../../services/thunks/ingredientsThunk";
 import { useParams } from "react-router";
 import IngredientPage from "../IngredientPage/IngredientPage";
+import { getUserInfo } from "../../api/getUserInfo";
+import { setIsAuth } from "../../services/slices/authSlice";
+
+const accessToken = "";
 
 const Constructor = () => {
   const { loading, error } = useAppSelector((state) => state.ingredients);
+  const { isAuth } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
   const { data: ingredientsSelected } = useAppSelector(
     (state) => state.ingredientsSelected,
@@ -47,8 +52,24 @@ const Constructor = () => {
   };
 
   useEffect(() => {
-    dispatch(fetchIngredients());
+    const getUserData = async () => {
+      try {
+        await getUserInfo(accessToken);
+        dispatch(setIsAuth(true));
+      } catch (err) {
+        console.error(err);
+        dispatch(setIsAuth(false));
+        return;
+      }
+    };
+    getUserData();
   }, [dispatch]);
+
+  useEffect(() => {
+    if (isAuth) {
+      dispatch(fetchIngredients());
+    }
+  }, [dispatch, isAuth]);
 
   useEffect(() => {
     ingredientsSelectedRef.current = ingredientsSelected;

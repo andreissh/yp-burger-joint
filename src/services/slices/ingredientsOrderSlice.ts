@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { OrderResponse } from "../../types/types";
-import { fetchIngredientsOrder } from "../middlewares/ingredientsOrderMiddleware";
+import { fetchIngredientsOrder } from "../thunks/ingredientsOrderThunk";
 
 type IngredientsOrderState = {
   data: OrderResponse | null;

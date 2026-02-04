@@ -20,7 +20,7 @@ import { useDrop } from "react-dnd";
 import { DND_INGREDIENT } from "../../shared/constants";
 import { v4 as uuidv4 } from "uuid";
 import type { Ingredient, IngredientSelected } from "../../types/types";
-import { fetchIngredientsOrder } from "../../services/middlewares/ingredientsOrderMiddleware";
+import { fetchIngredientsOrder } from "../../services/thunks/ingredientsOrderThunk";
 
 type Props = {
   onIngredientsSelectedChange: (arg: IngredientSelected) => void;
