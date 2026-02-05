@@ -18,18 +18,11 @@ const Router = () => {
         <Route element={<AppLayout />}>
           <Route
             index
-            element={
-              <ProtectedRouteElement
-                element={<Constructor />}
-                onlyAuth={true}
-              />
-            }
+            element={<ProtectedRouteElement element={<Constructor />} />}
           ></Route>
           <Route
             path="/profile"
-            element={
-              <ProtectedRouteElement element={<Profile />} onlyAuth={true} />
-            }
+            element={<ProtectedRouteElement element={<Profile />} onlyAuth />}
           ></Route>
           <Route path="ingredients/:id" element={<Constructor />}></Route>
         </Route>
@@ -37,23 +30,18 @@ const Router = () => {
         <Route element={<AuthLayout />}>
           <Route
             path="/login"
-            element={
-              <ProtectedRouteElement element={<Login />} onlyUnAuth={true} />
-            }
+            element={<ProtectedRouteElement element={<Login />} onlyUnAuth />}
           ></Route>
           <Route
             path="/register"
             element={
-              <ProtectedRouteElement element={<Register />} onlyUnAuth={true} />
+              <ProtectedRouteElement element={<Register />} onlyUnAuth />
             }
           ></Route>
           <Route
             path="/forgot-password"
             element={
-              <ProtectedRouteElement
-                element={<ForgotPassword />}
-                onlyUnAuth={true}
-              />
+              <ProtectedRouteElement element={<ForgotPassword />} onlyUnAuth />
             }
           ></Route>
           <Route
@@ -61,7 +49,8 @@ const Router = () => {
             element={
               <ProtectedRouteElement
                 element={<ResetPassword />}
-                onlyUnAuth={true}
+                onlyUnAuth
+                resetPasswordAllowed
               />
             }
           ></Route>

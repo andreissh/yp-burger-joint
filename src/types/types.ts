@@ -1,3 +1,8 @@
+export type ApiError = {
+  message: string;
+  status: string;
+};
+
 export type Ingredient = {
   _id: string;
   name: string;

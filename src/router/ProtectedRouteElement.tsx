@@ -13,17 +13,21 @@ const ProtectedRouteElement: React.FC<ProtectedRouteElementProps> = ({
   element,
   onlyAuth = false,
   onlyUnAuth = false,
+  resetPasswordAllowed = false,
 }) => {
   const { isAuth } = useAppSelector((store) => store.auth);
   const location = useLocation();
 
-  if (onlyUnAuth && isAuth) {
-    const from = location.state?.from || "/";
-    return <Navigate to={from} replace />;
+  if (isAuth && onlyUnAuth) {
+    return <Navigate to="/" replace />;
   }
 
-  if (onlyAuth && !isAuth) {
+  if (!isAuth && onlyAuth) {
     return <Navigate to="/login" state={{ from: location.pathname }} replace />;
+  }
+
+  if (resetPasswordAllowed && !location.state?.fromForgotPassword) {
+    return <Navigate to="/forgot-password" replace />;
   }
 
   return element;

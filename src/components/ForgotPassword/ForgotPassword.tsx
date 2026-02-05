@@ -13,7 +13,7 @@ const ForgotPassword = () => {
   const dispatch = useAppDispatch();
   const [email, setEmail] = useState("");
 
-  const handleEmailChange = (e: any) => {
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
   };
 
@@ -21,7 +21,7 @@ const ForgotPassword = () => {
     e.preventDefault();
     try {
       await dispatch(forgotPassword({ email })).unwrap();
-      navigate("/reset-password");
+      navigate("/reset-password", { state: { fromForgotPassword: true } });
     } catch (err) {
       console.error(err);
     }

@@ -8,7 +8,7 @@ import {
 import { useNavigate } from "react-router";
 import { useAppDispatch } from "../../services/hooks";
 import { registerUser } from "../../services/thunks/registerThunk";
-import { loginSuccess, setIsAuth } from "../../services/slices/authSlice";
+import { loginSuccess } from "../../services/slices/authSlice";
 
 const Register = () => {
   const [isPassIconVisible, setIsPassIconVisible] = useState(true);
@@ -24,15 +24,15 @@ const Register = () => {
     navigate("/login");
   };
 
-  const handleNameChange = (e: any) => {
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, name: e.target.value });
   };
 
-  const handleEmailChange = (e: any) => {
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, email: e.target.value });
   };
 
-  const handlePasswordChange = (e: any) => {
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, password: e.target.value });
   };
 
@@ -40,13 +40,13 @@ const Register = () => {
     setIsPassIconVisible(!isPassIconVisible);
   };
 
-  const handleRegisterClick = async (e: any) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
       const res = await dispatch(registerUser(form)).unwrap();
       dispatch(loginSuccess(res));
-      navigate("/");
+      navigate("/login");
     } catch (err) {
       console.error(err);
     }
@@ -56,7 +56,7 @@ const Register = () => {
     <div className={styles.wrapper}>
       <div className={styles.container}>
         <h2 className={styles.header}>Регистрация</h2>
-        <form className={styles.signupForm} onSubmit={handleRegisterClick}>
+        <form className={styles.signupForm} onSubmit={handleSubmit}>
           <label htmlFor="name" className={styles.loginLabel}>
             <Input
               type="text"

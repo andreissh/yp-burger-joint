@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from "../../services/hooks";
 import { logoutUser } from "../../services/thunks/logoutThunk";
 import { logout } from "../../services/slices/authSlice";
 import { updateUserInfo } from "../../services/thunks/updateUserInfoThunk";
+import { Link } from "react-router";
 
 const Profile = () => {
   const dispatch = useAppDispatch();
@@ -15,17 +16,17 @@ const Profile = () => {
     password: "",
   });
 
-  const handleNameChange = (e: any) => {
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, name: e.target.value });
   };
-  const handleLoginChange = (e: any) => {
+  const handleLoginChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, login: e.target.value });
   };
-  const handlePassChange = (e: any) => {
+  const handlePassChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, password: e.target.value });
   };
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       dispatch(updateUserInfo(form));
@@ -49,23 +50,26 @@ const Profile = () => {
         <aside className={styles.tabs}>
           <ul className={styles.tabsList}>
             <li className={styles.tabsItem}>
-              <a href="#" className={`${styles.tabsLink} ${styles.active}`}>
+              <Link
+                to="/profile"
+                className={`${styles.tabsLink} ${styles.active}`}
+              >
                 Профиль
-              </a>
+              </Link>
             </li>
             <li className={styles.tabsItem}>
-              <a href="#" className={styles.tabsLink}>
+              <Link to="/profile/orders" className={styles.tabsLink}>
                 История заказов
-              </a>
+              </Link>
             </li>
             <li className={styles.tabsItem}>
-              <a
-                href="#"
+              <Link
+                to="/login"
                 className={styles.tabsLink}
                 onClick={handleLogoutClick}
               >
                 Выход
-              </a>
+              </Link>
             </li>
           </ul>
           <span className={styles.tabsDesc}>

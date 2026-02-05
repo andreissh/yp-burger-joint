@@ -19,15 +19,15 @@ const ResetPassword = () => {
     setIsPassIconVisible(!isPassIconVisible);
   };
 
-  const handlePasswordChange = (e: any) => {
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
   };
 
-  const handleCodeChange = (e: any) => {
+  const handleCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCode(e.target.value);
   };
 
-  const handleSaveSubmit = async (e: React.FormEvent) => {
+  const handleSaveSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       await dispatch(resetPassword({ password, token: code })).unwrap();

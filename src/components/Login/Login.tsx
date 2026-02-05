@@ -42,11 +42,11 @@ const Login = () => {
     navigate("/forgot-password");
   };
 
-  const handleEmailChange = (e: any) => {
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, email: e.target.value });
   };
 
-  const handlePasswordChange = (e: any) => {
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, password: e.target.value });
   };
 

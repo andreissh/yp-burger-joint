@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { loginSuccess, logout } from "../slices/authSlice";
 import { fetchApi } from "../../api/api";
-import type { TokenResponse } from "../../types/types";
+import type { ApiError, TokenResponse } from "../../types/types";
 
 export const checkAuth = createAsyncThunk(
   "auth/check",
@@ -22,7 +22,8 @@ export const checkAuth = createAsyncThunk(
       dispatch(loginSuccess(response));
 
       return response;
-    } catch (error: any) {
+    } catch (err: unknown) {
+      const error = err as ApiError;
       dispatch(logout());
       return rejectWithValue({
         message: error.message,
