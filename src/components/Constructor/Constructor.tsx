@@ -79,12 +79,12 @@ const Constructor = () => {
   }, [isIngredientModalOpen]);
 
   if (loading) {
-    return <div className="loader">Загрузка ингредиентов...</div>;
+    return <div className={styles.loader}>Загрузка ингредиентов...</div>;
   }
 
   if (error) {
     return (
-      <div className="load-error">
+      <div className={styles.loadError}>
         Произошла ошибка при загрузке данных. Попробуйте перезагрузить страницу.
       </div>
     );
