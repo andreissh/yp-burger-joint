@@ -13,18 +13,9 @@ const ProtectedRouteElement: React.FC<ProtectedRouteElementProps> = ({
   element,
   onlyAuth = false,
   onlyUnAuth = false,
-  resetPasswordAllowed = false,
 }) => {
   const { isAuth } = useAppSelector((store) => store.auth);
   const location = useLocation();
-
-  if (resetPasswordAllowed) {
-    const isResetPasswordAllowed =
-      localStorage.getItem("resetPasswordAllowed") === "true";
-    if (!isResetPasswordAllowed) {
-      return <Navigate to="/forgot-password" replace />;
-    }
-  }
 
   if (onlyUnAuth && isAuth) {
     const from = location.state?.from || "/";

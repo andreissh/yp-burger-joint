@@ -13,12 +13,12 @@ import {
 import { fetchIngredients } from "../../services/thunks/ingredientsThunk";
 import { useParams } from "react-router";
 import IngredientPage from "../IngredientPage/IngredientPage";
-import { getUserInfo } from "../../api/getUserInfo";
-import { setIsAuth } from "../../services/slices/authSlice";
+import { setUserInfo } from "../../services/slices/authSlice";
+import { getUserInfo } from "../../services/thunks/getUserInfoThunk";
 
 const Constructor = () => {
   const { loading, error } = useAppSelector((state) => state.ingredients);
-  const { isAuth } = useAppSelector((state) => state.auth);
+  const { isAuth, user } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
   const { data: ingredientsSelected } = useAppSelector(
     (state) => state.ingredientsSelected,
@@ -28,7 +28,6 @@ const Constructor = () => {
     localStorage.getItem("isIngredientModalOpen"),
   );
   const params = useParams();
-  const accessToken = localStorage.getItem("accessToken");
 
   const handleIngredientsSelectedChange = (item: IngredientSelected) => {
     const currentOrder = ingredientsSelectedRef.current;
@@ -53,13 +52,14 @@ const Constructor = () => {
   useEffect(() => {
     const getUserData = async () => {
       try {
-        await getUserInfo(accessToken);
+        const userInfo = await dispatch(getUserInfo()).unwrap();
+        dispatch(setUserInfo(userInfo));
       } catch (err) {
         console.error(err);
       }
     };
     getUserData();
-  }, [accessToken, dispatch]);
+  }, [dispatch]);
 
   useEffect(() => {
     if (isAuth) {

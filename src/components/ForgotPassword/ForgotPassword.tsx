@@ -1,20 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./ForgotPassword.module.scss";
 import {
   Button,
   EmailInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useNavigate } from "react-router";
-import { useResetPassword } from "../../hooks/useResetPassword";
+import { forgotPassword } from "../../services/thunks/forgotPasswordThunk";
+import { useAppDispatch } from "../../services/hooks";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
-  const { allowResetPassword } = useResetPassword();
+  const dispatch = useAppDispatch();
+  const [email, setEmail] = useState("");
 
-  const handleRecoverSubmit = (e: React.FormEvent) => {
+  const handleEmailChange = (e: any) => {
+    setEmail(e.target.value);
+  };
+
+  const handleRecoverSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    allowResetPassword();
-    navigate("/reset-password");
+    try {
+      await dispatch(forgotPassword({ email })).unwrap();
+      navigate("/reset-password");
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const handleLoginClick = () => {
@@ -28,8 +38,8 @@ const ForgotPassword = () => {
         <form className={styles.resetForm} onSubmit={handleRecoverSubmit}>
           <label htmlFor="email" className={styles.emailLabel}>
             <EmailInput
-              value=""
-              onChange={console.log}
+              value={email}
+              onChange={handleEmailChange}
               id="email"
               placeholder="Укажите e-mail"
             />

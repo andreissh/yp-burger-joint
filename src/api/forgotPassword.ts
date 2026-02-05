@@ -1,7 +1,7 @@
 import type { ForgotPasswordResponse } from "../types/types";
 import { fetchApi } from "./api";
 
-export const forgotPassword = async (data: {
+export const forgotPasswordApi = async (data: {
   email: string;
 }): Promise<ForgotPasswordResponse> => {
   return fetchApi("/password-reset", {

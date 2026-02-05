@@ -1,39 +1,45 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styles from "./ResetPassword.module.scss";
 import {
   Button,
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useNavigate } from "react-router";
-import { useResetPassword } from "../../hooks/useResetPassword";
+import { resetPassword } from "../../services/thunks/resetPasswordThunk";
+import { useAppDispatch } from "../../services/hooks";
 
 const ResetPassword = () => {
   const [isPassIconVisible, setIsPassIconVisible] = useState(true);
+  const [password, setPassword] = useState("");
+  const [code, setCode] = useState("");
   const navigate = useNavigate();
-  const { checkResetPasswordAccess, disallowResetPassword } =
-    useResetPassword();
+  const dispatch = useAppDispatch();
 
   const changeIcon = () => {
     setIsPassIconVisible(!isPassIconVisible);
   };
 
-  const handleSaveSubmit = (e: React.FormEvent) => {
+  const handlePasswordChange = (e: any) => {
+    setPassword(e.target.value);
+  };
+
+  const handleCodeChange = (e: any) => {
+    setCode(e.target.value);
+  };
+
+  const handleSaveSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    disallowResetPassword();
-    navigate("/login");
+    try {
+      await dispatch(resetPassword({ password, token: code })).unwrap();
+      navigate("/login");
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const handleLoginClick = () => {
     navigate("/login");
   };
-
-  useEffect(() => {
-    checkResetPasswordAccess();
-
-    return () => {
-      disallowResetPassword();
-    };
-  }, [checkResetPasswordAccess, disallowResetPassword]);
 
   return (
     <div className={styles.wrapper}>
@@ -46,22 +52,22 @@ const ResetPassword = () => {
               id="newPass"
               placeholder="Введите новый пароль"
               type="text"
-              onChange={console.log}
+              onChange={handlePasswordChange}
               onIconClick={changeIcon}
               onPointerEnterCapture={console.log}
               onPointerLeaveCapture={console.log}
-              value=""
+              value={password}
             />
           </label>
           <label htmlFor="code" className={styles.codeLabel}>
             <Input
               id="code"
-              onChange={console.log}
+              onChange={handleCodeChange}
               onPointerEnterCapture={console.log}
               onPointerLeaveCapture={console.log}
               placeholder="Введите код из письма"
               type="text"
-              value=""
+              value={code}
             />
           </label>
           <Button

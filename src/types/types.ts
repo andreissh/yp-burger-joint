@@ -35,9 +35,18 @@ export type OrderResponse = {
   success: boolean;
 };
 
+export type ForgotPasswordRequest = {
+  email: string;
+};
+
 export type ForgotPasswordResponse = {
   success: string;
   message: string;
+};
+
+export type ResetPasswordRequest = {
+  password: string;
+  token: string;
 };
 
 export type ResetPasswordResponse = {
@@ -71,6 +80,10 @@ export type AuthUserResponse = {
   refreshToken: string;
 };
 
+export type LogoutRequest = {
+  token: string;
+};
+
 export type LogoutResponse = {
   success: string;
   message: string;
@@ -87,6 +100,11 @@ export type TokenResponse = {
 };
 
 export type UserInfo = {
+  email: string;
+  name: string;
+};
+
+export type UserInfoResponse = {
   success: string;
   user: {
     email: string;
@@ -94,7 +112,13 @@ export type UserInfo = {
   };
 };
 
-export type UserInfoUpdate = {
+export type UserInfoUpdateRequest = {
+  name: string;
+  login: string;
+  password: string;
+};
+
+export type UserInfoUpdateResponse = {
   success: string;
   user: {
     email: string;

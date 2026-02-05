@@ -62,7 +62,6 @@ const Router = () => {
               <ProtectedRouteElement
                 element={<ResetPassword />}
                 onlyUnAuth={true}
-                resetPasswordAllowed={true}
               />
             }
           ></Route>

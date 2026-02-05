@@ -1,14 +1,42 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./Profile.module.scss";
 import { Input } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useAppDispatch } from "../../services/hooks";
+import { useAppDispatch, useAppSelector } from "../../services/hooks";
+import { logoutUser } from "../../services/thunks/logoutThunk";
 import { logout } from "../../services/slices/authSlice";
+import { updateUserInfo } from "../../services/thunks/updateUserInfoThunk";
 
 const Profile = () => {
   const dispatch = useAppDispatch();
+  const { user } = useAppSelector((state) => state.auth);
+  const [form, setForm] = useState({
+    name: user?.name || "",
+    login: user?.email || "",
+    password: "",
+  });
+
+  const handleNameChange = (e: any) => {
+    setForm({ ...form, name: e.target.value });
+  };
+  const handleLoginChange = (e: any) => {
+    setForm({ ...form, login: e.target.value });
+  };
+  const handlePassChange = (e: any) => {
+    setForm({ ...form, password: e.target.value });
+  };
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    try {
+      dispatch(updateUserInfo(form));
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const handleLogoutClick = () => {
     try {
+      dispatch(logoutUser());
       dispatch(logout());
     } catch (err) {
       console.error(err);
@@ -44,15 +72,15 @@ const Profile = () => {
             В этом разделе вы можете изменить свои персональные данные
           </span>
         </aside>
-        <form className={styles.profileForm}>
+        <form className={styles.profileForm} onSubmit={handleSubmit}>
           <Input
             extraClass={styles.profileFormField}
             icon={"EditIcon"}
             id="name"
             placeholder="Имя"
             type="text"
-            value=""
-            onChange={console.log}
+            value={form.name}
+            onChange={handleNameChange}
             onPointerEnterCapture={console.log}
             onPointerLeaveCapture={console.log}
           />
@@ -62,8 +90,8 @@ const Profile = () => {
             id="login"
             placeholder="Логин"
             type="text"
-            value=""
-            onChange={console.log}
+            value={form.login}
+            onChange={handleLoginChange}
             onPointerEnterCapture={console.log}
             onPointerLeaveCapture={console.log}
           />
@@ -73,8 +101,8 @@ const Profile = () => {
             id="pass"
             placeholder="Пароль"
             type="text"
-            value=""
-            onChange={console.log}
+            value={form.password}
+            onChange={handlePassChange}
             onPointerEnterCapture={console.log}
             onPointerLeaveCapture={console.log}
           />

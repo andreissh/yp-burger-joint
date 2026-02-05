@@ -12,7 +12,11 @@ const AppContent = () => {
   const { loading } = useAppSelector((state) => state.auth);
 
   useEffect(() => {
-    dispatch(checkAuth());
+    try {
+      dispatch(checkAuth());
+    } catch (err) {
+      console.error(err);
+    }
   }, [dispatch]);
 
   if (loading) return <Loader />;
