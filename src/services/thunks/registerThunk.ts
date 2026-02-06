@@ -1,12 +1,12 @@
 import { type AuthUserResponse } from "./../../types/types";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import type { RegisterUserRequest } from "../../types/types";
-import { createUser } from "../../api/createUser";
+import { registerApi } from "../../api/register";
 
-export const registerUser = createAsyncThunk<
-  AuthUserResponse,
-  RegisterUserRequest
->("register/fetch", async (data) => {
-  const response = await createUser(data);
-  return response;
-});
+export const register = createAsyncThunk<AuthUserResponse, RegisterUserRequest>(
+  "auth/register",
+  async (data) => {
+    const response = await registerApi(data);
+    return response;
+  },
+);

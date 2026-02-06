@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Profile.module.scss";
 import { Input } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useAppDispatch, useAppSelector } from "../../services/hooks";
-import { logoutUser } from "../../services/thunks/logoutThunk";
-import { logout } from "../../services/slices/authSlice";
 import { updateUserInfo } from "../../services/thunks/updateUserInfoThunk";
 import { Link } from "react-router";
+import { setLogoutState, setUserInfo } from "../../services/slices/authSlice";
+import { logout } from "../../services/thunks/logoutThunk";
+import { getUserInfo } from "../../services/thunks/getUserInfoThunk";
 
 const Profile = () => {
   const dispatch = useAppDispatch();
@@ -37,12 +38,24 @@ const Profile = () => {
 
   const handleLogoutClick = () => {
     try {
-      dispatch(logoutUser());
       dispatch(logout());
+      dispatch(setLogoutState());
     } catch (err) {
       console.error(err);
     }
   };
+
+  useEffect(() => {
+    const getUserData = async () => {
+      try {
+        const userInfo = await dispatch(getUserInfo()).unwrap();
+        dispatch(setUserInfo(userInfo));
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    getUserData();
+  }, [dispatch]);
 
   return (
     <div className={styles.wrapper}>

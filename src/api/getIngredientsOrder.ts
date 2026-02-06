@@ -1,7 +1,7 @@
 import type { OrderResponse } from "../types/types";
 import { fetchApi } from "./api";
 
-export const getOrder = async (data: {
+export const getIngredientsOrderApi = async (data: {
   ingredients: string[];
 }): Promise<OrderResponse> => {
   return fetchApi("/orders", {

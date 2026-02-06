@@ -1,7 +1,7 @@
 import type { CreateUserResponse } from "../types/types";
 import { fetchApi } from "./api";
 
-export const createUser = async (data: {
+export const registerApi = async (data: {
   email: string;
   password: string;
   name: string;

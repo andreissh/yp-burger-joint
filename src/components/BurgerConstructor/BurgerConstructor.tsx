@@ -20,7 +20,8 @@ import { useDrop } from "react-dnd";
 import { DND_INGREDIENT } from "../../shared/constants";
 import { v4 as uuidv4 } from "uuid";
 import type { Ingredient, IngredientSelected } from "../../types/types";
-import { fetchIngredientsOrder } from "../../services/thunks/ingredientsOrderThunk";
+import { getIngredientsOrder } from "../../services/thunks/getIngredientsOrderThunk";
+import { useNavigate } from "react-router";
 
 type Props = {
   onIngredientsSelectedChange: (arg: IngredientSelected) => void;
@@ -40,6 +41,8 @@ const BurgerConstructor = ({ onIngredientsSelectedChange }: Props) => {
   );
   const totalCost = ingredientsSelected.reduce((a, c) => a + c.price, 0);
   const selectedRef = useRef(ingredientsSelected);
+  const { isAuth } = useAppSelector((state) => state.auth);
+  const navigate = useNavigate();
 
   const [, drop] = useDrop(() => ({
     accept: DND_INGREDIENT,
@@ -66,12 +69,16 @@ const BurgerConstructor = ({ onIngredientsSelectedChange }: Props) => {
   };
 
   const handleSendOrder = async () => {
+    if (!isAuth) {
+      navigate("/login");
+    }
+
     const ingredientsSelectedIds = {
       ingredients: ingredientsSelected.map((order) => order._id),
     };
     try {
-      const res = await dispatch(fetchIngredientsOrder(ingredientsSelectedIds));
-      if (fetchIngredientsOrder.rejected.match(res)) {
+      const res = await dispatch(getIngredientsOrder(ingredientsSelectedIds));
+      if (getIngredientsOrder.rejected.match(res)) {
         console.error("Error: ", res.error);
         return;
       }

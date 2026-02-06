@@ -1,7 +1,7 @@
 import type { AuthUserResponse } from "../types/types";
 import { fetchApi } from "./api";
 
-export const authUser = async (data: {
+export const loginApi = async (data: {
   email: string;
   password: string;
 }): Promise<AuthUserResponse> => {

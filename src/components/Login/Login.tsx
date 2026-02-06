@@ -6,9 +6,9 @@ import {
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useAppDispatch } from "../../services/hooks";
-import { loginSuccess } from "../../services/slices/authSlice";
 import { useNavigate } from "react-router";
-import { authUser } from "../../api/login";
+import { setLoginState } from "../../services/slices/authSlice";
+import { loginApi } from "../../api/login";
 
 const Login = () => {
   const [isPassIconVisible, setIsPassIconVisible] = useState(true);
@@ -26,8 +26,8 @@ const Login = () => {
   const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await authUser(form);
-      dispatch(loginSuccess(res));
+      const res = await loginApi(form);
+      dispatch(setLoginState(res));
       navigate("/");
     } catch (err) {
       console.error(err);

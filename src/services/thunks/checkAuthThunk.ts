@@ -1,30 +1,25 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { loginSuccess, logout } from "../slices/authSlice";
-import { fetchApi } from "../../api/api";
-import type { ApiError, TokenResponse } from "../../types/types";
+import type { ApiError } from "../../types/types";
+import { getAccessToken } from "./getAccessTokenThunk";
+import { setLoginState, setLogoutState } from "../slices/authSlice";
 
 export const checkAuth = createAsyncThunk(
-  "auth/check",
+  "auth/checkAuth",
   async (_, { dispatch, rejectWithValue }) => {
     const refreshToken = localStorage.getItem("refreshToken");
 
     if (!refreshToken) {
-      dispatch(logout());
+      dispatch(setLogoutState());
       return rejectWithValue("No refresh token");
     }
 
     try {
-      const response = await fetchApi<TokenResponse>("/auth/token", {
-        method: "POST",
-        body: JSON.stringify({ token: refreshToken }),
-      });
-
-      dispatch(loginSuccess(response));
-
+      const response = await getAccessToken({ token: refreshToken });
+      dispatch(setLoginState(response));
       return response;
     } catch (err: unknown) {
       const error = err as ApiError;
-      dispatch(logout());
+      dispatch(setLogoutState());
       return rejectWithValue({
         message: error.message,
         status: error.status,

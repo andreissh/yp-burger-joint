@@ -7,8 +7,8 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useNavigate } from "react-router";
 import { useAppDispatch } from "../../services/hooks";
-import { registerUser } from "../../services/thunks/registerThunk";
-import { loginSuccess } from "../../services/slices/authSlice";
+import { setLoginState } from "../../services/slices/authSlice";
+import { register } from "../../services/thunks/registerThunk";
 
 const Register = () => {
   const [isPassIconVisible, setIsPassIconVisible] = useState(true);
@@ -44,8 +44,8 @@ const Register = () => {
     e.preventDefault();
 
     try {
-      const res = await dispatch(registerUser(form)).unwrap();
-      dispatch(loginSuccess(res));
+      const res = await dispatch(register(form)).unwrap();
+      dispatch(setLoginState(res));
       navigate("/login");
     } catch (err) {
       console.error(err);

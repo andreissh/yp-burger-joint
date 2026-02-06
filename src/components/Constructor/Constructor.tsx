@@ -10,15 +10,14 @@ import {
   addIngredient,
   removeIngredient,
 } from "../../services/slices/ingredientsSelectedSlice";
-import { fetchIngredients } from "../../services/thunks/ingredientsThunk";
 import { useParams } from "react-router";
 import IngredientPage from "../IngredientPage/IngredientPage";
-import { setUserInfo } from "../../services/slices/authSlice";
-import { getUserInfo } from "../../services/thunks/getUserInfoThunk";
+import { getIngredientsApi } from "../../api/getIngredients";
+import { setIngredients } from "../../services/slices/ingredientsSlice";
 
 const Constructor = () => {
   const { loading, error } = useAppSelector((state) => state.ingredients);
-  const { isAuth, user } = useAppSelector((state) => state.auth);
+  const { isAuth } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
   const { data: ingredientsSelected } = useAppSelector(
     (state) => state.ingredientsSelected,
@@ -50,21 +49,15 @@ const Constructor = () => {
   };
 
   useEffect(() => {
-    const getUserData = async () => {
+    const getData = async () => {
       try {
-        const userInfo = await dispatch(getUserInfo()).unwrap();
-        dispatch(setUserInfo(userInfo));
+        const response = await getIngredientsApi();
+        dispatch(setIngredients(response.data));
       } catch (err) {
         console.error(err);
       }
     };
-    getUserData();
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (isAuth) {
-      dispatch(fetchIngredients());
-    }
+    getData();
   }, [dispatch, isAuth]);
 
   useEffect(() => {

@@ -8,7 +8,7 @@ import type {
 export const resetPassword = createAsyncThunk<
   ResetPasswordResponse,
   ResetPasswordRequest
->("resetPass/fetch", async (data) => {
+>("auth/resetPassword", async (data) => {
   const response = await resetPasswordApi(data);
   return response;
 });

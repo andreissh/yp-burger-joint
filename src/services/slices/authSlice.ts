@@ -27,14 +27,14 @@ export const authSlice = createSlice({
     setUserInfo(state, action: PayloadAction<UserInfo>) {
       state.user = action.payload;
     },
-    loginSuccess(state, action) {
+    setLoginState(state, action) {
       state.isAuth = true;
       state.loading = false;
       state.error = null;
       localStorage.setItem("refreshToken", action.payload.refreshToken);
       localStorage.setItem("accessToken", action.payload.accessToken);
     },
-    logout(state) {
+    setLogoutState(state) {
       state.isAuth = false;
       state.loading = false;
       state.error = null;
@@ -61,7 +61,7 @@ export const authSlice = createSlice({
   },
 });
 
-export const { setIsAuth, setUserInfo, loginSuccess, logout } =
+export const { setIsAuth, setUserInfo, setLoginState, setLogoutState } =
   authSlice.actions;
 
 export default authSlice.reducer;
