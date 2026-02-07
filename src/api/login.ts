@@ -1,10 +1,7 @@
-import type { AuthUserResponse } from "../types/types";
+import type { LoginRequest, LoginResponse } from "../types/types";
 import { fetchApi } from "./api";
 
-export const loginApi = async (data: {
-  email: string;
-  password: string;
-}): Promise<AuthUserResponse> => {
+export const loginApi = async (data: LoginRequest): Promise<LoginResponse> => {
   return fetchApi("/auth/login", {
     method: "POST",
     body: JSON.stringify(data),

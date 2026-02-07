@@ -3,6 +3,17 @@ export type ApiError = {
   status: string;
 };
 
+export type AuthError = {
+  message: string;
+  status: number;
+};
+
+export type ApiResponse<T> = {
+  success: boolean;
+  data: T;
+  message?: string;
+};
+
 export type Ingredient = {
   _id: string;
   name: string;
@@ -26,10 +37,8 @@ export type IngredientsTab = {
   type: string;
 };
 
-export type ApiResponse<T> = {
-  success: boolean;
-  data: T;
-  message?: string;
+export type OrderRequest = {
+  ingredients: string[];
 };
 
 export type OrderResponse = {
@@ -59,7 +68,7 @@ export type ResetPasswordResponse = {
   message: string;
 };
 
-export type CreateUserResponse = {
+export type RegisterResponse = {
   success: boolean;
   user: {
     email: string;
@@ -69,18 +78,18 @@ export type CreateUserResponse = {
   refreshToken: string;
 };
 
-export type RegisterUserRequest = {
+export type RegisterRequest = {
   email: string;
   password: string;
   name: string;
 };
 
-export type AuthError = {
-  message: string;
-  status: number;
+export type LoginRequest = {
+  email: string;
+  password: string;
 };
 
-export type AuthUserResponse = {
+export type LoginResponse = {
   success: boolean;
   user: {
     email: string;
