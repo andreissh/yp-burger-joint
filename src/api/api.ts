@@ -1,3 +1,6 @@
+import { setLogoutState } from "../services/slices/authSlice";
+import { store } from "../services/store";
+
 const baseUrl = "https://norma.education-services.ru/api";
 
 export const fetchApi = async <T>(
@@ -15,19 +18,15 @@ export const fetchApi = async <T>(
     ...options,
   });
 
-  if (response.status === 401) {
-    throw new Error("Session expired. Please login again.");
-  }
+  const json = await response.json().catch(() => ({}));
 
   if (!response.ok) {
-    const error = await response.json().catch(() => ({
-      message: `HTTP error with status ${response.status}`,
-    }));
+    if (response.status === 401 || response.status === 403) {
+      store.dispatch(setLogoutState());
+    }
 
-    throw new Error(
-      error.message || `Request failed with status ${response.status}`,
-    );
+    throw new Error(json.message);
   }
 
-  return response.json();
+  return json;
 };

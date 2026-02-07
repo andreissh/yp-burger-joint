@@ -7,13 +7,14 @@ import { Link } from "react-router";
 import { setLogoutState, setUserInfo } from "../../services/slices/authSlice";
 import { logout } from "../../services/thunks/logoutThunk";
 import { getUserInfo } from "../../services/thunks/getUserInfoThunk";
+import Loader from "../../shared/Loader/Loader";
 
 const Profile = () => {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
   const [form, setForm] = useState({
-    name: user?.name || "",
-    login: user?.email || "",
+    name: user?.name ?? "",
+    login: user?.email ?? "",
     password: "",
   });
 
@@ -56,6 +57,18 @@ const Profile = () => {
     };
     getUserData();
   }, [dispatch]);
+
+  useEffect(() => {
+    if (!user) return;
+
+    setForm({
+      name: user.name,
+      login: user.email,
+      password: "",
+    });
+  }, [user]);
+
+  if (!user) return <Loader />;
 
   return (
     <div className={styles.wrapper}>

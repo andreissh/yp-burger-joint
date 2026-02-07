@@ -71,11 +71,13 @@ const BurgerConstructor = ({ onIngredientsSelectedChange }: Props) => {
   const handleSendOrder = async () => {
     if (!isAuth) {
       navigate("/login");
+      return;
     }
 
     const ingredientsSelectedIds = {
       ingredients: ingredientsSelected.map((order) => order._id),
     };
+
     try {
       const res = await dispatch(getIngredientsOrder(ingredientsSelectedIds));
       if (getIngredientsOrder.rejected.match(res)) {

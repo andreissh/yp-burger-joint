@@ -4,7 +4,6 @@ import ingredientsSelectedReducer from "./slices/ingredientsSelectedSlice";
 import ingredientCurrentReducer from "./slices/ingredientCurrentSlice";
 import ingredientsOrderReducer from "./slices/ingredientsOrderSlice";
 import authReducer from "./slices/authSlice";
-import { authMiddleware } from "./middlewares/authMiddleware";
 
 export const store = configureStore({
   reducer: {
@@ -13,9 +12,6 @@ export const store = configureStore({
     ingredientCurrent: ingredientCurrentReducer,
     ingredientsSelected: ingredientsSelectedReducer,
     auth: authReducer,
-  },
-  middleware: (getDefaultMiddleware) => {
-    return getDefaultMiddleware().concat(authMiddleware);
   },
 });
 

@@ -1,11 +1,5 @@
-import type { Action, Middleware } from "redux";
-import { setLogoutState } from "../slices/authSlice";
+import type { Middleware } from "redux";
 
-export const authMiddleware: Middleware = (store) => (next) => (action) => {
-  const act = action as Action & { payload?: { status?: number } };
-  if (act.type.endsWith("/rejected") && act.payload?.status === 401) {
-    store.dispatch(setLogoutState());
-  }
-
+export const authMiddleware: Middleware = () => (next) => (action) => {
   return next(action);
 };
