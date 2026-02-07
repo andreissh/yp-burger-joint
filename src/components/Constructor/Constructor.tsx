@@ -28,6 +28,9 @@ const Constructor = () => {
   );
   const params = useParams();
 
+  const handleIngredientModalToggle = (value: string) =>
+    setIsIngredientModalOpen(value);
+
   const handleIngredientsSelectedChange = (item: IngredientSelected) => {
     const currentOrder = ingredientsSelectedRef.current;
 
@@ -65,10 +68,8 @@ const Constructor = () => {
   }, [ingredientsSelected]);
 
   useEffect(() => {
-    if (!isIngredientModalOpen) {
-      localStorage.setItem("isIngredientModalOpen", "false");
-      setIsIngredientModalOpen("false");
-    }
+    if (!isIngredientModalOpen) return;
+    localStorage.setItem("isIngredientModalOpen", isIngredientModalOpen);
   }, [isIngredientModalOpen]);
 
   if (loading) {
@@ -91,6 +92,7 @@ const Constructor = () => {
     <DndProvider backend={HTML5Backend}>
       <BurgerIngredients
         onIngredientsSelectedChange={handleIngredientsSelectedChange}
+        onIngredientModalToggle={handleIngredientModalToggle}
       />
       <BurgerConstructor
         onIngredientsSelectedChange={handleIngredientsSelectedChange}

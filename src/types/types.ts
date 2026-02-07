@@ -75,6 +75,11 @@ export type RegisterUserRequest = {
   name: string;
 };
 
+export type AuthError = {
+  message: string;
+  status: number;
+};
+
 export type AuthUserResponse = {
   success: boolean;
   user: {

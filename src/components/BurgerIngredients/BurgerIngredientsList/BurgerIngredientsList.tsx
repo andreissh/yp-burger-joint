@@ -23,6 +23,7 @@ type Props = {
   titleStyle?: React.CSSProperties;
   products: Ingredient[];
   onIngredientsSelectedChange: (arg: IngredientSelected) => void;
+  onIngredientModalToggle: (arg: string) => void;
 };
 
 const BurgerIngredientsList = ({
@@ -30,6 +31,7 @@ const BurgerIngredientsList = ({
   titleStyle = {},
   products,
   onIngredientsSelectedChange,
+  onIngredientModalToggle,
 }: Props) => {
   const isMobile = useMediaQuery("(max-width: 640px)");
   const { isModalOpen, openModal, closeModal } = useModal();
@@ -44,13 +46,13 @@ const BurgerIngredientsList = ({
 
   const handleIngredientClick = (ingredient: Ingredient) => {
     dispatch(addIngredient(ingredient));
-    localStorage.setItem("isIngredientModalOpen", "true");
+    onIngredientModalToggle("true");
     navigate(`/ingredients/${ingredient._id}`);
   };
 
   const handleCloseModal = () => {
     dispatch(removeIngredient());
-    localStorage.setItem("isIngredientModalOpen", "false");
+    onIngredientModalToggle("false");
     navigate("/");
     closeModal();
   };
