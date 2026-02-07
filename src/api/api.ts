@@ -1,4 +1,5 @@
-import type { ApiResponse, Ingredient, OrderResponse } from "../types/types";
+import { setLogoutState } from "../services/slices/authSlice";
+import { store } from "../services/store";
 
 const baseUrl = "https://norma.education-services.ru/api";
 
@@ -6,36 +7,26 @@ export const fetchApi = async <T>(
   endpoint: string,
   options: RequestInit = {},
 ): Promise<T> => {
+  const accessToken = localStorage.getItem("accessToken");
+
   const response = await fetch(`${baseUrl}${endpoint}`, {
     headers: {
       "Content-Type": "application/json",
+      ...(accessToken && { Authorization: `${accessToken}` }),
       ...options.headers,
     },
     ...options,
   });
 
-  if (!response.ok) {
-    const error = await response.json().catch(() => ({
-      message: `HTTP error with status ${response.status}`,
-    }));
+  const json = await response.json().catch(() => ({}));
 
-    throw new Error(
-      error.message || `Request failed with status ${response.status}`,
-    );
+  if (!response.ok) {
+    if (response.status === 401 || response.status === 403) {
+      store.dispatch(setLogoutState());
+    }
+
+    throw new Error(json.message);
   }
 
-  return response.json();
-};
-
-export const getIngredients = async (): Promise<ApiResponse<Ingredient[]>> => {
-  return fetchApi("/ingredients");
-};
-
-export const getOrder = async (data: {
-  ingredients: string[];
-}): Promise<OrderResponse> => {
-  return fetchApi("/orders", {
-    method: "POST",
-    body: JSON.stringify(data),
-  });
+  return json;
 };

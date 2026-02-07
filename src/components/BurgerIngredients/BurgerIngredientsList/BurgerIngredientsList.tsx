@@ -1,4 +1,4 @@
-import React, { type SyntheticEvent } from "react";
+import React, { useEffect, type SyntheticEvent } from "react";
 import styles from "./BurgerIngredientsList.module.scss";
 import {
   Button,
@@ -6,7 +6,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import type { Ingredient, IngredientSelected } from "../../../types/types";
 import Modal from "../../../shared/Modal/Modal";
-import IngredientDetails from "../../IngredientDetails/IngredientDetails";
+import IngredientDetails from "../../../shared/IngredientDetails/IngredientDetails";
 import { useModal } from "../../../hooks/useModal";
 import { useMediaQuery } from "usehooks-ts";
 import { useAppDispatch, useAppSelector } from "../../../services/hooks";
@@ -16,12 +16,14 @@ import {
   addIngredient,
   removeIngredient,
 } from "../../../services/slices/ingredientCurrentSlice";
+import { useNavigate, useParams } from "react-router";
 
 type Props = {
   title: string;
   titleStyle?: React.CSSProperties;
   products: Ingredient[];
   onIngredientsSelectedChange: (arg: IngredientSelected) => void;
+  onIngredientModalToggle: (arg: string) => void;
 };
 
 const BurgerIngredientsList = ({
@@ -29,21 +31,29 @@ const BurgerIngredientsList = ({
   titleStyle = {},
   products,
   onIngredientsSelectedChange,
+  onIngredientModalToggle,
 }: Props) => {
   const isMobile = useMediaQuery("(max-width: 640px)");
   const { isModalOpen, openModal, closeModal } = useModal();
+  const { data: ingredients } = useAppSelector((state) => state.ingredients);
   const { data: ingredientsSelected } = useAppSelector(
     (state) => state.ingredientsSelected,
   );
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const params = useParams();
+  const isIngredientModalOpen = localStorage.getItem("isIngredientModalOpen");
 
   const handleIngredientClick = (ingredient: Ingredient) => {
     dispatch(addIngredient(ingredient));
-    openModal();
+    onIngredientModalToggle("true");
+    navigate(`/ingredients/${ingredient._id}`);
   };
 
   const handleCloseModal = () => {
     dispatch(removeIngredient());
+    onIngredientModalToggle("false");
+    navigate("/");
     closeModal();
   };
 
@@ -54,6 +64,17 @@ const BurgerIngredientsList = ({
     }
     onIngredientsSelectedChange({ ...v, uuid: uuidv4() });
   };
+
+  useEffect(() => {
+    if (params.id && isIngredientModalOpen === "true") {
+      const ingredient = ingredients.find(
+        (ingredient) => ingredient._id === params.id,
+      );
+      if (!ingredient) return;
+      dispatch(addIngredient(ingredient));
+      openModal();
+    }
+  }, [dispatch, ingredients, isIngredientModalOpen, openModal, params.id]);
 
   return (
     <>

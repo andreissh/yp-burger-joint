@@ -7,12 +7,34 @@ import {
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import logoMobile from "../../assets/images/logo-mobile.svg";
+import { Link, useNavigate } from "react-router";
+import clsx from "clsx";
+
+enum Tabs {
+  Constructor = "constructor",
+  Orders = "orders",
+  Account = "account",
+}
+
+type TabsType = "constructor" | "orders" | "account";
 
 const AppHeader = () => {
   const [burgerMenuActive, setBurgerMenuActive] = useState(false);
+  const [activeTab, setActiveTab] = useState<TabsType>(Tabs.Constructor);
+  const navigate = useNavigate();
 
   const handleBurgerMenuClick = () => {
     setBurgerMenuActive(!burgerMenuActive);
+  };
+
+  const handleConstructorClick = () => {
+    setActiveTab(Tabs.Constructor);
+    navigate("/");
+  };
+
+  const handleAccountClick = () => {
+    setActiveTab(Tabs.Account);
+    navigate("/profile");
   };
 
   useEffect(() => {
@@ -27,16 +49,32 @@ const AppHeader = () => {
     <header className={styles.headerWrapper}>
       <nav className={styles.headerContainer}>
         <div className={styles.leftTabs}>
-          <a className={styles.tab} href="#">
-            <BurgerIcon type="primary" />
-            <span className={`${styles.tabTitle} ${styles.tabTitleActive}`}>
+          <Link to="/" className={styles.tab} onClick={handleConstructorClick}>
+            <BurgerIcon
+              type={activeTab === Tabs.Constructor ? "primary" : "secondary"}
+            />
+            <span
+              className={clsx([
+                styles.tabTitle,
+                activeTab === Tabs.Constructor && styles.tabTitleActive,
+              ])}
+            >
               Конструктор
             </span>
-          </a>
-          <a className={styles.tab} href="#">
-            <ListIcon type="secondary" />
-            <span className={styles.tabTitle}>Лента заказов</span>
-          </a>
+          </Link>
+          <Link to="/profile/orders" className={styles.tab}>
+            <ListIcon
+              type={activeTab === Tabs.Orders ? "primary" : "secondary"}
+            />
+            <span
+              className={clsx([
+                styles.tabTitle,
+                activeTab === Tabs.Orders && styles.tabTitleActive,
+              ])}
+            >
+              Лента заказов
+            </span>
+          </Link>
         </div>
         <div className={styles.logoWrapper}>
           <Logo className={styles.logo} />
@@ -47,10 +85,23 @@ const AppHeader = () => {
           />
         </div>
         <div className={styles.rightTabs}>
-          <a className={styles.tab} href="#">
-            <ProfileIcon type="secondary" />
-            <span className={styles.tabTitle}>Личный кабинет</span>
-          </a>
+          <Link
+            to="/profile"
+            className={styles.tab}
+            onClick={handleAccountClick}
+          >
+            <ProfileIcon
+              type={activeTab === Tabs.Account ? "primary" : "secondary"}
+            />
+            <span
+              className={clsx([
+                styles.tabTitle,
+                activeTab === Tabs.Account && styles.tabTitleActive,
+              ])}
+            >
+              Личный кабинет
+            </span>
+          </Link>
           <span
             className={`${styles.burgerMenu} ${
               burgerMenuActive ? styles.active : ""
@@ -69,18 +120,49 @@ const AppHeader = () => {
         }`}
       >
         <li className={styles.headerDropdownItem}>
-          <ProfileIcon type="secondary" />
-          <span className={styles.tabTitle}>Личный кабинет</span>
+          <Link to="/profile" onClick={handleAccountClick}>
+            <ProfileIcon
+              type={activeTab === Tabs.Account ? "primary" : "secondary"}
+            />
+            <span
+              className={clsx([
+                styles.tabTitle,
+                activeTab === Tabs.Account && styles.tabTitleActive,
+              ])}
+            >
+              Личный кабинет
+            </span>
+          </Link>
         </li>
         <li className={styles.headerDropdownItem}>
-          <BurgerIcon type="primary" />
-          <span className={`${styles.tabTitle} ${styles.tabTitleActive}`}>
-            Конструктор
-          </span>
+          <Link to="/" onClick={handleConstructorClick}>
+            <BurgerIcon
+              type={activeTab === Tabs.Constructor ? "primary" : "secondary"}
+            />
+            <span
+              className={clsx([
+                styles.tabTitle,
+                activeTab === Tabs.Constructor && styles.tabTitleActive,
+              ])}
+            >
+              Конструктор
+            </span>
+          </Link>
         </li>
         <li className={styles.headerDropdownItem}>
-          <ListIcon type="secondary" />
-          <span className={styles.tabTitle}>Лента заказов</span>
+          <Link to="/profile/orders">
+            <ListIcon
+              type={activeTab === Tabs.Orders ? "primary" : "secondary"}
+            />
+            <span
+              className={clsx([
+                styles.tabTitle,
+                activeTab === Tabs.Orders && styles.tabTitleActive,
+              ])}
+            >
+              Лента заказов
+            </span>
+          </Link>
         </li>
       </ul>
     </header>

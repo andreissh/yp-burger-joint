@@ -1,3 +1,19 @@
+export type ApiError = {
+  message: string;
+  status: string;
+};
+
+export type AuthError = {
+  message: string;
+  status: number;
+};
+
+export type ApiResponse<T> = {
+  success: boolean;
+  data: T;
+  message?: string;
+};
+
 export type Ingredient = {
   _id: string;
   name: string;
@@ -21,10 +37,8 @@ export type IngredientsTab = {
   type: string;
 };
 
-export type ApiResponse<T> = {
-  success: boolean;
-  data: T;
-  message?: string;
+export type OrderRequest = {
+  ingredients: string[];
 };
 
 export type OrderResponse = {
@@ -33,4 +47,100 @@ export type OrderResponse = {
     number: number;
   };
   success: boolean;
+};
+
+export type ForgotPasswordRequest = {
+  email: string;
+};
+
+export type ForgotPasswordResponse = {
+  success: string;
+  message: string;
+};
+
+export type ResetPasswordRequest = {
+  password: string;
+  token: string;
+};
+
+export type ResetPasswordResponse = {
+  success: string;
+  message: string;
+};
+
+export type RegisterResponse = {
+  success: boolean;
+  user: {
+    email: string;
+    name: string;
+  };
+  accessToken: string;
+  refreshToken: string;
+};
+
+export type RegisterRequest = {
+  email: string;
+  password: string;
+  name: string;
+};
+
+export type LoginRequest = {
+  email: string;
+  password: string;
+};
+
+export type LoginResponse = {
+  success: boolean;
+  user: {
+    email: string;
+    name: string;
+  };
+  accessToken: string;
+  refreshToken: string;
+};
+
+export type LogoutRequest = {
+  token: string;
+};
+
+export type LogoutResponse = {
+  success: string;
+  message: string;
+};
+
+export type TokenRequest = {
+  token: string | null;
+};
+
+export type TokenResponse = {
+  success: boolean;
+  accessToken: string;
+  refreshToken: string;
+};
+
+export type UserInfo = {
+  email: string;
+  name: string;
+};
+
+export type UserInfoResponse = {
+  success: string;
+  user: {
+    email: string;
+    name: string;
+  };
+};
+
+export type UserInfoUpdateRequest = {
+  name: string;
+  login: string;
+  password: string;
+};
+
+export type UserInfoUpdateResponse = {
+  success: string;
+  user: {
+    email: string;
+    name: string;
+  };
 };
