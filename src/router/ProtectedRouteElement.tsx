@@ -17,9 +17,10 @@ const ProtectedRouteElement: React.FC<ProtectedRouteElementProps> = ({
 }) => {
   const { isAuth } = useAppSelector((store) => store.auth);
   const location = useLocation();
+  const { from } = location.state || {};
 
   if (isAuth && onlyUnAuth) {
-    return <Navigate to="/" replace />;
+    return <Navigate to={from || "/"} replace />;
   }
 
   if (!isAuth && onlyAuth) {

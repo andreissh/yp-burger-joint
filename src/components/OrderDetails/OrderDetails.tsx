@@ -11,7 +11,7 @@ const OrderDetails = () => {
   } = useAppSelector((store) => store.ingredientsOrder);
 
   if (loading) {
-    return <div>Загрузка...</div>;
+    return <div className={styles.loader}>Загрузка...</div>;
   }
 
   if (error) {

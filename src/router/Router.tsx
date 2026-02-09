@@ -10,6 +10,7 @@ import AppLayout from "../layout/AppLayout/AppLayout";
 import AuthLayout from "../layout/AuthLayout/AuthLayout";
 import NotFound from "../components/NotFound/NotFound";
 import ProtectedRouteElement from "./ProtectedRouteElement";
+import OrderHistory from "../components/Profile/OrderHistory/OrderHistory";
 
 const Router = () => {
   return (
@@ -23,6 +24,12 @@ const Router = () => {
           <Route
             path="/profile"
             element={<ProtectedRouteElement element={<Profile />} onlyAuth />}
+          ></Route>
+          <Route
+            path="/profile/orders"
+            element={
+              <ProtectedRouteElement element={<OrderHistory />} onlyAuth />
+            }
           ></Route>
           <Route path="ingredients/:id" element={<Constructor />}></Route>
         </Route>

@@ -7,7 +7,7 @@ import {
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import logoMobile from "../../assets/images/logo-mobile.svg";
-import { Link, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import clsx from "clsx";
 
 enum Tabs {
@@ -22,6 +22,7 @@ const AppHeader = () => {
   const [burgerMenuActive, setBurgerMenuActive] = useState(false);
   const [activeTab, setActiveTab] = useState<TabsType>(Tabs.Constructor);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleBurgerMenuClick = () => {
     setBurgerMenuActive(!burgerMenuActive);
@@ -32,10 +33,26 @@ const AppHeader = () => {
     navigate("/");
   };
 
+  const handleOrderHistoryClick = () => {
+    setActiveTab(Tabs.Orders);
+    navigate("/profile/orders");
+  };
+
   const handleAccountClick = () => {
     setActiveTab(Tabs.Account);
     navigate("/profile");
   };
+
+  useEffect(() => {
+    const setInitialActiveTab = () => {
+      const { pathname } = location;
+      if (pathname === "/") setActiveTab(Tabs.Constructor);
+      if (pathname === "/profile") setActiveTab(Tabs.Account);
+      if (pathname === "/profile/orders") setActiveTab(Tabs.Orders);
+    };
+
+    setInitialActiveTab();
+  }, [location]);
 
   useEffect(() => {
     document.body.classList.toggle("no-scroll", burgerMenuActive);
@@ -62,7 +79,11 @@ const AppHeader = () => {
               Конструктор
             </span>
           </Link>
-          <Link to="/profile/orders" className={styles.tab}>
+          <Link
+            to="/profile/orders"
+            className={styles.tab}
+            onClick={handleOrderHistoryClick}
+          >
             <ListIcon
               type={activeTab === Tabs.Orders ? "primary" : "secondary"}
             />
@@ -77,12 +98,14 @@ const AppHeader = () => {
           </Link>
         </div>
         <div className={styles.logoWrapper}>
-          <Logo className={styles.logo} />
-          <img
-            className={styles.logoMobile}
-            src={logoMobile}
-            alt="stellar burger mobile logo"
-          />
+          <Link to="/" onClick={handleConstructorClick}>
+            <Logo className={styles.logo} />
+            <img
+              className={styles.logoMobile}
+              src={logoMobile}
+              alt="stellar burger mobile logo"
+            />
+          </Link>
         </div>
         <div className={styles.rightTabs}>
           <Link

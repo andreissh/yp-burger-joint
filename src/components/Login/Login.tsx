@@ -6,7 +6,7 @@ import {
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useAppDispatch } from "../../services/hooks";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { setLoginState } from "../../services/slices/authSlice";
 import { loginApi } from "../../api/login";
 
@@ -18,6 +18,7 @@ const Login = () => {
   });
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const changeIcon = () => {
     setIsPassIconVisible(!isPassIconVisible);
@@ -28,7 +29,8 @@ const Login = () => {
     try {
       const res = await loginApi(form);
       dispatch(setLoginState(res));
-      navigate("/");
+      const { from } = location.state || { from: "/" };
+      navigate(from, { replace: true });
     } catch (err) {
       console.error(err);
     }
