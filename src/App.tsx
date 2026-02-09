@@ -1,13 +1,12 @@
-import React, { useEffect } from "react";
 import "./App.css";
-import { Provider } from "react-redux";
-import { store } from "./services/store";
+import React, { useEffect } from "react";
 import Router from "./router/Router";
 import { useAppDispatch, useAppSelector } from "./services/hooks";
 import { checkAuth } from "./services/thunks/checkAuthThunk";
 import Loader from "./shared/Loader/Loader";
+import AppHeader from "./components/AppHeader/AppHeader";
 
-const AppContent = () => {
+function App() {
   const dispatch = useAppDispatch();
   const { loading } = useAppSelector((state) => state.auth);
 
@@ -19,16 +18,11 @@ const AppContent = () => {
     }
   }, [dispatch]);
 
-  if (loading) return <Loader />;
-
-  return <Router />;
-};
-
-function App() {
   return (
-    <Provider store={store}>
-      <AppContent />
-    </Provider>
+    <div className="page-wrapper">
+      <AppHeader />
+      <main className="page-content">{loading ? <Loader /> : <Router />}</main>
+    </div>
   );
 }
 

@@ -20,7 +20,7 @@ type TabsType = "constructor" | "orders" | "account";
 
 const AppHeader = () => {
   const [burgerMenuActive, setBurgerMenuActive] = useState(false);
-  const [activeTab, setActiveTab] = useState<TabsType>(Tabs.Constructor);
+  const [activeTab, setActiveTab] = useState<TabsType | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -46,9 +46,15 @@ const AppHeader = () => {
   useEffect(() => {
     const setInitialActiveTab = () => {
       const { pathname } = location;
-      if (pathname === "/") setActiveTab(Tabs.Constructor);
-      if (pathname === "/profile") setActiveTab(Tabs.Account);
-      if (pathname === "/profile/orders") setActiveTab(Tabs.Orders);
+      if (pathname === "/") {
+        setActiveTab(Tabs.Constructor);
+      } else if (pathname === "/profile") {
+        setActiveTab(Tabs.Account);
+      } else if (pathname === "/profile/orders") {
+        setActiveTab(Tabs.Orders);
+      } else {
+        setActiveTab(null);
+      }
     };
 
     setInitialActiveTab();

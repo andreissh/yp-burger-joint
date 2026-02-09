@@ -5,7 +5,7 @@ const Loader = () => {
     <div
       style={{
         display: "flex",
-        minHeight: "100vh",
+        minHeight: "calc(100vh - 89px)",
         justifyContent: "center",
         alignItems: "center",
       }}
