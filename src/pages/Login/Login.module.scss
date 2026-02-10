@@ -32,6 +32,9 @@
 }
 
 .signinBtn {
+  display: flex;
+  align-self: center;
+  width: 128px;
   margin-bottom: 80px;
 }
 
@@ -39,10 +42,11 @@
   margin-bottom: 16px;
 }
 
-.signupLink {
-  color: var(--fg-color-blue);
-}
-
+.signupLink,
 .resetPassLink {
-  color: var(--fg-color-blue);
+  color: var(--fg-color-blue) !important;
+  font-size: 16px !important;
+  line-height: 24px !important;
+  padding: 0 !important;
+  margin-left: 8px !important;
 }
