@@ -5,10 +5,12 @@ import { useAppDispatch, useAppSelector } from "./services/hooks";
 import { checkAuth } from "./services/thunks/checkAuthThunk";
 import Loader from "./shared/Loader/Loader";
 import AppHeader from "./components/AppHeader/AppHeader";
+import { getIngredients } from "./services/thunks/getIngredientsThunk";
+import { setIngredients } from "./services/slices/ingredientsSlice";
 
 function App() {
   const dispatch = useAppDispatch();
-  const { loading } = useAppSelector((state) => state.auth);
+  const { isAuth, loading } = useAppSelector((state) => state.auth);
 
   useEffect(() => {
     try {
@@ -17,6 +19,18 @@ function App() {
       console.error(err);
     }
   }, [dispatch]);
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await dispatch(getIngredients()).unwrap();
+        dispatch(setIngredients(response));
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    getData();
+  }, [dispatch, isAuth]);
 
   return (
     <div className="page-wrapper">

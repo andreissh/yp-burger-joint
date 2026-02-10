@@ -27,7 +27,7 @@ const Login = () => {
   const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await dispatch(login(form));
+      const res = await dispatch(login(form)).unwrap();
       dispatch(setLoginState(res));
       const { from } = location.state || { from: "/" };
       navigate(from, { replace: true });

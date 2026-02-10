@@ -12,12 +12,9 @@ import {
 } from "../../services/slices/ingredientsSelectedSlice";
 import { useParams } from "react-router";
 import IngredientPage from "../IngredientPage/IngredientPage";
-import { setIngredients } from "../../services/slices/ingredientsSlice";
-import { getIngredients } from "../../services/thunks/getIngredientsThunk";
 
 const Constructor = () => {
   const { loading, error } = useAppSelector((state) => state.ingredients);
-  const { isAuth } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
   const { data: ingredientsSelected } = useAppSelector(
     (state) => state.ingredientsSelected,
@@ -50,18 +47,6 @@ const Constructor = () => {
       dispatch(addIngredient(item));
     }
   };
-
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const response = await dispatch(getIngredients()).unwrap();
-        dispatch(setIngredients(response));
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    getData();
-  }, [dispatch, isAuth]);
 
   useEffect(() => {
     ingredientsSelectedRef.current = ingredientsSelected;
