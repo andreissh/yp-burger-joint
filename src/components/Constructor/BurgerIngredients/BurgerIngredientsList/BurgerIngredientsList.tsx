@@ -4,19 +4,19 @@ import {
   Button,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import type { Ingredient, IngredientSelected } from "../../../types/types";
-import Modal from "../../../shared/Modal/Modal";
-import IngredientDetails from "../../../shared/IngredientDetails/IngredientDetails";
-import { useModal } from "../../../hooks/useModal";
 import { useMediaQuery } from "usehooks-ts";
-import { useAppDispatch, useAppSelector } from "../../../services/hooks";
 import { v4 as uuidv4 } from "uuid";
 import DraggableIngredient from "./DraggableIngredient/DraggableIngredient";
-import {
-  addIngredient,
-  removeIngredient,
-} from "../../../services/slices/ingredientCurrentSlice";
 import { useNavigate, useParams } from "react-router";
+import type { Ingredient, IngredientSelected } from "../../../../types/types";
+import { useModal } from "../../../../hooks/useModal";
+import { useAppDispatch, useAppSelector } from "../../../../services/hooks";
+import Modal from "../../../../shared/Modal/Modal";
+import IngredientDetails from "../../../../shared/IngredientDetails/IngredientDetails";
+import {
+  addCurrentIngredient,
+  removeCurrentIngredient,
+} from "../../../../services/slices/ingredientCurrentSlice";
 
 type Props = {
   title: string;
@@ -45,13 +45,13 @@ const BurgerIngredientsList = ({
   const isIngredientModalOpen = localStorage.getItem("isIngredientModalOpen");
 
   const handleIngredientClick = (ingredient: Ingredient) => {
-    dispatch(addIngredient(ingredient));
+    dispatch(addCurrentIngredient(ingredient));
     onIngredientModalToggle("true");
     navigate(`/ingredients/${ingredient._id}`);
   };
 
   const handleCloseModal = () => {
-    dispatch(removeIngredient());
+    dispatch(removeCurrentIngredient());
     onIngredientModalToggle("false");
     navigate("/");
     closeModal();
@@ -71,7 +71,7 @@ const BurgerIngredientsList = ({
         (ingredient) => ingredient._id === params.id,
       );
       if (!ingredient) return;
-      dispatch(addIngredient(ingredient));
+      dispatch(addCurrentIngredient(ingredient));
       openModal();
     }
   }, [dispatch, ingredients, isIngredientModalOpen, openModal, params.id]);

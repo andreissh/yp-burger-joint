@@ -14,16 +14,16 @@ export const ingredientCurrentSlice = createSlice({
   name: "ingredientCurrent",
   initialState,
   reducers: {
-    addIngredient(state, action: PayloadAction<Ingredient>) {
+    addCurrentIngredient(state, action: PayloadAction<Ingredient>) {
       state.data = action.payload;
     },
-    removeIngredient(state) {
+    removeCurrentIngredient(state) {
       state.data = null;
     },
   },
 });
 
-export const { addIngredient, removeIngredient } =
+export const { addCurrentIngredient, removeCurrentIngredient } =
   ingredientCurrentSlice.actions;
 
 export default ingredientCurrentSlice.reducer;

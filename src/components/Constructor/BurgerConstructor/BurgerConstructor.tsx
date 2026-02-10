@@ -5,23 +5,23 @@ import {
   ConstructorElement,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import SortableItem from "./SortableItem/SortableItem";
 import Scrollbars from "rc-scrollbars";
-import Modal from "../../shared/Modal/Modal";
-import OrderDetails from "../OrderDetails/OrderDetails";
-import { useModal } from "../../hooks/useModal";
-import { useAppDispatch, useAppSelector } from "../../services/hooks";
+import Modal from "../../../shared/Modal/Modal";
+import OrderDetails from "./OrderDetails/OrderDetails";
+import { useModal } from "../../../hooks/useModal";
+import { useAppDispatch, useAppSelector } from "../../../services/hooks";
 import {
   removeAllIngredients,
   removeIngredient,
   shuffleIngredients,
-} from "../../services/slices/ingredientsSelectedSlice";
+} from "../../../services/slices/ingredientsSelectedSlice";
 import { useDrop } from "react-dnd";
-import { DND_INGREDIENT } from "../../shared/constants";
+import { DND_INGREDIENT } from "../../../shared/constants";
 import { v4 as uuidv4 } from "uuid";
-import type { Ingredient, IngredientSelected } from "../../types/types";
-import { getIngredientsOrder } from "../../services/thunks/getIngredientsOrderThunk";
+import type { Ingredient, IngredientSelected } from "../../../types/types";
+import { getIngredientsOrder } from "../../../services/thunks/getIngredientsOrderThunk";
 import { useNavigate } from "react-router";
+import SortableItem from "./SortableItem/SortableItem";
 
 type Props = {
   onIngredientsSelectedChange: (arg: IngredientSelected) => void;

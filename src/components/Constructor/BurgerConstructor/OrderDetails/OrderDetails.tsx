@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./OrderDetails.module.scss";
-import orderAccepted from "../../assets/images/order-accepted.svg";
-import { useAppSelector } from "../../services/hooks";
+import orderAccepted from "../../../../assets/images/order-accepted.svg";
+import { useAppSelector } from "../../../../services/hooks";
 
 const OrderDetails = () => {
   const {

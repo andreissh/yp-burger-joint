@@ -1,12 +1,12 @@
 import React from "react";
 import { Route, Routes } from "react-router";
-import Login from "../components/Login/Login";
-import Register from "../components/Register/Register";
-import ForgotPassword from "../components/ForgotPassword/ForgotPassword";
-import ResetPassword from "../components/ResetPassword/ResetPassword";
-import Constructor from "../components/Constructor/Constructor";
-import Profile from "../components/Profile/Profile";
-import NotFound from "../components/NotFound/NotFound";
+import Login from "../pages/Login/Login";
+import Register from "../pages/Register/Register";
+import ForgotPassword from "../pages/ForgotPassword/ForgotPassword";
+import ResetPassword from "../pages/ResetPassword/ResetPassword";
+import Constructor from "../pages/Constructor/Constructor";
+import Profile from "../pages/Profile/Profile";
+import NotFound from "../pages/NotFound/NotFound";
 import ProtectedRouteElement from "./ProtectedRouteElement";
 import OrderHistory from "../components/Profile/OrderHistory/OrderHistory";
 

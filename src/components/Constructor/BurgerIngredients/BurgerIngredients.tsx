@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./BurgerIngredients.module.scss";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
-import BurgerIngredientsList from "./BurgerIngredientsList/BurgerIngredientsList";
 import Scrollbars from "rc-scrollbars";
-import { ingredientsTabs } from "../../utils/utils";
-import type { IngredientSelected } from "../../types/types";
-import { useAppSelector } from "../../services/hooks";
+import { ingredientsTabs } from "../../../utils/utils";
+import type { IngredientSelected } from "../../../types/types";
+import { useAppSelector } from "../../../services/hooks";
+import BurgerIngredientsList from "./BurgerIngredientsList/BurgerIngredientsList";
 
 type Props = {
   onIngredientsSelectedChange: (arg: IngredientSelected) => void;

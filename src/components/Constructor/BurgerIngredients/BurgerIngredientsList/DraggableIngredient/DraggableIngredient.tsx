@@ -1,7 +1,7 @@
 import { useDrag } from "react-dnd";
 import styles from "./DraggableIngredient.module.scss";
-import type { Ingredient } from "../../../../types/types";
-import { DND_INGREDIENT } from "../../../../shared/constants";
+import type { Ingredient } from "../../../../../types/types";
+import { DND_INGREDIENT } from "../../../../../shared/constants";
 
 type Props = {
   ingredient: Ingredient;

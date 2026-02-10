@@ -2,8 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import styles from "./Constructor.module.scss";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
-import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
+import BurgerIngredients from "../../components/Constructor/BurgerIngredients/BurgerIngredients";
+import BurgerConstructor from "../../components/Constructor/BurgerConstructor/BurgerConstructor";
 import { useAppDispatch, useAppSelector } from "../../services/hooks";
 import type { IngredientSelected } from "../../types/types";
 import {

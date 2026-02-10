@@ -1,18 +1,8 @@
 import React from "react";
+import styles from "./Loader.module.scss";
 
 const Loader = () => {
-  return (
-    <div
-      style={{
-        display: "flex",
-        minHeight: "calc(100vh - 89px)",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      Загрузка...
-    </div>
-  );
+  return <div className={styles.loader}>Загрузка...</div>;
 };
 
 export default Loader;
