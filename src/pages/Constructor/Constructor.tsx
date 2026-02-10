@@ -12,8 +12,8 @@ import {
 } from "../../services/slices/ingredientsSelectedSlice";
 import { useParams } from "react-router";
 import IngredientPage from "../IngredientPage/IngredientPage";
-import { getIngredientsApi } from "../../api/getIngredients";
 import { setIngredients } from "../../services/slices/ingredientsSlice";
+import { getIngredients } from "../../services/thunks/getIngredientsThunk";
 
 const Constructor = () => {
   const { loading, error } = useAppSelector((state) => state.ingredients);
@@ -54,8 +54,8 @@ const Constructor = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await getIngredientsApi();
-        dispatch(setIngredients(response.data));
+        const response = await dispatch(getIngredients()).unwrap();
+        dispatch(setIngredients(response));
       } catch (err) {
         console.error(err);
       }

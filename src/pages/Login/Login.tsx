@@ -8,7 +8,7 @@ import {
 import { useAppDispatch } from "../../services/hooks";
 import { useLocation, useNavigate } from "react-router";
 import { setLoginState } from "../../services/slices/authSlice";
-import { loginApi } from "../../api/login";
+import { login } from "../../services/thunks/loginThunk";
 
 const Login = () => {
   const [isPassIconVisible, setIsPassIconVisible] = useState(true);
@@ -27,7 +27,7 @@ const Login = () => {
   const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await loginApi(form);
+      const res = await dispatch(login(form));
       dispatch(setLoginState(res));
       const { from } = location.state || { from: "/" };
       navigate(from, { replace: true });
