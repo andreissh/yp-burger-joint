@@ -9,21 +9,14 @@ import { v4 as uuidv4 } from "uuid";
 import DraggableIngredient from "./DraggableIngredient/DraggableIngredient";
 import { useNavigate, useParams } from "react-router";
 import type { Ingredient, IngredientSelected } from "../../../../types/types";
-import { useModal } from "../../../../hooks/useModal";
 import { useAppDispatch, useAppSelector } from "../../../../services/hooks";
-import Modal from "../../../../shared/Modal/Modal";
-import IngredientDetails from "../../../../shared/IngredientDetails/IngredientDetails";
-import {
-  addCurrentIngredient,
-  removeCurrentIngredient,
-} from "../../../../services/slices/ingredientCurrentSlice";
+import { addCurrentIngredient } from "../../../../services/slices/ingredientCurrentSlice";
 
 type Props = {
   title: string;
   titleStyle?: React.CSSProperties;
   products: Ingredient[];
   onIngredientsSelectedChange: (arg: IngredientSelected) => void;
-  onIngredientModalToggle: (arg: string) => void;
 };
 
 const BurgerIngredientsList = ({
@@ -31,10 +24,8 @@ const BurgerIngredientsList = ({
   titleStyle = {},
   products,
   onIngredientsSelectedChange,
-  onIngredientModalToggle,
 }: Props) => {
   const isMobile = useMediaQuery("(max-width: 640px)");
-  const { isModalOpen, openModal, closeModal } = useModal();
   const { data: ingredients } = useAppSelector((state) => state.ingredients);
   const { data: ingredientsSelected } = useAppSelector(
     (state) => state.ingredientsSelected,
@@ -42,19 +33,12 @@ const BurgerIngredientsList = ({
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const params = useParams();
-  const isIngredientModalOpen = localStorage.getItem("isIngredientModalOpen");
 
   const handleIngredientClick = (ingredient: Ingredient) => {
     dispatch(addCurrentIngredient(ingredient));
-    onIngredientModalToggle("true");
-    navigate(`/ingredients/${ingredient._id}`);
-  };
-
-  const handleCloseModal = () => {
-    dispatch(removeCurrentIngredient());
-    onIngredientModalToggle("false");
-    navigate("/");
-    closeModal();
+    navigate(`/ingredients/${ingredient._id}`, {
+      state: { background: window.location.pathname },
+    });
   };
 
   const handleAddIngredientClick = (e: SyntheticEvent, v: Ingredient) => {
@@ -66,15 +50,14 @@ const BurgerIngredientsList = ({
   };
 
   useEffect(() => {
-    if (params.id && isIngredientModalOpen === "true") {
+    if (params.id) {
       const ingredient = ingredients.find(
         (ingredient) => ingredient._id === params.id,
       );
       if (!ingredient) return;
       dispatch(addCurrentIngredient(ingredient));
-      openModal();
     }
-  }, [dispatch, ingredients, isIngredientModalOpen, openModal, params.id]);
+  }, [dispatch, ingredients, params.id]);
 
   return (
     <>
@@ -127,12 +110,6 @@ const BurgerIngredientsList = ({
           })}
         </ul>
       </div>
-
-      {isModalOpen && (
-        <Modal title="Детали ингредиента" onClose={handleCloseModal}>
-          <IngredientDetails />
-        </Modal>
-      )}
     </>
   );
 };

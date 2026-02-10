@@ -1,16 +1,27 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "./IngredientDetails.module.scss";
 import { useMediaQuery } from "usehooks-ts";
-import { useAppSelector } from "../../services/hooks";
+import { useAppDispatch, useAppSelector } from "../../services/hooks";
+import { useParams } from "react-router";
+import { addCurrentIngredient } from "../../services/slices/ingredientCurrentSlice";
 
 const IngredientDetails = () => {
   const isMobile = useMediaQuery("(max-width: 640px)");
   const isLargeDesktop = useMediaQuery("(min-width: 1280px)");
+  const { data: ingredients } = useAppSelector((store) => store.ingredients);
   const { data: ingredient } = useAppSelector(
     (store) => store.ingredientCurrent,
   );
+  const { id } = useParams();
+  const dispatch = useAppDispatch();
 
-  if (!ingredient) return;
+  useEffect(() => {
+    const ingredient = ingredients.find((ingredient) => ingredient._id === id);
+    if (!ingredient) return;
+    dispatch(addCurrentIngredient(ingredient));
+  }, [dispatch, id, ingredients]);
+
+  if (!ingredient) return null;
 
   const {
     name,

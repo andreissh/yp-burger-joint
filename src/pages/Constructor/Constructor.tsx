@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import styles from "./Constructor.module.scss";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
@@ -10,8 +10,6 @@ import {
   addIngredient,
   removeIngredient,
 } from "../../services/slices/ingredientsSelectedSlice";
-import { useParams } from "react-router";
-import IngredientPage from "../IngredientPage/IngredientPage";
 
 const Constructor = () => {
   const { loading, error } = useAppSelector((state) => state.ingredients);
@@ -20,13 +18,6 @@ const Constructor = () => {
     (state) => state.ingredientsSelected,
   );
   const ingredientsSelectedRef = useRef(ingredientsSelected);
-  const [isIngredientModalOpen, setIsIngredientModalOpen] = useState(
-    localStorage.getItem("isIngredientModalOpen"),
-  );
-  const params = useParams();
-
-  const handleIngredientModalToggle = (value: string) =>
-    setIsIngredientModalOpen(value);
 
   const handleIngredientsSelectedChange = (item: IngredientSelected) => {
     const currentOrder = ingredientsSelectedRef.current;
@@ -52,11 +43,6 @@ const Constructor = () => {
     ingredientsSelectedRef.current = ingredientsSelected;
   }, [ingredientsSelected]);
 
-  useEffect(() => {
-    if (!isIngredientModalOpen) return;
-    localStorage.setItem("isIngredientModalOpen", isIngredientModalOpen);
-  }, [isIngredientModalOpen]);
-
   if (loading) {
     return <div className={styles.loader}>Загрузка ингредиентов...</div>;
   }
@@ -69,15 +55,10 @@ const Constructor = () => {
     );
   }
 
-  if (params.id && isIngredientModalOpen !== "true") {
-    return <IngredientPage />;
-  }
-
   return (
     <DndProvider backend={HTML5Backend}>
       <BurgerIngredients
         onIngredientsSelectedChange={handleIngredientsSelectedChange}
-        onIngredientModalToggle={handleIngredientModalToggle}
       />
       <BurgerConstructor
         onIngredientsSelectedChange={handleIngredientsSelectedChange}

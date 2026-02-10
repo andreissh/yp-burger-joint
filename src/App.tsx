@@ -10,7 +10,12 @@ import { setIngredients } from "./services/slices/ingredientsSlice";
 
 function App() {
   const dispatch = useAppDispatch();
-  const { isAuth, loading } = useAppSelector((state) => state.auth);
+  const { isAuth, loading: loadingAuth } = useAppSelector(
+    (state) => state.auth,
+  );
+  const { loading: loadingIngredients } = useAppSelector(
+    (state) => state.ingredients,
+  );
 
   useEffect(() => {
     try {
@@ -35,7 +40,9 @@ function App() {
   return (
     <div className="page-wrapper">
       <AppHeader />
-      <main className="page-content">{loading ? <Loader /> : <Router />}</main>
+      <main className="page-content">
+        {loadingAuth || loadingIngredients ? <Loader /> : <Router />}
+      </main>
     </div>
   );
 }

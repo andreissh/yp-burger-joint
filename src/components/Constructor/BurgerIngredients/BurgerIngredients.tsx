@@ -9,13 +9,9 @@ import BurgerIngredientsList from "./BurgerIngredientsList/BurgerIngredientsList
 
 type Props = {
   onIngredientsSelectedChange: (arg: IngredientSelected) => void;
-  onIngredientModalToggle: (arg: string) => void;
 };
 
-const BurgerIngredients = ({
-  onIngredientsSelectedChange,
-  onIngredientModalToggle,
-}: Props) => {
+const BurgerIngredients = ({ onIngredientsSelectedChange }: Props) => {
   const [activeTab, setActiveTab] = useState(1);
   const { data: ingredients } = useAppSelector((state) => state.ingredients);
   const sections = ingredientsTabs.map((tab) => ({
@@ -116,7 +112,6 @@ const BurgerIngredients = ({
                   titleStyle={section.type === "bun" ? { marginTop: 0 } : {}}
                   products={section.products}
                   onIngredientsSelectedChange={onIngredientsSelectedChange}
-                  onIngredientModalToggle={onIngredientModalToggle}
                 />
               </div>
             );
