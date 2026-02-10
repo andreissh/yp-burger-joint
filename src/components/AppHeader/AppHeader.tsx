@@ -7,58 +7,28 @@ import {
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import logoMobile from "../../assets/images/logo-mobile.svg";
-import { Link, useLocation, useNavigate } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 import clsx from "clsx";
-
-enum Tabs {
-  Constructor = "constructor",
-  Orders = "orders",
-  Account = "account",
-}
-
-type TabsType = "constructor" | "orders" | "account";
 
 const AppHeader = () => {
   const [burgerMenuActive, setBurgerMenuActive] = useState(false);
-  const [activeTab, setActiveTab] = useState<TabsType | null>(null);
   const navigate = useNavigate();
-  const location = useLocation();
 
   const handleBurgerMenuClick = () => {
     setBurgerMenuActive(!burgerMenuActive);
   };
 
   const handleConstructorClick = () => {
-    setActiveTab(Tabs.Constructor);
     navigate("/");
   };
 
   const handleOrderHistoryClick = () => {
-    setActiveTab(Tabs.Orders);
     navigate("/profile/orders");
   };
 
   const handleAccountClick = () => {
-    setActiveTab(Tabs.Account);
     navigate("/profile");
   };
-
-  useEffect(() => {
-    const setInitialActiveTab = () => {
-      const { pathname } = location;
-      if (pathname === "/") {
-        setActiveTab(Tabs.Constructor);
-      } else if (pathname === "/profile") {
-        setActiveTab(Tabs.Account);
-      } else if (pathname === "/profile/orders") {
-        setActiveTab(Tabs.Orders);
-      } else {
-        setActiveTab(null);
-      }
-    };
-
-    setInitialActiveTab();
-  }, [location]);
 
   useEffect(() => {
     document.body.classList.toggle("no-scroll", burgerMenuActive);
@@ -72,65 +42,61 @@ const AppHeader = () => {
     <header className={styles.headerWrapper}>
       <nav className={styles.headerContainer}>
         <div className={styles.leftTabs}>
-          <Link to="/" className={styles.tab} onClick={handleConstructorClick}>
-            <BurgerIcon
-              type={activeTab === Tabs.Constructor ? "primary" : "secondary"}
-            />
-            <span
-              className={clsx([
-                styles.tabTitle,
-                activeTab === Tabs.Constructor && styles.tabTitleActive,
-              ])}
-            >
-              Конструктор
-            </span>
-          </Link>
-          <Link
+          <NavLink
+            to="/"
+            className={({ isActive }) =>
+              `${clsx([styles.tab, isActive ? styles.tabTitleActive : styles.tabTitle])}`
+            }
+            onClick={handleConstructorClick}
+          >
+            {({ isActive }) => (
+              <>
+                <BurgerIcon type={isActive ? "primary" : "secondary"} />
+                Конструктор
+              </>
+            )}
+          </NavLink>
+          <NavLink
             to="/profile/orders"
-            className={styles.tab}
+            className={({ isActive }) =>
+              `${clsx([styles.tab, isActive ? styles.tabTitleActive : styles.tabTitle])}`
+            }
             onClick={handleOrderHistoryClick}
           >
-            <ListIcon
-              type={activeTab === Tabs.Orders ? "primary" : "secondary"}
-            />
-            <span
-              className={clsx([
-                styles.tabTitle,
-                activeTab === Tabs.Orders && styles.tabTitleActive,
-              ])}
-            >
-              Лента заказов
-            </span>
-          </Link>
+            {({ isActive }) => (
+              <>
+                <ListIcon type={isActive ? "primary" : "secondary"} />
+                Лента заказов
+              </>
+            )}
+          </NavLink>
         </div>
         <div className={styles.logoWrapper}>
-          <Link to="/" onClick={handleConstructorClick}>
+          <NavLink to="/" onClick={handleConstructorClick}>
             <Logo className={styles.logo} />
             <img
               className={styles.logoMobile}
               src={logoMobile}
               alt="stellar burger mobile logo"
             />
-          </Link>
+          </NavLink>
         </div>
         <div className={styles.rightTabs}>
-          <Link
+          <NavLink
             to="/profile"
-            className={styles.tab}
+            className={({ isActive }) =>
+              `${clsx([styles.tab, isActive ? styles.tabTitleActive : styles.tabTitle])}`
+            }
             onClick={handleAccountClick}
+            end
           >
-            <ProfileIcon
-              type={activeTab === Tabs.Account ? "primary" : "secondary"}
-            />
-            <span
-              className={clsx([
-                styles.tabTitle,
-                activeTab === Tabs.Account && styles.tabTitleActive,
-              ])}
-            >
-              Личный кабинет
-            </span>
-          </Link>
+            {({ isActive }) => (
+              <>
+                <ProfileIcon type={isActive ? "primary" : "secondary"} />
+                Личный кабинет
+              </>
+            )}
+          </NavLink>
           <span
             className={`${styles.burgerMenu} ${
               burgerMenuActive ? styles.active : ""
@@ -144,54 +110,58 @@ const AppHeader = () => {
         </div>
       </nav>
       <ul
-        className={`${styles.headerDropdownList} ${
-          burgerMenuActive ? styles.active : ""
-        }`}
+        className={clsx([
+          styles.headerDropdownList,
+          burgerMenuActive ? styles.active : "",
+        ])}
       >
         <li className={styles.headerDropdownItem}>
-          <Link to="/profile" onClick={handleAccountClick}>
-            <ProfileIcon
-              type={activeTab === Tabs.Account ? "primary" : "secondary"}
-            />
-            <span
-              className={clsx([
-                styles.tabTitle,
-                activeTab === Tabs.Account && styles.tabTitleActive,
-              ])}
-            >
-              Личный кабинет
-            </span>
-          </Link>
+          <NavLink
+            to="/profile"
+            className={({ isActive }) =>
+              `${clsx([styles.tabMobile, isActive ? styles.tabTitleActive : styles.tabTitle])}`
+            }
+            onClick={handleAccountClick}
+            end
+          >
+            {({ isActive }) => (
+              <>
+                <ProfileIcon type={isActive ? "primary" : "secondary"} />
+                Личный кабинет
+              </>
+            )}
+          </NavLink>
         </li>
         <li className={styles.headerDropdownItem}>
-          <Link to="/" onClick={handleConstructorClick}>
-            <BurgerIcon
-              type={activeTab === Tabs.Constructor ? "primary" : "secondary"}
-            />
-            <span
-              className={clsx([
-                styles.tabTitle,
-                activeTab === Tabs.Constructor && styles.tabTitleActive,
-              ])}
-            >
-              Конструктор
-            </span>
-          </Link>
+          <NavLink
+            to="/"
+            className={({ isActive }) =>
+              `${clsx([styles.tabMobile, isActive ? styles.tabTitleActive : styles.tabTitle])}`
+            }
+            onClick={handleConstructorClick}
+          >
+            {({ isActive }) => (
+              <>
+                <BurgerIcon type={isActive ? "primary" : "secondary"} />
+                Конструктор
+              </>
+            )}
+          </NavLink>
         </li>
         <li className={styles.headerDropdownItem}>
-          <Link to="/profile/orders">
-            <ListIcon
-              type={activeTab === Tabs.Orders ? "primary" : "secondary"}
-            />
-            <span
-              className={clsx([
-                styles.tabTitle,
-                activeTab === Tabs.Orders && styles.tabTitleActive,
-              ])}
-            >
-              Лента заказов
-            </span>
-          </Link>
+          <NavLink
+            to="/profile/orders"
+            className={({ isActive }) =>
+              `${clsx([styles.tabMobile, isActive ? styles.tabTitleActive : styles.tabTitle])}`
+            }
+          >
+            {({ isActive }) => (
+              <>
+                <ListIcon type={isActive ? "primary" : "secondary"} />
+                Лента заказов
+              </>
+            )}
+          </NavLink>
         </li>
       </ul>
     </header>
