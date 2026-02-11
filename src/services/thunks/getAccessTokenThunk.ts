@@ -4,8 +4,5 @@ import { getAccessTokenApi } from "../../api/getAccessToken";
 
 export const getAccessToken = createAsyncThunk<TokenResponse, TokenRequest>(
   "auth/token",
-  async (token) => {
-    const response = await getAccessTokenApi(token);
-    return response;
-  },
+  getAccessTokenApi,
 );

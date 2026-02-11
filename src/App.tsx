@@ -16,6 +16,11 @@ function App() {
   const { loading: loadingIngredients } = useAppSelector(
     (state) => state.ingredients,
   );
+  const { loading: ingredientsOrderLoading } = useAppSelector(
+    (state) => state.ingredientsOrder,
+  );
+  const isLoading =
+    loadingAuth || loadingIngredients || ingredientsOrderLoading;
 
   useEffect(() => {
     try {
@@ -41,7 +46,7 @@ function App() {
     <div className="page-wrapper">
       <AppHeader />
       <main className="page-content">
-        {loadingAuth || loadingIngredients ? <Loader /> : <Router />}
+        {isLoading ? <Loader /> : <Router />}
       </main>
     </div>
   );

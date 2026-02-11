@@ -5,7 +5,4 @@ import { getIngredientsOrderApi } from "../../api/getIngredientsOrder";
 export const getIngredientsOrder = createAsyncThunk<
   OrderResponse,
   OrderRequest
->("ingredientsOrder/getOrder", async (orderIds) => {
-  const response = await getIngredientsOrderApi(orderIds);
-  return response;
-});
+>("ingredientsOrder/getOrder", getIngredientsOrderApi);

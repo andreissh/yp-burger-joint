@@ -79,11 +79,7 @@ const BurgerConstructor = ({ onIngredientsSelectedChange }: Props) => {
     };
 
     try {
-      const res = await dispatch(getIngredientsOrder(ingredientsSelectedIds));
-      if (getIngredientsOrder.rejected.match(res)) {
-        console.error("Error: ", res.error);
-        return;
-      }
+      await dispatch(getIngredientsOrder(ingredientsSelectedIds));
       dispatch(removeAllIngredients());
       openModal();
     } catch (err) {
