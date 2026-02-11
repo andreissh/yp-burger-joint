@@ -43,3 +43,9 @@
 .profileFormField:not(:last-child) {
   margin-bottom: 24px;
 }
+
+.buttonsBlock {
+  display: flex;
+  justify-content: end;
+  gap: 8px;
+}

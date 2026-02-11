@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import styles from "./Profile.module.scss";
-import { Input } from "@ya.praktikum/react-developer-burger-ui-components";
+import {
+  Button,
+  Input,
+} from "@ya.praktikum/react-developer-burger-ui-components";
 import { useAppDispatch, useAppSelector } from "../../services/hooks";
 import { updateUserInfo } from "../../services/thunks/updateUserInfoThunk";
 import { Link } from "react-router";
@@ -17,15 +20,16 @@ const Profile = () => {
     login: user?.email ?? "",
     password: "",
   });
+  const [isFormChanged, setIsFormChanged] = useState(false);
 
-  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, name: e.target.value });
-  };
-  const handleLoginChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, login: e.target.value });
-  };
-  const handlePassChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, password: e.target.value });
+  const handleFormFieldChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    key: string,
+  ) => {
+    setForm({ ...form, [key]: e.target.value });
+    if (!isFormChanged) {
+      setIsFormChanged(true);
+    }
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -41,6 +45,29 @@ const Profile = () => {
     try {
       dispatch(logout());
       dispatch(setLogoutState());
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const resetFormState = () => {
+    setForm({
+      name: user?.name ?? "",
+      login: user?.email ?? "",
+      password: "",
+    });
+    setIsFormChanged(false);
+  };
+
+  const handleCancelClick = () => {
+    resetFormState();
+  };
+
+  const handleSaveClick = async () => {
+    try {
+      await dispatch(updateUserInfo(form));
+      await dispatch(getUserInfo());
+      resetFormState();
     } catch (err) {
       console.error(err);
     }
@@ -110,7 +137,7 @@ const Profile = () => {
             placeholder="Имя"
             type="text"
             value={form.name}
-            onChange={handleNameChange}
+            onChange={(e) => handleFormFieldChange(e, "name")}
             onPointerEnterCapture={console.log}
             onPointerLeaveCapture={console.log}
           />
@@ -121,7 +148,7 @@ const Profile = () => {
             placeholder="Логин"
             type="text"
             value={form.login}
-            onChange={handleLoginChange}
+            onChange={(e) => handleFormFieldChange(e, "login")}
             onPointerEnterCapture={console.log}
             onPointerLeaveCapture={console.log}
           />
@@ -132,10 +159,32 @@ const Profile = () => {
             placeholder="Пароль"
             type="text"
             value={form.password}
-            onChange={handlePassChange}
+            onChange={(e) => handleFormFieldChange(e, "password")}
             onPointerEnterCapture={console.log}
             onPointerLeaveCapture={console.log}
           />
+
+          <div
+            className={styles.buttonsBlock}
+            style={{ display: isFormChanged ? "flex" : "none" }}
+          >
+            <Button
+              htmlType="button"
+              type="primary"
+              size="medium"
+              onClick={handleCancelClick}
+            >
+              Отмена
+            </Button>
+            <Button
+              htmlType="submit"
+              type="primary"
+              size="medium"
+              onClick={handleSaveClick}
+            >
+              Сохранить
+            </Button>
+          </div>
         </form>
       </div>
     </div>
