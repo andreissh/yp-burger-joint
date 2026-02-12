@@ -1,5 +1,11 @@
-.loader {
-  min-height: calc(100vh - 89px);
+.loaderWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 720px;
+  max-width: 90%;
+  min-height: 600px;
+  max-height: 90vh;
 }
 
 .orderContainer {

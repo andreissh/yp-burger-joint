@@ -39,6 +39,7 @@ const BurgerConstructor = ({ onIngredientsSelectedChange }: Props) => {
   const constructorIngredients = ingredientsSelected.filter(
     (item) => item.type !== "bun",
   );
+  const { loading } = useAppSelector((store) => store.ingredientsOrder);
   const totalCost = ingredientsSelected.reduce((a, c) => a + c.price, 0);
   const selectedRef = useRef(ingredientsSelected);
   const { isAuth } = useAppSelector((state) => state.auth);
@@ -79,9 +80,9 @@ const BurgerConstructor = ({ onIngredientsSelectedChange }: Props) => {
     };
 
     try {
+      openModal();
       await dispatch(getIngredientsOrder(ingredientsSelectedIds));
       dispatch(removeAllIngredients());
-      openModal();
     } catch (err) {
       console.error(err);
     }
@@ -166,7 +167,7 @@ const BurgerConstructor = ({ onIngredientsSelectedChange }: Props) => {
       </div>
 
       {isModalOpen && (
-        <Modal onClose={closeModal}>
+        <Modal onClose={closeModal} loading={loading}>
           <OrderDetails />
         </Modal>
       )}

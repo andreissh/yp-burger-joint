@@ -3,31 +3,28 @@ import React, { useEffect } from "react";
 import Router from "./router/Router";
 import { useAppDispatch, useAppSelector } from "./services/hooks";
 import { checkAuth } from "./services/thunks/checkAuthThunk";
-import Loader from "./shared/Loader/Loader";
 import AppHeader from "./components/AppHeader/AppHeader";
 import { getIngredients } from "./services/thunks/getIngredientsThunk";
 import { setIngredients } from "./services/slices/ingredientsSlice";
+import { PacmanLoader } from "react-spinners";
 
 function App() {
   const dispatch = useAppDispatch();
-  const { isAuth, loading: loadingAuth } = useAppSelector(
-    (state) => state.auth,
-  );
+  const { loading: loadingAuth } = useAppSelector((state) => state.auth);
   const { loading: loadingIngredients } = useAppSelector(
     (state) => state.ingredients,
   );
-  const { loading: ingredientsOrderLoading } = useAppSelector(
-    (state) => state.ingredientsOrder,
-  );
-  const isLoading =
-    loadingAuth || loadingIngredients || ingredientsOrderLoading;
+  const isLoading = loadingAuth || loadingIngredients;
 
   useEffect(() => {
-    try {
-      dispatch(checkAuth());
-    } catch (err) {
-      console.error(err);
-    }
+    const getData = async () => {
+      try {
+        await dispatch(checkAuth());
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    getData();
   }, [dispatch]);
 
   useEffect(() => {
@@ -40,13 +37,19 @@ function App() {
       }
     };
     getData();
-  }, [dispatch, isAuth]);
+  }, [dispatch]);
 
   return (
     <div className="page-wrapper">
       <AppHeader />
       <main className="page-content">
-        {isLoading ? <Loader /> : <Router />}
+        {isLoading ? (
+          <div className="loaderWrapper">
+            <PacmanLoader color="var(--bg-color-white)" size={50} />
+          </div>
+        ) : (
+          <Router />
+        )}
       </main>
     </div>
   );

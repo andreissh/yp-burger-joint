@@ -7,14 +7,14 @@ import {
 import { useAppDispatch, useAppSelector } from "../../services/hooks";
 import { updateUserInfo } from "../../services/thunks/updateUserInfoThunk";
 import { Link } from "react-router";
-import { setLogoutState, setUserInfo } from "../../services/slices/authSlice";
+import { setLogoutState } from "../../services/slices/authSlice";
 import { logout } from "../../services/thunks/logoutThunk";
 import { getUserInfo } from "../../services/thunks/getUserInfoThunk";
-import Loader from "../../shared/Loader/Loader";
+import { PacmanLoader } from "react-spinners";
 
 const Profile = () => {
   const dispatch = useAppDispatch();
-  const { user } = useAppSelector((state) => state.auth);
+  const { user, loading } = useAppSelector((state) => state.profile);
   const [form, setForm] = useState({
     name: user?.name ?? "",
     login: user?.email ?? "",
@@ -37,8 +37,7 @@ const Profile = () => {
     try {
       await dispatch(updateUserInfo(form));
       const userInfo = await dispatch(getUserInfo()).unwrap();
-      dispatch(setUserInfo(userInfo));
-      resetFormState();
+      resetFormState(userInfo);
     } catch (err) {
       console.error(err);
     }
@@ -53,10 +52,10 @@ const Profile = () => {
     }
   };
 
-  const resetFormState = () => {
+  const resetFormState = (userInfo = user) => {
     setForm({
-      name: user?.name ?? "",
-      login: user?.email ?? "",
+      name: userInfo?.name ?? "",
+      login: userInfo?.email ?? "",
       password: "",
     });
     setIsFormChanged(false);
@@ -69,8 +68,7 @@ const Profile = () => {
   useEffect(() => {
     const getUserData = async () => {
       try {
-        const userInfo = await dispatch(getUserInfo()).unwrap();
-        dispatch(setUserInfo(userInfo));
+        await dispatch(getUserInfo());
       } catch (err) {
         console.error(err);
       }
@@ -88,7 +86,12 @@ const Profile = () => {
     });
   }, [user]);
 
-  if (!user) return <Loader />;
+  if (loading)
+    return (
+      <div className={styles.loaderWrapper}>
+        <PacmanLoader color="var(--bg-color-white)" size={50} />
+      </div>
+    );
 
   return (
     <div className={styles.wrapper}>

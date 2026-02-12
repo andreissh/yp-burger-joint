@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./OrderDetails.module.scss";
 import orderAccepted from "../../../../assets/images/order-accepted.svg";
 import { useAppSelector } from "../../../../services/hooks";
+import { PacmanLoader } from "react-spinners";
 
 const OrderDetails = () => {
   const {
@@ -11,7 +12,11 @@ const OrderDetails = () => {
   } = useAppSelector((store) => store.ingredientsOrder);
 
   if (loading) {
-    return <div className={styles.loader}>Загрузка...</div>;
+    return (
+      <div className={styles.loaderWrapper}>
+        <PacmanLoader color="var(--bg-color-white)" size={50} />
+      </div>
+    );
   }
 
   if (error) {

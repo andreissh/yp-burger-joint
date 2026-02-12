@@ -8,9 +8,10 @@ type Props = {
   title?: string;
   children: React.ReactNode;
   onClose: () => void;
+  loading: boolean;
 };
 
-const Modal = ({ title, children, onClose }: Props) => {
+const Modal = ({ title, children, onClose, loading }: Props) => {
   const modalRoot = document.getElementById("modal-root");
 
   if (!modalRoot) {
@@ -28,6 +29,8 @@ const Modal = ({ title, children, onClose }: Props) => {
   }, []);
 
   useEffect(() => {
+    if (loading) return;
+
     const handleEscKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         onClose();
@@ -39,17 +42,19 @@ const Modal = ({ title, children, onClose }: Props) => {
     return () => {
       document.removeEventListener("keydown", handleEscKey);
     };
-  }, [onClose]);
+  }, [loading, onClose]);
 
   const modalContent = (
-    <ModalOverlay onClick={onClose}>
+    <ModalOverlay onClick={loading ? undefined : onClose}>
       <div className={styles.modalWrapper}>
         <div className={styles.modalContainer}>
           <div className={styles.modalHeader}>
             {title && <h2 className={styles.title}>{title}</h2>}
-            <span className={styles.closeIcon}>
-              <CloseIcon type="primary" onClick={onClose} />
-            </span>
+            {!loading && (
+              <span className={styles.closeIcon}>
+                <CloseIcon type="primary" onClick={onClose} />
+              </span>
+            )}
           </div>
           <div className={styles.modalBody}>{children}</div>
         </div>
@@ -59,7 +64,7 @@ const Modal = ({ title, children, onClose }: Props) => {
 
   return ReactDOM.createPortal(
     modalContent,
-    document.getElementById("modal-root")!
+    document.getElementById("modal-root")!,
   );
 };
 
