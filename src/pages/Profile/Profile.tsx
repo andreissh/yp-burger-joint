@@ -32,10 +32,13 @@ const Profile = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      dispatch(updateUserInfo(form));
+      await dispatch(updateUserInfo(form));
+      const userInfo = await dispatch(getUserInfo()).unwrap();
+      dispatch(setUserInfo(userInfo));
+      resetFormState();
     } catch (err) {
       console.error(err);
     }
@@ -61,16 +64,6 @@ const Profile = () => {
 
   const handleCancelClick = () => {
     resetFormState();
-  };
-
-  const handleSaveClick = async () => {
-    try {
-      await dispatch(updateUserInfo(form));
-      await dispatch(getUserInfo());
-      resetFormState();
-    } catch (err) {
-      console.error(err);
-    }
   };
 
   useEffect(() => {
@@ -176,12 +169,7 @@ const Profile = () => {
             >
               Отмена
             </Button>
-            <Button
-              htmlType="submit"
-              type="primary"
-              size="medium"
-              onClick={handleSaveClick}
-            >
+            <Button htmlType="submit" type="primary" size="medium">
               Сохранить
             </Button>
           </div>
