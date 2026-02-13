@@ -58,6 +58,11 @@
   }
 }
 
+.tabMobile {
+  display: flex;
+  gap: 8px;
+}
+
 .tabTitle {
   color: var(--fg-color-secondary);
 }
@@ -104,7 +109,9 @@
     width: 18px;
     height: 2px;
     border-radius: 10px;
-    transition: transform 0.3s ease, opacity 0.3s ease;
+    transition:
+      transform 0.3s ease,
+      opacity 0.3s ease;
   }
 
   .burgerMenuMiddle {
@@ -130,6 +137,7 @@
   .headerDropdownList {
     &.active {
       display: block;
+      margin-bottom: 16px;
     }
   }
 }

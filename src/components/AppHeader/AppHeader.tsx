@@ -7,12 +7,27 @@ import {
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import logoMobile from "../../assets/images/logo-mobile.svg";
+import { NavLink, useNavigate } from "react-router";
+import clsx from "clsx";
 
 const AppHeader = () => {
   const [burgerMenuActive, setBurgerMenuActive] = useState(false);
+  const navigate = useNavigate();
 
   const handleBurgerMenuClick = () => {
     setBurgerMenuActive(!burgerMenuActive);
+  };
+
+  const handleConstructorClick = () => {
+    navigate("/");
+  };
+
+  const handleOrderHistoryClick = () => {
+    navigate("/profile/orders");
+  };
+
+  const handleAccountClick = () => {
+    navigate("/profile");
   };
 
   useEffect(() => {
@@ -27,30 +42,61 @@ const AppHeader = () => {
     <header className={styles.headerWrapper}>
       <nav className={styles.headerContainer}>
         <div className={styles.leftTabs}>
-          <a className={styles.tab} href="#">
-            <BurgerIcon type="primary" />
-            <span className={`${styles.tabTitle} ${styles.tabTitleActive}`}>
-              Конструктор
-            </span>
-          </a>
-          <a className={styles.tab} href="#">
-            <ListIcon type="secondary" />
-            <span className={styles.tabTitle}>Лента заказов</span>
-          </a>
+          <NavLink
+            to="/"
+            className={({ isActive }) =>
+              `${clsx([styles.tab, isActive ? styles.tabTitleActive : styles.tabTitle])}`
+            }
+            onClick={handleConstructorClick}
+          >
+            {({ isActive }) => (
+              <>
+                <BurgerIcon type={isActive ? "primary" : "secondary"} />
+                Конструктор
+              </>
+            )}
+          </NavLink>
+          <NavLink
+            to="/profile/orders"
+            className={({ isActive }) =>
+              `${clsx([styles.tab, isActive ? styles.tabTitleActive : styles.tabTitle])}`
+            }
+            onClick={handleOrderHistoryClick}
+          >
+            {({ isActive }) => (
+              <>
+                <ListIcon type={isActive ? "primary" : "secondary"} />
+                Лента заказов
+              </>
+            )}
+          </NavLink>
         </div>
         <div className={styles.logoWrapper}>
-          <Logo className={styles.logo} />
-          <img
-            className={styles.logoMobile}
-            src={logoMobile}
-            alt="stellar burger mobile logo"
-          />
+          <NavLink to="/" onClick={handleConstructorClick}>
+            <Logo className={styles.logo} />
+            <img
+              className={styles.logoMobile}
+              src={logoMobile}
+              alt="stellar burger mobile logo"
+            />
+          </NavLink>
         </div>
         <div className={styles.rightTabs}>
-          <a className={styles.tab} href="#">
-            <ProfileIcon type="secondary" />
-            <span className={styles.tabTitle}>Личный кабинет</span>
-          </a>
+          <NavLink
+            to="/profile"
+            className={({ isActive }) =>
+              `${clsx([styles.tab, isActive ? styles.tabTitleActive : styles.tabTitle])}`
+            }
+            onClick={handleAccountClick}
+            end
+          >
+            {({ isActive }) => (
+              <>
+                <ProfileIcon type={isActive ? "primary" : "secondary"} />
+                Личный кабинет
+              </>
+            )}
+          </NavLink>
           <span
             className={`${styles.burgerMenu} ${
               burgerMenuActive ? styles.active : ""
@@ -64,23 +110,58 @@ const AppHeader = () => {
         </div>
       </nav>
       <ul
-        className={`${styles.headerDropdownList} ${
-          burgerMenuActive ? styles.active : ""
-        }`}
+        className={clsx([
+          styles.headerDropdownList,
+          burgerMenuActive ? styles.active : "",
+        ])}
       >
         <li className={styles.headerDropdownItem}>
-          <ProfileIcon type="secondary" />
-          <span className={styles.tabTitle}>Личный кабинет</span>
+          <NavLink
+            to="/profile"
+            className={({ isActive }) =>
+              `${clsx([styles.tabMobile, isActive ? styles.tabTitleActive : styles.tabTitle])}`
+            }
+            onClick={handleAccountClick}
+            end
+          >
+            {({ isActive }) => (
+              <>
+                <ProfileIcon type={isActive ? "primary" : "secondary"} />
+                Личный кабинет
+              </>
+            )}
+          </NavLink>
         </li>
         <li className={styles.headerDropdownItem}>
-          <BurgerIcon type="primary" />
-          <span className={`${styles.tabTitle} ${styles.tabTitleActive}`}>
-            Конструктор
-          </span>
+          <NavLink
+            to="/"
+            className={({ isActive }) =>
+              `${clsx([styles.tabMobile, isActive ? styles.tabTitleActive : styles.tabTitle])}`
+            }
+            onClick={handleConstructorClick}
+          >
+            {({ isActive }) => (
+              <>
+                <BurgerIcon type={isActive ? "primary" : "secondary"} />
+                Конструктор
+              </>
+            )}
+          </NavLink>
         </li>
         <li className={styles.headerDropdownItem}>
-          <ListIcon type="secondary" />
-          <span className={styles.tabTitle}>Лента заказов</span>
+          <NavLink
+            to="/profile/orders"
+            className={({ isActive }) =>
+              `${clsx([styles.tabMobile, isActive ? styles.tabTitleActive : styles.tabTitle])}`
+            }
+          >
+            {({ isActive }) => (
+              <>
+                <ListIcon type={isActive ? "primary" : "secondary"} />
+                Лента заказов
+              </>
+            )}
+          </NavLink>
         </li>
       </ul>
     </header>

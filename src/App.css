@@ -21,6 +21,13 @@
   overflow: hidden;
 }
 
+.loaderWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 89px);
+}
+
 .iceland-regular {
   font-family: "Iceland", sans-serif;
   font-weight: 400;
@@ -43,12 +50,4 @@
 .rc-scrollbars-thumb-v {
   background-color: var(--bg-color-secondary) !important;
   border-radius: 0 !important;
-}
-
-.loader,
-.load-error {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
 }

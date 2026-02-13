@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { OrderResponse } from "../../types/types";
-import { fetchIngredientsOrder } from "../middlewares/ingredientsOrderMiddleware";
+import { getIngredientsOrder } from "../thunks/getIngredientsOrderThunk";
 
 type IngredientsOrderState = {
   data: OrderResponse | null;
@@ -20,15 +20,15 @@ export const ingredientsOrderSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchIngredientsOrder.pending, (state) => {
+      .addCase(getIngredientsOrder.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchIngredientsOrder.fulfilled, (state, action) => {
+      .addCase(getIngredientsOrder.fulfilled, (state, action) => {
         state.loading = false;
         state.data = action.payload;
       })
-      .addCase(fetchIngredientsOrder.rejected, (state, action) => {
+      .addCase(getIngredientsOrder.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message ?? "Unknown error";
       });

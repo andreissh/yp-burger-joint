@@ -1,0 +1,73 @@
+import React, { useState } from "react";
+import styles from "./ForgotPassword.module.scss";
+import {
+  Button,
+  EmailInput,
+} from "@ya.praktikum/react-developer-burger-ui-components";
+import { useNavigate } from "react-router";
+import { forgotPassword } from "../../services/thunks/forgotPasswordThunk";
+import { useAppDispatch } from "../../services/hooks";
+
+const ForgotPassword = () => {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const [email, setEmail] = useState("");
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+  };
+
+  const handleRecoverSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await dispatch(forgotPassword({ email })).unwrap();
+      navigate("/reset-password", { state: { fromForgotPassword: true } });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleLoginClick = () => {
+    navigate("/login");
+  };
+
+  return (
+    <div className={styles.wrapper}>
+      <div className={styles.container}>
+        <h2 className={styles.header}>Восстановление пароля</h2>
+        <form className={styles.resetForm} onSubmit={handleRecoverSubmit}>
+          <label htmlFor="email" className={styles.emailLabel}>
+            <EmailInput
+              value={email}
+              onChange={handleEmailChange}
+              id="email"
+              placeholder="Укажите e-mail"
+            />
+          </label>
+          <Button
+            htmlType="submit"
+            type="primary"
+            size="large"
+            extraClass={styles.resetBtn}
+          >
+            Восстановить
+          </Button>
+        </form>
+        <span className={styles.signinText}>
+          Вспомнили пароль?
+          <Button
+            htmlType="button"
+            onClick={handleLoginClick}
+            type="secondary"
+            size="small"
+            extraClass={styles.signinLink}
+          >
+            Войти
+          </Button>
+        </span>
+      </div>
+    </div>
+  );
+};
+
+export default ForgotPassword;

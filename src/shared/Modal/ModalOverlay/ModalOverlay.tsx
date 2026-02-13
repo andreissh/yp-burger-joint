@@ -3,7 +3,7 @@ import styles from "./ModalOverlay.module.scss";
 
 type Props = {
   children: React.ReactNode;
-  onClick: () => void;
+  onClick?: () => void;
 };
 
 const ModalOverlay = ({ onClick, children }: Props) => {
