@@ -5,6 +5,7 @@ import ingredientCurrentReducer from "./slices/ingredientCurrentSlice";
 import ingredientsOrderReducer from "./slices/ingredientsOrderSlice";
 import authReducer from "./slices/authSlice";
 import profileReducer from "./slices/profileSlice";
+import { errorLogger } from "./middlewares/errorLogger";
 
 export const store = configureStore({
   reducer: {
@@ -15,6 +16,8 @@ export const store = configureStore({
     auth: authReducer,
     profile: profileReducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(errorLogger),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

@@ -1,11 +1,5 @@
 export type ApiError = {
   message: string;
-  status: string;
-};
-
-export type AuthError = {
-  message: string;
-  status: number;
 };
 
 export type ApiResponse<T> = {

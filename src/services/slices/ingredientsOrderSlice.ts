@@ -1,11 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import type { OrderResponse } from "../../types/types";
+import type { ApiError, OrderResponse } from "../../types/types";
 import { getIngredientsOrder } from "../thunks/getIngredientsOrderThunk";
 
 type IngredientsOrderState = {
   data: OrderResponse | null;
   loading: boolean;
-  error: string | null;
+  error: ApiError | null;
 };
 
 const initialState: IngredientsOrderState = {
@@ -30,7 +30,7 @@ export const ingredientsOrderSlice = createSlice({
       })
       .addCase(getIngredientsOrder.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message ?? "Unknown error";
+        state.error = action.payload ?? { message: "Unknown error" };
       });
   },
 });
