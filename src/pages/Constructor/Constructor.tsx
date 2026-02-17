@@ -14,7 +14,7 @@ import {
 const Constructor = () => {
   const { loading, error } = useAppSelector((state) => state.ingredients);
   const dispatch = useAppDispatch();
-  const { data: ingredientsSelected } = useAppSelector(
+  const { ingredientsSelected } = useAppSelector(
     (state) => state.ingredientsSelected,
   );
   const ingredientsSelectedRef = useRef(ingredientsSelected);

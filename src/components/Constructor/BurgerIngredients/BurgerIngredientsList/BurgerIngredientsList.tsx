@@ -26,8 +26,8 @@ const BurgerIngredientsList = ({
   onIngredientsSelectedChange,
 }: Props) => {
   const isMobile = useMediaQuery("(max-width: 640px)");
-  const { data: ingredients } = useAppSelector((state) => state.ingredients);
-  const { data: ingredientsSelected } = useAppSelector(
+  const { ingredients } = useAppSelector((state) => state.ingredients);
+  const { ingredientsSelected } = useAppSelector(
     (state) => state.ingredientsSelected,
   );
   const dispatch = useAppDispatch();

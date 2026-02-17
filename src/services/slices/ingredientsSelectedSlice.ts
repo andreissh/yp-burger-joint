@@ -3,11 +3,11 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import type { IngredientSelected } from "../../types/types";
 
 type ingredientsSelectedState = {
-  data: IngredientSelected[];
+  ingredientsSelected: IngredientSelected[];
 };
 
 const initialState: ingredientsSelectedState = {
-  data: [],
+  ingredientsSelected: [],
 };
 
 export const ingredientsSelectedSlice = createSlice({
@@ -15,16 +15,18 @@ export const ingredientsSelectedSlice = createSlice({
   initialState,
   reducers: {
     addIngredient(state, action: PayloadAction<IngredientSelected>) {
-      state.data.push(action.payload);
+      state.ingredientsSelected.push(action.payload);
     },
     removeIngredient(state, action: PayloadAction<string>) {
-      state.data = state.data.filter((item) => item.uuid !== action.payload);
+      state.ingredientsSelected = state.ingredientsSelected.filter(
+        (item) => item.uuid !== action.payload,
+      );
     },
     shuffleIngredients(state, action: PayloadAction<IngredientSelected[]>) {
-      state.data = action.payload;
+      state.ingredientsSelected = action.payload;
     },
     removeAllIngredients(state) {
-      state.data = [];
+      state.ingredientsSelected = [];
     },
   },
 });

@@ -30,7 +30,7 @@ type Props = {
 const BurgerConstructor = ({ onIngredientsSelectedChange }: Props) => {
   const { isModalOpen, openModal, closeModal } = useModal();
   const dispatch = useAppDispatch();
-  const { data: ingredientsSelected } = useAppSelector(
+  const { ingredientsSelected } = useAppSelector(
     (state) => state.ingredientsSelected,
   );
   const constructorBun = ingredientsSelected.find(

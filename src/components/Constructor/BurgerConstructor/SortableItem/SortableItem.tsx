@@ -13,7 +13,7 @@ type Props = {
 
 function SortableItem({ id, moveItem, children }: Props) {
   const ref = useRef<HTMLLIElement>(null);
-  const { data: ingredientsSelected } = useAppSelector(
+  const { ingredientsSelected } = useAppSelector(
     (store) => store.ingredientsSelected,
   );
 

@@ -13,7 +13,7 @@ type Props = {
 
 const BurgerIngredients = ({ onIngredientsSelectedChange }: Props) => {
   const [activeTab, setActiveTab] = useState(1);
-  const { data: ingredients } = useAppSelector((state) => state.ingredients);
+  const { ingredients } = useAppSelector((state) => state.ingredients);
   const sections = ingredientsTabs.map((tab) => ({
     ...tab,
     products: ingredients.filter((i) => i.type === tab.type),

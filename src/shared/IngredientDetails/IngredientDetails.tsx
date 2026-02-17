@@ -8,8 +8,8 @@ import { addCurrentIngredient } from "../../services/slices/ingredientCurrentSli
 const IngredientDetails = () => {
   const isMobile = useMediaQuery("(max-width: 640px)");
   const isLargeDesktop = useMediaQuery("(min-width: 1280px)");
-  const { data: ingredients } = useAppSelector((store) => store.ingredients);
-  const { data: ingredient } = useAppSelector(
+  const { ingredients } = useAppSelector((store) => store.ingredients);
+  const { ingredientCurrent } = useAppSelector(
     (store) => store.ingredientCurrent,
   );
   const { id } = useParams();
@@ -21,7 +21,7 @@ const IngredientDetails = () => {
     dispatch(addCurrentIngredient(ingredient));
   }, [dispatch, id, ingredients]);
 
-  if (!ingredient) return null;
+  if (!ingredientCurrent) return null;
 
   const {
     name,
@@ -32,7 +32,7 @@ const IngredientDetails = () => {
     image,
     image_large,
     image_mobile,
-  } = ingredient;
+  } = ingredientCurrent;
 
   const nutritionValueMap = {
     "Калории, ккал": calories,
