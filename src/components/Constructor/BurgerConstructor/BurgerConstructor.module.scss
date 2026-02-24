@@ -40,6 +40,12 @@
   text-align: center;
 }
 
+@media (max-width: 640px) {
+  .constructorListTemplate {
+    width: 320px;
+  }
+}
+
 .constructorItem {
   margin-left: 32px;
 }
@@ -81,6 +87,7 @@
     background-color: var(--bg-color-primary);
     padding: 16px 8px;
     width: calc(100% - 16px);
+    z-index: 900;
   }
 }
 

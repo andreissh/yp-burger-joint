@@ -66,13 +66,13 @@
   }
 
   .constructor-element__image {
-    width: 52px !important;
-    height: 26px !important;
+    width: 48px !important;
+    height: 24px !important;
     margin-right: 4px !important;
   }
 
   .constructor-element__text {
-    width: 140px !important;
+    width: 128px !important;
     font-size: 14px !important;
     line-height: 18px !important;
     margin-right: 4px !important;
