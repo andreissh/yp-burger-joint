@@ -4,3 +4,10 @@
   min-height: 208px;
   cursor: pointer;
 }
+
+@media (max-width: 640px) {
+  .productTypeItem {
+    width: calc(50% - 12px);
+    min-height: 172px;
+  }
+}

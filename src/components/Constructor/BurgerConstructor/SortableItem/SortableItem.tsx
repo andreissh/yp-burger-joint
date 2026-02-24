@@ -4,6 +4,7 @@ import styles from "./SortableItem.module.scss";
 import { DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useAppSelector } from "../../../../services/hooks";
 import { SORT_INGREDIENTS } from "../../../../shared/constants";
+import { useMediaQuery } from "usehooks-ts";
 
 type Props = {
   id: string;
@@ -16,6 +17,7 @@ function SortableItem({ id, moveItem, children }: Props) {
   const { ingredientsSelected } = useAppSelector(
     (store) => store.ingredientsSelected,
   );
+  const isMobile = useMediaQuery("(max-width: 640px)");
 
   const [, drop] = useDrop({
     accept: SORT_INGREDIENTS,
@@ -42,10 +44,49 @@ function SortableItem({ id, moveItem, children }: Props) {
   });
 
   useEffect(() => {
-    if (ref.current) {
-      drag(drop(ref.current));
-    }
+    if (!ref.current) return;
+
+    drag(drop(ref.current));
   }, [drag, drop]);
+
+  useEffect(() => {
+    const element = ref.current;
+    if (!isMobile || !element) return;
+
+    const handleMouseEnterEvent = (e: MouseEvent) => {
+      const deleteIcon = element.querySelector<HTMLElement>(
+        ".constructor-element__action",
+      );
+      const priceIcon = element.querySelector<HTMLElement>(
+        ".constructor-element__price svg",
+      );
+      if (!deleteIcon || !priceIcon) return;
+
+      deleteIcon.classList.add("visible");
+      priceIcon.classList.add("hidden");
+    };
+
+    const handleMouseLeaveEvent = (e: MouseEvent) => {
+      const deleteIcon = element.querySelector<HTMLElement>(
+        ".constructor-element__action",
+      );
+      const priceIcon = element.querySelector<HTMLElement>(
+        ".constructor-element__price svg",
+      );
+      if (!deleteIcon || !priceIcon) return;
+
+      deleteIcon.classList.remove("visible");
+      priceIcon.classList.remove("hidden");
+    };
+
+    element.addEventListener("mouseenter", handleMouseEnterEvent);
+    element.addEventListener("mouseleave", handleMouseLeaveEvent);
+
+    return () => {
+      element.removeEventListener("mouseenter", handleMouseEnterEvent);
+      element.removeEventListener("mouseleave", handleMouseLeaveEvent);
+    };
+  }, [isMobile]);
 
   return (
     <li ref={ref} className={styles.item} style={{ opacity }}>

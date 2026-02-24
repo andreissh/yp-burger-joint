@@ -5,6 +5,13 @@
   padding-left: 32px;
 }
 
+@media (max-width: 640px) {
+  .item {
+    padding-left: 24px;
+    margin-right: 16px;
+  }
+}
+
 .dragHandle {
   position: absolute;
   left: 0;

@@ -22,6 +22,7 @@ import type { Ingredient, IngredientSelected } from "../../../types/types";
 import { getIngredientsOrder } from "../../../services/thunks/getIngredientsOrderThunk";
 import { useNavigate } from "react-router";
 import SortableItem from "./SortableItem/SortableItem";
+import { useMediaQuery } from "usehooks-ts";
 
 type Props = {
   onIngredientsSelectedChange: (arg: IngredientSelected) => void;
@@ -43,6 +44,7 @@ const BurgerConstructor = ({ onIngredientsSelectedChange }: Props) => {
   const totalCost = ingredientsSelected.reduce((a, c) => a + c.price, 0);
   const selectedRef = useRef(ingredientsSelected);
   const { isAuth } = useAppSelector((state) => state.auth);
+  const isMobile = useMediaQuery("(max-width: 640px)");
   const navigate = useNavigate();
 
   const [, drop] = useDrop(() => ({
@@ -103,7 +105,7 @@ const BurgerConstructor = ({ onIngredientsSelectedChange }: Props) => {
                   {constructorBun && (
                     <ConstructorElement
                       type="top"
-                      isLocked={true}
+                      isLocked={!isMobile}
                       text={`${constructorBun.name} (верх)`}
                       price={constructorBun.price}
                       thumbnail={constructorBun.image}
@@ -132,7 +134,7 @@ const BurgerConstructor = ({ onIngredientsSelectedChange }: Props) => {
                   {constructorBun && (
                     <ConstructorElement
                       type="bottom"
-                      isLocked={true}
+                      isLocked={!isMobile}
                       text={`${constructorBun.name} (низ)`}
                       price={constructorBun.price}
                       thumbnail={constructorBun.image}
@@ -156,7 +158,7 @@ const BurgerConstructor = ({ onIngredientsSelectedChange }: Props) => {
             <Button
               htmlType="button"
               type="primary"
-              size="large"
+              size={isMobile ? "small" : "large"}
               onClick={handleSendOrder}
               disabled={!ingredientsSelected.length}
             >

@@ -5,6 +5,12 @@
   flex-direction: column;
 }
 
+@media (max-width: 640px) {
+  .ingredientsContainer {
+    min-width: 320px;
+  }
+}
+
 .tabsList {
   display: flex;
 }

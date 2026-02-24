@@ -17,20 +17,6 @@
   }
 }
 
-.productTypeItem {
-  position: relative;
-  width: 272px;
-  min-height: 208px;
-  cursor: pointer;
-}
-
-@media (max-width: 640px) {
-  .productTypeItem {
-    width: 144px;
-    min-height: 172px;
-  }
-}
-
 .itemImgWrapper {
   display: flex;
   justify-content: center;
