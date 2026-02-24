@@ -23,7 +23,7 @@ const AppHeader = () => {
   };
 
   const handleOrderHistoryClick = () => {
-    navigate("/profile/orders");
+    navigate("/feed");
   };
 
   const handleAccountClick = () => {
@@ -57,7 +57,7 @@ const AppHeader = () => {
             )}
           </NavLink>
           <NavLink
-            to="/profile/orders"
+            to="/feed"
             className={({ isActive }) =>
               `${clsx([styles.tab, isActive ? styles.tabTitleActive : styles.tabTitle])}`
             }
@@ -88,7 +88,6 @@ const AppHeader = () => {
               `${clsx([styles.tab, isActive ? styles.tabTitleActive : styles.tabTitle])}`
             }
             onClick={handleAccountClick}
-            end
           >
             {({ isActive }) => (
               <>
@@ -127,7 +126,6 @@ const AppHeader = () => {
               `${clsx([styles.tabMobile, isActive ? styles.tabTitleActive : styles.tabTitle])}`
             }
             onClick={handleAccountClick}
-            end
           >
             {({ isActive }) => (
               <>
@@ -144,6 +142,7 @@ const AppHeader = () => {
                 className={({ isActive }) =>
                   `${clsx([styles.tabMobile, isActive ? styles.tabTitleActive : styles.tabTitle])}`
                 }
+                end
               >
                 Профиль
               </NavLink>
@@ -188,7 +187,7 @@ const AppHeader = () => {
         </li>
         <li className={styles.headerDropdownItem}>
           <NavLink
-            to="/profile/orders"
+            to="/feed"
             className={({ isActive }) =>
               `${clsx([styles.tabMobile, isActive ? styles.tabTitleActive : styles.tabTitle])}`
             }

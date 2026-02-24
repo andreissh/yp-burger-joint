@@ -15,6 +15,8 @@ import IngredientPage from "../pages/IngredientPage/IngredientPage";
 import { useAppDispatch } from "../services/hooks";
 import { removeCurrentIngredient } from "../services/slices/ingredientCurrentSlice";
 import { useModal } from "../hooks/useModal";
+import OrderFeed from "../pages/OrderFeed/OrderFeed";
+import ProfileForm from "../components/Profile/ProfileForm/ProfileForm";
 
 const Router = () => {
   const location = useLocation();
@@ -41,12 +43,23 @@ const Router = () => {
         <Route
           path="/profile"
           element={<ProtectedRouteElement element={<Profile />} onlyAuth />}
-        ></Route>
+        >
+          <Route
+            index
+            element={
+              <ProtectedRouteElement element={<ProfileForm />} onlyAuth />
+            }
+          ></Route>
+          <Route
+            path="orders"
+            element={
+              <ProtectedRouteElement element={<OrderHistory />} onlyAuth />
+            }
+          ></Route>
+        </Route>
         <Route
-          path="/profile/orders"
-          element={
-            <ProtectedRouteElement element={<OrderHistory />} onlyAuth />
-          }
+          path="/feed"
+          element={<ProtectedRouteElement element={<OrderFeed />} onlyAuth />}
         ></Route>
 
         <Route

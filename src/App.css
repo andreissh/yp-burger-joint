@@ -99,4 +99,8 @@
     top: 30px !important;
     right: 0 !important;
   }
+
+  .input {
+    width: 320px !important;
+  }
 }
