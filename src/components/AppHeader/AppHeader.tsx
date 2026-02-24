@@ -115,7 +115,12 @@ const AppHeader = () => {
           burgerMenuActive ? styles.active : "",
         ])}
       >
-        <li className={styles.headerDropdownItem}>
+        <li
+          className={clsx([
+            styles.headerDropdownItem,
+            styles.headerDropdownSubmenuItem,
+          ])}
+        >
           <NavLink
             to="/profile"
             className={({ isActive }) =>
@@ -131,6 +136,39 @@ const AppHeader = () => {
               </>
             )}
           </NavLink>
+
+          <ul className={styles.submenuList}>
+            <li>
+              <NavLink
+                to="/profile"
+                className={({ isActive }) =>
+                  `${clsx([styles.tabMobile, isActive ? styles.tabTitleActive : styles.tabTitle])}`
+                }
+              >
+                Профиль
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/profile/orders"
+                className={({ isActive }) =>
+                  `${clsx([styles.tabMobile, isActive ? styles.tabTitleActive : styles.tabTitle])}`
+                }
+              >
+                История заказов
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/login"
+                className={({ isActive }) =>
+                  `${clsx([styles.tabMobile, isActive ? styles.tabTitleActive : styles.tabTitle])}`
+                }
+              >
+                Выход
+              </NavLink>
+            </li>
+          </ul>
         </li>
         <li className={styles.headerDropdownItem}>
           <NavLink
