@@ -63,58 +63,61 @@ const ProfileForm = () => {
   }, [user]);
 
   return (
-    <form className={styles.profileForm} onSubmit={handleSubmit}>
-      <Input
-        extraClass={styles.profileFormField}
-        icon={"EditIcon"}
-        id="name"
-        placeholder="Имя"
-        type="text"
-        value={form.name}
-        onChange={(e) => handleFormFieldChange(e, "name")}
-        onPointerEnterCapture={console.log}
-        onPointerLeaveCapture={console.log}
-      />
-      <Input
-        extraClass={styles.profileFormField}
-        icon={"EditIcon"}
-        id="login"
-        placeholder="Логин"
-        type="text"
-        value={form.login}
-        onChange={(e) => handleFormFieldChange(e, "login")}
-        onPointerEnterCapture={console.log}
-        onPointerLeaveCapture={console.log}
-      />
-      <Input
-        extraClass={styles.profileFormField}
-        icon={"EditIcon"}
-        id="pass"
-        placeholder="Пароль"
-        type="text"
-        value={form.password}
-        onChange={(e) => handleFormFieldChange(e, "password")}
-        onPointerEnterCapture={console.log}
-        onPointerLeaveCapture={console.log}
-      />
+    <div className={styles.container}>
+      <h1 className={styles.profileFormTitle}>Профиль</h1>
+      <form className={styles.profileForm} onSubmit={handleSubmit}>
+        <Input
+          extraClass={styles.profileFormField}
+          icon={"EditIcon"}
+          id="name"
+          placeholder="Имя"
+          type="text"
+          value={form.name}
+          onChange={(e) => handleFormFieldChange(e, "name")}
+          onPointerEnterCapture={console.log}
+          onPointerLeaveCapture={console.log}
+        />
+        <Input
+          extraClass={styles.profileFormField}
+          icon={"EditIcon"}
+          id="login"
+          placeholder="Логин"
+          type="text"
+          value={form.login}
+          onChange={(e) => handleFormFieldChange(e, "login")}
+          onPointerEnterCapture={console.log}
+          onPointerLeaveCapture={console.log}
+        />
+        <Input
+          extraClass={styles.profileFormField}
+          icon={"EditIcon"}
+          id="pass"
+          placeholder="Пароль"
+          type="text"
+          value={form.password}
+          onChange={(e) => handleFormFieldChange(e, "password")}
+          onPointerEnterCapture={console.log}
+          onPointerLeaveCapture={console.log}
+        />
 
-      <div
-        className={styles.buttonsBlock}
-        style={{ display: isFormChanged ? "flex" : "none" }}
-      >
-        <Button
-          htmlType="button"
-          type="primary"
-          size="medium"
-          onClick={handleCancelClick}
+        <div
+          className={styles.buttonsBlock}
+          style={{ display: isFormChanged ? "flex" : "none" }}
         >
-          Отмена
-        </Button>
-        <Button htmlType="submit" type="primary" size="medium">
-          Сохранить
-        </Button>
-      </div>
-    </form>
+          <Button
+            htmlType="button"
+            type="primary"
+            size="medium"
+            onClick={handleCancelClick}
+          >
+            Отмена
+          </Button>
+          <Button htmlType="submit" type="primary" size="medium">
+            Сохранить
+          </Button>
+        </div>
+      </form>
+    </div>
   );
 };
 

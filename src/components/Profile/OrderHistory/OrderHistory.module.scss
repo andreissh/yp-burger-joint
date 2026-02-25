@@ -1,6 +1,32 @@
 .container {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 480px;
+  flex-direction: column;
+  width: 844px;
+}
+
+.orderHistoryTitle {
+  display: none;
+}
+
+@media (max-width: 1280px) {
+  .orderHistoryTitle {
+    display: block;
+    font-size: 28px;
+    line-height: 32px;
+    text-align: center;
+    margin: 16px 0;
+  }
+}
+
+.orderHistoryList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-right: 16px;
+}
+
+.orderHistoryItem {
+  min-height: 246px;
+  border-radius: 40px;
+  background-color: var(--bg-color-primary);
 }

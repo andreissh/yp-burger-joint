@@ -7,28 +7,38 @@ import {
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import logoMobile from "../../assets/images/logo-mobile.svg";
-import { NavLink, useNavigate } from "react-router";
+import { NavLink, useLocation } from "react-router";
 import clsx from "clsx";
+import { logout } from "../../services/thunks/logoutThunk";
+import { useAppDispatch } from "../../services/hooks";
+import { setLogoutState } from "../../services/slices/authSlice";
 
 const AppHeader = () => {
   const [burgerMenuActive, setBurgerMenuActive] = useState(false);
-  const navigate = useNavigate();
+  const location = useLocation();
+  const dispatch = useAppDispatch();
 
   const handleBurgerMenuClick = () => {
     setBurgerMenuActive(!burgerMenuActive);
   };
 
-  const handleConstructorClick = () => {
-    navigate("/");
+  const handleCloseBurgerMenu = () => {
+    setBurgerMenuActive(false);
   };
 
-  const handleOrderHistoryClick = () => {
-    navigate("/feed");
+  const handleLogout = () => {
+    try {
+      dispatch(logout());
+      dispatch(setLogoutState());
+      handleCloseBurgerMenu();
+    } catch (err) {
+      console.error(err);
+    }
   };
 
-  const handleAccountClick = () => {
-    navigate("/profile");
-  };
+  useEffect(() => {
+    handleCloseBurgerMenu();
+  }, [location.pathname]);
 
   useEffect(() => {
     document.body.classList.toggle("no-scroll", burgerMenuActive);
@@ -47,7 +57,6 @@ const AppHeader = () => {
             className={({ isActive }) =>
               `${clsx([styles.tab, isActive ? styles.tabTitleActive : styles.tabTitle])}`
             }
-            onClick={handleConstructorClick}
           >
             {({ isActive }) => (
               <>
@@ -61,7 +70,6 @@ const AppHeader = () => {
             className={({ isActive }) =>
               `${clsx([styles.tab, isActive ? styles.tabTitleActive : styles.tabTitle])}`
             }
-            onClick={handleOrderHistoryClick}
           >
             {({ isActive }) => (
               <>
@@ -72,7 +80,7 @@ const AppHeader = () => {
           </NavLink>
         </div>
         <div className={styles.logoWrapper}>
-          <NavLink to="/" onClick={handleConstructorClick}>
+          <NavLink to="/">
             <Logo className={styles.logo} />
             <img
               className={styles.logoMobile}
@@ -87,7 +95,6 @@ const AppHeader = () => {
             className={({ isActive }) =>
               `${clsx([styles.tab, isActive ? styles.tabTitleActive : styles.tabTitle])}`
             }
-            onClick={handleAccountClick}
           >
             {({ isActive }) => (
               <>
@@ -125,7 +132,6 @@ const AppHeader = () => {
             className={({ isActive }) =>
               `${clsx([styles.tabMobile, isActive ? styles.tabTitleActive : styles.tabTitle])}`
             }
-            onClick={handleAccountClick}
           >
             {({ isActive }) => (
               <>
@@ -159,10 +165,9 @@ const AppHeader = () => {
             </li>
             <li>
               <NavLink
+                onClick={handleLogout}
                 to="/login"
-                className={({ isActive }) =>
-                  `${clsx([styles.tabMobile, isActive ? styles.tabTitleActive : styles.tabTitle])}`
-                }
+                className={`${clsx([styles.tabMobile, styles.tabTitle])}`}
               >
                 Выход
               </NavLink>
@@ -175,7 +180,6 @@ const AppHeader = () => {
             className={({ isActive }) =>
               `${clsx([styles.tabMobile, isActive ? styles.tabTitleActive : styles.tabTitle])}`
             }
-            onClick={handleConstructorClick}
           >
             {({ isActive }) => (
               <>
