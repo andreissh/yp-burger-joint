@@ -17,6 +17,7 @@ import { removeCurrentIngredient } from "../services/slices/ingredientCurrentSli
 import { useModal } from "../hooks/useModal";
 import OrderFeed from "../pages/OrderFeed/OrderFeed";
 import ProfileForm from "../components/Profile/ProfileForm/ProfileForm";
+import OrderInfo from "../shared/OrderInfo/OrderInfo";
 
 const Router = () => {
   const location = useLocation();
@@ -41,7 +42,16 @@ const Router = () => {
         <Route path="ingredients/:id" element={<IngredientPage />}></Route>
 
         <Route
-          path="/profile"
+          path="feed"
+          element={<ProtectedRouteElement element={<OrderFeed />} onlyAuth />}
+        ></Route>
+        <Route
+          path="feed/:id"
+          element={<ProtectedRouteElement element={<OrderInfo />} onlyAuth />}
+        ></Route>
+
+        <Route
+          path="profile"
           element={<ProtectedRouteElement element={<Profile />} onlyAuth />}
         >
           <Route
@@ -56,11 +66,11 @@ const Router = () => {
               <ProtectedRouteElement element={<OrderHistory />} onlyAuth />
             }
           ></Route>
+          <Route
+            path="orders/:id"
+            element={<ProtectedRouteElement element={<OrderInfo />} onlyAuth />}
+          ></Route>
         </Route>
-        <Route
-          path="/feed"
-          element={<ProtectedRouteElement element={<OrderFeed />} onlyAuth />}
-        ></Route>
 
         <Route
           path="/login"

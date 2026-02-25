@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./OrderFeed.module.scss";
 import clsx from "clsx";
 import Scrollbars from "rc-scrollbars";
+import { Link } from "react-router";
 
 const OrderFeed = () => {
   return (
@@ -11,11 +12,21 @@ const OrderFeed = () => {
         <div className={styles.feedContainer}>
           <Scrollbars style={{ width: "100%", height: 700 }}>
             <ul className={styles.feedList}>
-              <li className={styles.feedItem}></li>
-              <li className={styles.feedItem}></li>
-              <li className={styles.feedItem}></li>
-              <li className={styles.feedItem}></li>
-              <li className={styles.feedItem}></li>
+              <Link to="/feed/1">
+                <li className={styles.feedItem}></li>
+              </Link>
+              <Link to="/feed/1">
+                <li className={styles.feedItem}></li>
+              </Link>
+              <Link to="/feed/1">
+                <li className={styles.feedItem}></li>
+              </Link>
+              <Link to="/feed/1">
+                <li className={styles.feedItem}></li>
+              </Link>
+              <Link to="/feed/1">
+                <li className={styles.feedItem}></li>
+              </Link>
             </ul>
           </Scrollbars>
         </div>
