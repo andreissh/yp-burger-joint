@@ -51,7 +51,7 @@ const ResetPassword = () => {
               icon={isPassIconVisible ? "ShowIcon" : "HideIcon"}
               id="newPass"
               placeholder="Введите новый пароль"
-              type="text"
+              type={isPassIconVisible ? "text" : "password"}
               onChange={handlePasswordChange}
               onIconClick={changeIcon}
               onPointerEnterCapture={console.log}
