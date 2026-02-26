@@ -1,15 +1,13 @@
 import React from "react";
 import styles from "./OrderDetails.module.scss";
 import orderAccepted from "../../../../assets/images/order-accepted.svg";
-import { useAppSelector } from "../../../../services/hooks";
+import { useAppSelector } from "../../../../services/store/hooks";
 import { PacmanLoader } from "react-spinners";
 
 const OrderDetails = () => {
-  const {
-    data: order,
-    loading,
-    error,
-  } = useAppSelector((store) => store.ingredientsOrder);
+  const { ingredientsOrder, loading, error } = useAppSelector(
+    (store) => store.ingredientsOrder,
+  );
 
   if (loading) {
     return (
@@ -28,9 +26,9 @@ const OrderDetails = () => {
   return (
     <div className={styles.orderContainer}>
       <span className={`${styles.orderId} iceland-regular`}>
-        {order?.order.number}
+        {ingredientsOrder?.order.number}
       </span>
-      <span className={styles.orderIdText}>{order?.name}</span>
+      <span className={styles.orderIdText}>{ingredientsOrder?.name}</span>
       <img
         className={styles.orderAccepted}
         src={orderAccepted}

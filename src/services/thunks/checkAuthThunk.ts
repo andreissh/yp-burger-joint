@@ -1,12 +1,12 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import type { ApiError, AuthError, TokenResponse } from "../../types/types";
+import type { ApiError, TokenResponse } from "../../types/types";
 import { getAccessToken } from "./getAccessTokenThunk";
 import { setLoginState, setLogoutState } from "../slices/authSlice";
 
 export const checkAuth = createAsyncThunk<
   TokenResponse,
   void,
-  { rejectValue: AuthError }
+  { rejectValue: ApiError }
 >("auth/checkAuth", async (_, { dispatch, rejectWithValue }) => {
   const refreshToken = localStorage.getItem("refreshToken");
 
@@ -14,7 +14,6 @@ export const checkAuth = createAsyncThunk<
     dispatch(setLogoutState());
     return rejectWithValue({
       message: "No refresh token",
-      status: 401,
     });
   }
 
@@ -24,12 +23,11 @@ export const checkAuth = createAsyncThunk<
     ).unwrap();
     dispatch(setLoginState(response));
     return response;
-  } catch (err: unknown) {
-    const error = err as ApiError;
+  } catch (err) {
+    const error = err as Error;
     dispatch(setLogoutState());
     return rejectWithValue({
       message: error.message,
-      status: Number(error.status),
     });
   }
 });

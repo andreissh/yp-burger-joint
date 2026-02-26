@@ -1,0 +1,38 @@
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.profileForm {
+  width: 480px;
+}
+
+@media (max-width: 640px) {
+  .profileForm {
+    width: 320px;
+  }
+}
+
+.profileFormField:not(:last-child) {
+  margin-bottom: 24px;
+}
+
+.profileFormTitle {
+  display: none;
+}
+
+@media (max-width: 1280px) {
+  .profileFormTitle {
+    display: block;
+    font-size: 28px;
+    line-height: 32px;
+    text-align: center;
+    margin: 16px 0;
+  }
+}
+
+.buttonsBlock {
+  display: flex;
+  justify-content: end;
+  gap: 8px;
+}

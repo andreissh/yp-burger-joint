@@ -12,9 +12,12 @@ import OrderHistory from "../components/Profile/OrderHistory/OrderHistory";
 import Modal from "../shared/Modal/Modal";
 import IngredientDetails from "../shared/IngredientDetails/IngredientDetails";
 import IngredientPage from "../pages/IngredientPage/IngredientPage";
-import { useAppDispatch } from "../services/hooks";
+import { useAppDispatch } from "../services/store/hooks";
 import { removeCurrentIngredient } from "../services/slices/ingredientCurrentSlice";
 import { useModal } from "../hooks/useModal";
+import OrderFeed from "../pages/OrderFeed/OrderFeed";
+import ProfileForm from "../components/Profile/ProfileForm/ProfileForm";
+import OrderInfo from "../shared/OrderInfo/OrderInfo";
 
 const Router = () => {
   const location = useLocation();
@@ -39,14 +42,34 @@ const Router = () => {
         <Route path="ingredients/:id" element={<IngredientPage />}></Route>
 
         <Route
-          path="/profile"
-          element={<ProtectedRouteElement element={<Profile />} onlyAuth />}
+          path="feed"
+          element={<ProtectedRouteElement element={<OrderFeed />} onlyAuth />}
         ></Route>
         <Route
-          path="/profile/orders"
-          element={
-            <ProtectedRouteElement element={<OrderHistory />} onlyAuth />
-          }
+          path="feed/:id"
+          element={<ProtectedRouteElement element={<OrderInfo />} onlyAuth />}
+        ></Route>
+
+        <Route
+          path="profile"
+          element={<ProtectedRouteElement element={<Profile />} onlyAuth />}
+        >
+          <Route
+            index
+            element={
+              <ProtectedRouteElement element={<ProfileForm />} onlyAuth />
+            }
+          ></Route>
+          <Route
+            path="orders"
+            element={
+              <ProtectedRouteElement element={<OrderHistory />} onlyAuth />
+            }
+          ></Route>
+        </Route>
+        <Route
+          path="profile/orders/:id"
+          element={<ProtectedRouteElement element={<OrderInfo />} onlyAuth />}
         ></Route>
 
         <Route

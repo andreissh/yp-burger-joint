@@ -6,7 +6,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useNavigate } from "react-router";
 import { resetPassword } from "../../services/thunks/resetPasswordThunk";
-import { useAppDispatch } from "../../services/hooks";
+import { useAppDispatch } from "../../services/store/hooks";
 
 const ResetPassword = () => {
   const [isPassIconVisible, setIsPassIconVisible] = useState(true);
@@ -51,7 +51,7 @@ const ResetPassword = () => {
               icon={isPassIconVisible ? "ShowIcon" : "HideIcon"}
               id="newPass"
               placeholder="Введите новый пароль"
-              type="text"
+              type={isPassIconVisible ? "text" : "password"}
               onChange={handlePasswordChange}
               onIconClick={changeIcon}
               onPointerEnterCapture={console.log}

@@ -1,11 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import type { UserInfo } from "../../types/types";
+import type { ApiError, UserInfo } from "../../types/types";
 import { getUserInfo } from "../thunks/getUserInfoThunk";
 
 type ProfileState = {
   user: UserInfo | null;
   loading: boolean;
-  error: string | null;
+  error: ApiError | null;
 };
 
 const initialState: ProfileState = {
@@ -29,9 +29,9 @@ export const profileSlice = createSlice({
         state.loading = false;
         state.error = null;
       })
-      .addCase(getUserInfo.rejected, (state) => {
+      .addCase(getUserInfo.rejected, (state, action) => {
         state.loading = false;
-        state.error = "Profile info request failed";
+        state.error = action.payload ?? { message: "Unknown error" };
       });
   },
 });

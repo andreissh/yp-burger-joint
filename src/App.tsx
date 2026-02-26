@@ -1,7 +1,7 @@
 import "./App.css";
 import React, { useEffect } from "react";
 import Router from "./router/Router";
-import { useAppDispatch, useAppSelector } from "./services/hooks";
+import { useAppDispatch, useAppSelector } from "./services/store/hooks";
 import { checkAuth } from "./services/thunks/checkAuthThunk";
 import AppHeader from "./components/AppHeader/AppHeader";
 import { getIngredients } from "./services/thunks/getIngredientsThunk";

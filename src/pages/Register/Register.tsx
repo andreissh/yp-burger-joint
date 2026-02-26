@@ -6,7 +6,7 @@ import {
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useNavigate } from "react-router";
-import { useAppDispatch } from "../../services/hooks";
+import { useAppDispatch } from "../../services/store/hooks";
 import { setLoginState } from "../../services/slices/authSlice";
 import { register } from "../../services/thunks/registerThunk";
 

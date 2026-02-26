@@ -5,7 +5,7 @@ import {
   EmailInput,
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useAppDispatch } from "../../services/hooks";
+import { useAppDispatch } from "../../services/store/hooks";
 import { useLocation, useNavigate } from "react-router";
 import { setLoginState } from "../../services/slices/authSlice";
 import { login } from "../../services/thunks/loginThunk";

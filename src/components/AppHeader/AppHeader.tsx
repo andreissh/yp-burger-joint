@@ -7,28 +7,38 @@ import {
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import logoMobile from "../../assets/images/logo-mobile.svg";
-import { NavLink, useNavigate } from "react-router";
+import { NavLink, useLocation } from "react-router";
 import clsx from "clsx";
+import { logout } from "../../services/thunks/logoutThunk";
+import { useAppDispatch } from "../../services/store/hooks";
+import { setLogoutState } from "../../services/slices/authSlice";
 
 const AppHeader = () => {
   const [burgerMenuActive, setBurgerMenuActive] = useState(false);
-  const navigate = useNavigate();
+  const location = useLocation();
+  const dispatch = useAppDispatch();
 
   const handleBurgerMenuClick = () => {
     setBurgerMenuActive(!burgerMenuActive);
   };
 
-  const handleConstructorClick = () => {
-    navigate("/");
+  const handleCloseBurgerMenu = () => {
+    setBurgerMenuActive(false);
   };
 
-  const handleOrderHistoryClick = () => {
-    navigate("/profile/orders");
+  const handleLogout = () => {
+    try {
+      dispatch(logout());
+      dispatch(setLogoutState());
+      handleCloseBurgerMenu();
+    } catch (err) {
+      console.error(err);
+    }
   };
 
-  const handleAccountClick = () => {
-    navigate("/profile");
-  };
+  useEffect(() => {
+    handleCloseBurgerMenu();
+  }, [location.pathname]);
 
   useEffect(() => {
     document.body.classList.toggle("no-scroll", burgerMenuActive);
@@ -47,7 +57,6 @@ const AppHeader = () => {
             className={({ isActive }) =>
               `${clsx([styles.tab, isActive ? styles.tabTitleActive : styles.tabTitle])}`
             }
-            onClick={handleConstructorClick}
           >
             {({ isActive }) => (
               <>
@@ -57,11 +66,10 @@ const AppHeader = () => {
             )}
           </NavLink>
           <NavLink
-            to="/profile/orders"
+            to="/feed"
             className={({ isActive }) =>
               `${clsx([styles.tab, isActive ? styles.tabTitleActive : styles.tabTitle])}`
             }
-            onClick={handleOrderHistoryClick}
           >
             {({ isActive }) => (
               <>
@@ -72,7 +80,7 @@ const AppHeader = () => {
           </NavLink>
         </div>
         <div className={styles.logoWrapper}>
-          <NavLink to="/" onClick={handleConstructorClick}>
+          <NavLink to="/">
             <Logo className={styles.logo} />
             <img
               className={styles.logoMobile}
@@ -87,8 +95,6 @@ const AppHeader = () => {
             className={({ isActive }) =>
               `${clsx([styles.tab, isActive ? styles.tabTitleActive : styles.tabTitle])}`
             }
-            onClick={handleAccountClick}
-            end
           >
             {({ isActive }) => (
               <>
@@ -115,14 +121,17 @@ const AppHeader = () => {
           burgerMenuActive ? styles.active : "",
         ])}
       >
-        <li className={styles.headerDropdownItem}>
+        <li
+          className={clsx([
+            styles.headerDropdownItem,
+            styles.headerDropdownSubmenuItem,
+          ])}
+        >
           <NavLink
             to="/profile"
             className={({ isActive }) =>
               `${clsx([styles.tabMobile, isActive ? styles.tabTitleActive : styles.tabTitle])}`
             }
-            onClick={handleAccountClick}
-            end
           >
             {({ isActive }) => (
               <>
@@ -131,6 +140,39 @@ const AppHeader = () => {
               </>
             )}
           </NavLink>
+
+          <ul className={styles.submenuList}>
+            <li>
+              <NavLink
+                to="/profile"
+                className={({ isActive }) =>
+                  `${clsx([styles.tabMobile, isActive ? styles.tabTitleActive : styles.tabTitle])}`
+                }
+                end
+              >
+                Профиль
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/profile/orders"
+                className={({ isActive }) =>
+                  `${clsx([styles.tabMobile, isActive ? styles.tabTitleActive : styles.tabTitle])}`
+                }
+              >
+                История заказов
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                onClick={handleLogout}
+                to="/login"
+                className={`${clsx([styles.tabMobile, styles.tabTitle])}`}
+              >
+                Выход
+              </NavLink>
+            </li>
+          </ul>
         </li>
         <li className={styles.headerDropdownItem}>
           <NavLink
@@ -138,7 +180,6 @@ const AppHeader = () => {
             className={({ isActive }) =>
               `${clsx([styles.tabMobile, isActive ? styles.tabTitleActive : styles.tabTitle])}`
             }
-            onClick={handleConstructorClick}
           >
             {({ isActive }) => (
               <>
@@ -150,7 +191,7 @@ const AppHeader = () => {
         </li>
         <li className={styles.headerDropdownItem}>
           <NavLink
-            to="/profile/orders"
+            to="/feed"
             className={({ isActive }) =>
               `${clsx([styles.tabMobile, isActive ? styles.tabTitleActive : styles.tabTitle])}`
             }

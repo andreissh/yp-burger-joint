@@ -1,11 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import type { PayloadAction } from "@reduxjs/toolkit";
 import { checkAuth } from "../thunks/checkAuthThunk";
+import type { ApiError } from "../../types/types";
 
 type AuthState = {
   isAuth: boolean;
   loading: boolean;
-  error: string | null;
+  error: ApiError | null;
 };
 
 const initialState: AuthState = {
@@ -18,9 +18,6 @@ export const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setIsAuth(state, action: PayloadAction<boolean>) {
-      state.isAuth = action.payload;
-    },
     setLoginState(state, action) {
       state.isAuth = true;
       state.loading = false;
@@ -47,14 +44,14 @@ export const authSlice = createSlice({
         state.loading = false;
         state.error = null;
       })
-      .addCase(checkAuth.rejected, (state) => {
+      .addCase(checkAuth.rejected, (state, action) => {
         state.isAuth = false;
         state.loading = false;
-        state.error = "Auth check failed";
+        state.error = action.payload ?? { message: "Auth check failed" };
       });
   },
 });
 
-export const { setIsAuth, setLoginState, setLogoutState } = authSlice.actions;
+export const { setLoginState, setLogoutState } = authSlice.actions;
 
 export default authSlice.reducer;

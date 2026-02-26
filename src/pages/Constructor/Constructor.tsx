@@ -4,7 +4,7 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import BurgerIngredients from "../../components/Constructor/BurgerIngredients/BurgerIngredients";
 import BurgerConstructor from "../../components/Constructor/BurgerConstructor/BurgerConstructor";
-import { useAppDispatch, useAppSelector } from "../../services/hooks";
+import { useAppDispatch, useAppSelector } from "../../services/store/hooks";
 import type { IngredientSelected } from "../../types/types";
 import {
   addIngredient,
@@ -14,7 +14,7 @@ import {
 const Constructor = () => {
   const { loading, error } = useAppSelector((state) => state.ingredients);
   const dispatch = useAppDispatch();
-  const { data: ingredientsSelected } = useAppSelector(
+  const { ingredientsSelected } = useAppSelector(
     (state) => state.ingredientsSelected,
   );
   const ingredientsSelectedRef = useRef(ingredientsSelected);

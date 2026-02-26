@@ -4,7 +4,7 @@ import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import Scrollbars from "rc-scrollbars";
 import { ingredientsTabs } from "../../../utils/utils";
 import type { IngredientSelected } from "../../../types/types";
-import { useAppSelector } from "../../../services/hooks";
+import { useAppSelector } from "../../../services/store/hooks";
 import BurgerIngredientsList from "./BurgerIngredientsList/BurgerIngredientsList";
 
 type Props = {
@@ -13,7 +13,7 @@ type Props = {
 
 const BurgerIngredients = ({ onIngredientsSelectedChange }: Props) => {
   const [activeTab, setActiveTab] = useState(1);
-  const { data: ingredients } = useAppSelector((state) => state.ingredients);
+  const { ingredients } = useAppSelector((state) => state.ingredients);
   const sections = ingredientsTabs.map((tab) => ({
     ...tab,
     products: ingredients.filter((i) => i.type === tab.type),
