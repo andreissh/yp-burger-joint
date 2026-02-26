@@ -1,5 +1,5 @@
 import { setLogoutState } from "../services/slices/authSlice";
-import { store } from "../services/store";
+import { store } from "../services/store/store";
 import { baseUrl } from "../utils/consts";
 
 export const fetchApi = async <T>(

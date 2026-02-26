@@ -1,6 +1,6 @@
 import React from "react";
 import { Navigate, useLocation } from "react-router";
-import { useAppSelector } from "../services/hooks";
+import { useAppSelector } from "../services/store/hooks";
 
 type ProtectedRouteElementProps = {
   element: React.ReactElement;

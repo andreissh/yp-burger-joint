@@ -4,7 +4,7 @@ import {
   Button,
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useAppDispatch, useAppSelector } from "../../../services/hooks";
+import { useAppDispatch, useAppSelector } from "../../../services/store/hooks";
 import { updateUserInfo } from "../../../services/thunks/updateUserInfoThunk";
 import { getUserInfo } from "../../../services/thunks/getUserInfoThunk";
 

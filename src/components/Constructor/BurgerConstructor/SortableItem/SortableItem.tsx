@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import styles from "./SortableItem.module.scss";
 import { DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useAppSelector } from "../../../../services/hooks";
+import { useAppSelector } from "../../../../services/store/hooks";
 import { SORT_INGREDIENTS } from "../../../../shared/constants";
 import { useMediaQuery } from "usehooks-ts";
 

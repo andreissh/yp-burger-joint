@@ -4,7 +4,7 @@ import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import Scrollbars from "rc-scrollbars";
 import { ingredientsTabs } from "../../../utils/utils";
 import type { IngredientSelected } from "../../../types/types";
-import { useAppSelector } from "../../../services/hooks";
+import { useAppSelector } from "../../../services/store/hooks";
 import BurgerIngredientsList from "./BurgerIngredientsList/BurgerIngredientsList";
 
 type Props = {

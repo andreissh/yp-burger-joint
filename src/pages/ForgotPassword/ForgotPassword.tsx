@@ -6,7 +6,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useNavigate } from "react-router";
 import { forgotPassword } from "../../services/thunks/forgotPasswordThunk";
-import { useAppDispatch } from "../../services/hooks";
+import { useAppDispatch } from "../../services/store/hooks";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();

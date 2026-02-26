@@ -9,7 +9,10 @@ import { v4 as uuidv4 } from "uuid";
 import DraggableIngredient from "./DraggableIngredient/DraggableIngredient";
 import { useNavigate, useParams } from "react-router";
 import type { Ingredient, IngredientSelected } from "../../../../types/types";
-import { useAppDispatch, useAppSelector } from "../../../../services/hooks";
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "../../../../services/store/hooks";
 import { addCurrentIngredient } from "../../../../services/slices/ingredientCurrentSlice";
 
 type Props = {

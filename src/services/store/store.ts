@@ -1,11 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
-import ingredientsReducer from "./slices/ingredientsSlice";
-import ingredientsSelectedReducer from "./slices/ingredientsSelectedSlice";
-import ingredientCurrentReducer from "./slices/ingredientCurrentSlice";
-import ingredientsOrderReducer from "./slices/ingredientsOrderSlice";
-import authReducer from "./slices/authSlice";
-import profileReducer from "./slices/profileSlice";
-import { errorLogger } from "./middlewares/errorLogger";
+import ingredientsReducer from "../slices/ingredientsSlice";
+import ingredientsSelectedReducer from "../slices/ingredientsSelectedSlice";
+import ingredientCurrentReducer from "../slices/ingredientCurrentSlice";
+import ingredientsOrderReducer from "../slices/ingredientsOrderSlice";
+import authReducer from "../slices/authSlice";
+import profileReducer from "../slices/profileSlice";
+import { errorLogger } from "../middlewares/errorLogger";
 
 export const store = configureStore({
   reducer: {

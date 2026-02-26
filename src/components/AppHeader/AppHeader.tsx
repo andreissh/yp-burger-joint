@@ -10,7 +10,7 @@ import logoMobile from "../../assets/images/logo-mobile.svg";
 import { NavLink, useLocation } from "react-router";
 import clsx from "clsx";
 import { logout } from "../../services/thunks/logoutThunk";
-import { useAppDispatch } from "../../services/hooks";
+import { useAppDispatch } from "../../services/store/hooks";
 import { setLogoutState } from "../../services/slices/authSlice";
 
 const AppHeader = () => {

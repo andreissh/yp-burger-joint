@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import styles from "./Profile.module.scss";
-import { useAppDispatch, useAppSelector } from "../../services/hooks";
+import { useAppDispatch, useAppSelector } from "../../services/store/hooks";
 import { NavLink, Outlet } from "react-router";
 import { setLogoutState } from "../../services/slices/authSlice";
 import { logout } from "../../services/thunks/logoutThunk";

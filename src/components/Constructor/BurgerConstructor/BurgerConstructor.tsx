@@ -9,7 +9,7 @@ import Scrollbars from "rc-scrollbars";
 import Modal from "../../../shared/Modal/Modal";
 import OrderDetails from "./OrderDetails/OrderDetails";
 import { useModal } from "../../../hooks/useModal";
-import { useAppDispatch, useAppSelector } from "../../../services/hooks";
+import { useAppDispatch, useAppSelector } from "../../../services/store/hooks";
 import {
   removeAllIngredients,
   removeIngredient,

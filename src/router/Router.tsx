@@ -12,7 +12,7 @@ import OrderHistory from "../components/Profile/OrderHistory/OrderHistory";
 import Modal from "../shared/Modal/Modal";
 import IngredientDetails from "../shared/IngredientDetails/IngredientDetails";
 import IngredientPage from "../pages/IngredientPage/IngredientPage";
-import { useAppDispatch } from "../services/hooks";
+import { useAppDispatch } from "../services/store/hooks";
 import { removeCurrentIngredient } from "../services/slices/ingredientCurrentSlice";
 import { useModal } from "../hooks/useModal";
 import OrderFeed from "../pages/OrderFeed/OrderFeed";

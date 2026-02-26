@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./OrderDetails.module.scss";
 import orderAccepted from "../../../../assets/images/order-accepted.svg";
-import { useAppSelector } from "../../../../services/hooks";
+import { useAppSelector } from "../../../../services/store/hooks";
 import { PacmanLoader } from "react-spinners";
 
 const OrderDetails = () => {
