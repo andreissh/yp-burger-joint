@@ -18,6 +18,10 @@
   }
 }
 
+.orderHistoryLink {
+  color: var(--fg-color-primary);
+}
+
 .orderHistoryList {
   display: flex;
   flex-direction: column;
@@ -26,7 +30,55 @@
 }
 
 .orderHistoryItem {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
   min-height: 246px;
+  padding: 24px;
   border-radius: 40px;
   background-color: var(--bg-color-primary);
+}
+
+.orderHistoryNumberBlock {
+  display: flex;
+  justify-content: space-between;
+}
+
+.orderHistoryNumber {
+  font-size: 28px;
+  line-height: 24px;
+}
+
+.orderHistoryTime {
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--fg-color-secondary);
+}
+
+.orderHistoryNameBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.orderHistoryIngredientsBlock {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+}
+
+.orderHistoryIngredientsImg {
+  width: 64px;
+  height: 64px;
+}
+
+.orderHistoryPriceBlock {
+  display: flex;
+  gap: 8px;
+}
+
+.orderHistoryPrice {
+  font-size: 28px;
+  line-height: 24px;
 }

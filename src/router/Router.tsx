@@ -66,11 +66,11 @@ const Router = () => {
               <ProtectedRouteElement element={<OrderHistory />} onlyAuth />
             }
           ></Route>
-          <Route
-            path="orders/:id"
-            element={<ProtectedRouteElement element={<OrderInfo />} onlyAuth />}
-          ></Route>
         </Route>
+        <Route
+          path="profile/orders/:id"
+          element={<ProtectedRouteElement element={<OrderInfo />} onlyAuth />}
+        ></Route>
 
         <Route
           path="/login"

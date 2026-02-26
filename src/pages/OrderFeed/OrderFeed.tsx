@@ -3,6 +3,7 @@ import styles from "./OrderFeed.module.scss";
 import clsx from "clsx";
 import Scrollbars from "rc-scrollbars";
 import { Link } from "react-router";
+import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 
 const OrderFeed = () => {
   return (
@@ -12,8 +13,49 @@ const OrderFeed = () => {
         <div className={styles.feedContainer}>
           <Scrollbars style={{ width: "100%", height: 700 }}>
             <ul className={styles.feedList}>
-              <Link to="/feed/1">
-                <li className={styles.feedItem}></li>
+              <Link className={styles.feedLink} to="/feed/1">
+                <li className={styles.feedItem}>
+                  <div className={styles.feedItemNumberBlock}>
+                    <span
+                      className={clsx([
+                        styles.feedItemNumber,
+                        "iceland-regular",
+                      ])}
+                    >
+                      #034535
+                    </span>
+                    <span className={styles.feedItemTime}>Сегодня, 16:20</span>
+                  </div>
+                  <h2 className={styles.feedItemName}>
+                    Death Star Starship Main бургер
+                  </h2>
+                  <div className={styles.feedItemIngredientsBlock}>
+                    <div className={styles.feedItemIngredients}>
+                      {Array(7)
+                        .fill("")
+                        .map((_) => {
+                          return (
+                            <img
+                              className={styles.feedItemIngredientsImg}
+                              src=""
+                              alt=""
+                            />
+                          );
+                        })}
+                    </div>
+                    <div className={styles.feedItemPriceBlock}>
+                      <span
+                        className={clsx([
+                          styles.feedItemPrice,
+                          "iceland-regular",
+                        ])}
+                      >
+                        480
+                      </span>
+                      <CurrencyIcon type="primary" />
+                    </div>
+                  </div>
+                </li>
               </Link>
               <Link to="/feed/1">
                 <li className={styles.feedItem}></li>
