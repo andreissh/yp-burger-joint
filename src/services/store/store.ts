@@ -5,8 +5,9 @@ import ingredientCurrentReducer from "../slices/ingredientCurrentSlice";
 import ingredientsOrderReducer from "../slices/ingredientsOrderSlice";
 import authReducer from "../slices/authSlice";
 import profileReducer from "../slices/profileSlice";
-import websocketReducer from "../slices/wsSlice";
+import wsReducer from "../slices/wsSlice";
 import { errorLogger } from "../middlewares/errorLogger";
+import { wsMiddleware } from "../middlewares/wsMiddleware";
 
 export const store = configureStore({
   reducer: {
@@ -16,10 +17,10 @@ export const store = configureStore({
     ingredientsSelected: ingredientsSelectedReducer,
     auth: authReducer,
     profile: profileReducer,
-    websocket: websocketReducer,
+    websocket: wsReducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(errorLogger),
+    getDefaultMiddleware().concat(wsMiddleware).concat(errorLogger),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

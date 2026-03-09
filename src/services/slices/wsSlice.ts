@@ -1,5 +1,5 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import { type WebSocketMessage, WebSocketStatus } from "../../types/types";
+import { type WebSocketMessage, WebSocketStatus } from "../../types/ws";
 
 type WebSocketState = {
   status: WebSocketStatus;
@@ -25,7 +25,6 @@ const wsSlice = createSlice({
     addMessage: (state, action: PayloadAction<WebSocketMessage>) => {
       state.messages.push(action.payload);
       state.lastMessage = action.payload;
-      state.error = null;
     },
     setError: (state, action: PayloadAction<string>) => {
       state.error = action.payload;
