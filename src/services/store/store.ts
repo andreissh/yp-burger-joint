@@ -6,6 +6,7 @@ import ingredientsOrderReducer from "../slices/ingredientsOrderSlice";
 import authReducer from "../slices/authSlice";
 import profileReducer from "../slices/profileSlice";
 import wsReducer from "../slices/wsSlice";
+import orderCurrentReducer from "../slices/orderCurrentSlice";
 import { errorLogger } from "../middlewares/errorLogger";
 import { wsMiddleware } from "../middlewares/wsMiddleware";
 
@@ -18,6 +19,7 @@ export const store = configureStore({
     auth: authReducer,
     profile: profileReducer,
     websocket: wsReducer,
+    orderCurrent: orderCurrentReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(wsMiddleware).concat(errorLogger),

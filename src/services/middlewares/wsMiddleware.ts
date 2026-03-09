@@ -18,11 +18,19 @@ export const wsMiddleware: Middleware = (store) => (next) => (action) => {
       withTokenRefresh,
     } = action.payload;
 
+    if (socket) {
+      socket.close();
+      socket = null;
+      if (reconnectTimer) {
+        clearTimeout(reconnectTimer);
+        reconnectTimer = null;
+      }
+    }
+
     let wsUrl = url;
 
     if (withTokenRefresh) {
       const token = localStorage.getItem("accessToken")?.replace("Bearer ", "");
-      console.log(token);
 
       if (token) {
         wsUrl = `${url}?token=${token}`;

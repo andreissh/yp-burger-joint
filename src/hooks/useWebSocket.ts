@@ -10,7 +10,6 @@ export const useWebSocket = (url: string, withTokenRefresh = false) => {
   );
 
   useEffect(() => {
-    console.log("WS CONNECT");
     dispatch(wsConnect({ url, withTokenRefresh }));
 
     return () => {

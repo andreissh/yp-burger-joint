@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import styles from "./OrderFeed.module.scss";
 import clsx from "clsx";
 import Scrollbars from "rc-scrollbars";
-import { Link } from "react-router";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useWebSocket } from "../../hooks/useWebSocket";
 import { wsOrdersUrl } from "../../utils/consts";
-import { useAppSelector } from "../../services/store/hooks";
+import { useAppDispatch, useAppSelector } from "../../services/store/hooks";
+import type { Order } from "../../types/ws";
+import { addOrderCurrent } from "../../services/slices/orderCurrentSlice";
+import { useNavigate } from "react-router";
 
 const OrderFeed = () => {
   const { lastMessage } = useWebSocket(`${wsOrdersUrl}/orders/all`);
@@ -15,6 +17,8 @@ const OrderFeed = () => {
   const [ordersTotalToday, setOrdersTotalToday] = useState(0);
   const [ordersDone, setOrdersDone] = useState<number[]>([]);
   const [ordersPending, setOrdersPending] = useState<number[]>([]);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const getTotalPrice = (orderIngredients: string[]) => {
     return orderIngredients.reduce((a: number, c: string) => {
@@ -26,6 +30,13 @@ const OrderFeed = () => {
 
       return a + ingredient.price;
     }, 0);
+  };
+
+  const handleFeedItemClick = (order: Order) => {
+    dispatch(addOrderCurrent(order));
+    navigate(`/feed/${order._id}`, {
+      state: { background: window.location.pathname },
+    });
   };
 
   useEffect(() => {
@@ -58,65 +69,63 @@ const OrderFeed = () => {
             <ul className={styles.feedList}>
               {lastMessage?.orders.map((order) => {
                 return (
-                  <Link
-                    className={styles.feedLink}
-                    to={`/feed/${order._id}`}
+                  <li
+                    className={styles.feedItem}
                     key={order._id}
+                    onClick={() => handleFeedItemClick(order)}
                   >
-                    <li className={styles.feedItem}>
-                      <div className={styles.feedItemNumberBlock}>
+                    <div className={styles.feedItemNumberBlock}>
+                      <span
+                        className={clsx([
+                          styles.feedItemNumber,
+                          "iceland-regular",
+                        ])}
+                      >
+                        #{order.number}
+                      </span>
+                      <span className={styles.feedItemTime}>
+                        {order.updatedAt}
+                      </span>
+                    </div>
+                    <h2 className={styles.feedItemName}>{order.name}</h2>
+                    <div className={styles.feedItemIngredientsBlock}>
+                      <div className={styles.feedItemIngredients}>
+                        {order.ingredients.map((ingredient, i) => {
+                          const currentIngredient = ingredients.find(
+                            (item) => item._id === ingredient,
+                          );
+                          if (!currentIngredient) {
+                            throw new Error(
+                              `Ingredient with id ${ingredient} not found in store`,
+                            );
+                          }
+                          return (
+                            <span
+                              className={styles.feedItemIngredientImgWrapper}
+                              key={`${order._id}-ingredient-${i}`}
+                            >
+                              <img
+                                className={styles.feedItemIngredientImg}
+                                src={currentIngredient.image_mobile}
+                                alt="Ингредиент"
+                              />
+                            </span>
+                          );
+                        })}
+                      </div>
+                      <div className={styles.feedItemPriceBlock}>
                         <span
                           className={clsx([
-                            styles.feedItemNumber,
+                            styles.feedItemPrice,
                             "iceland-regular",
                           ])}
                         >
-                          #{order.number}
+                          {getTotalPrice(order.ingredients)}
                         </span>
-                        <span className={styles.feedItemTime}>
-                          {order.updatedAt}
-                        </span>
+                        <CurrencyIcon type="primary" />
                       </div>
-                      <h2 className={styles.feedItemName}>{order.name}</h2>
-                      <div className={styles.feedItemIngredientsBlock}>
-                        <div className={styles.feedItemIngredients}>
-                          {order.ingredients.map((ingredient, i) => {
-                            const currentIngredient = ingredients.find(
-                              (item) => item._id === ingredient,
-                            );
-                            if (!currentIngredient) {
-                              throw new Error(
-                                `Ingredient with id ${ingredient} not found in store`,
-                              );
-                            }
-                            return (
-                              <span
-                                className={styles.feedItemIngredientImgWrapper}
-                                key={`${order._id}-ingredient-${i}`}
-                              >
-                                <img
-                                  className={styles.feedItemIngredientImg}
-                                  src={currentIngredient.image_mobile}
-                                  alt="Ингредиент"
-                                />
-                              </span>
-                            );
-                          })}
-                        </div>
-                        <div className={styles.feedItemPriceBlock}>
-                          <span
-                            className={clsx([
-                              styles.feedItemPrice,
-                              "iceland-regular",
-                            ])}
-                          >
-                            {getTotalPrice(order.ingredients)}
-                          </span>
-                          <CurrencyIcon type="primary" />
-                        </div>
-                      </div>
-                    </li>
-                  </Link>
+                    </div>
+                  </li>
                 );
               })}
             </ul>

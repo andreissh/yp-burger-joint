@@ -18,6 +18,7 @@ import { useModal } from "../hooks/useModal";
 import OrderFeed from "../pages/OrderFeed/OrderFeed";
 import ProfileForm from "../components/Profile/ProfileForm/ProfileForm";
 import OrderInfo from "../shared/OrderInfo/OrderInfo";
+import { removeOrderCurrent } from "../services/slices/orderCurrentSlice";
 
 const Router = () => {
   const location = useLocation();
@@ -28,6 +29,12 @@ const Router = () => {
 
   const handleCloseIngredientDetailsModal = () => {
     dispatch(removeCurrentIngredient());
+    navigate(-1);
+    closeModal();
+  };
+
+  const handleCloseOrderInfoModal = () => {
+    dispatch(removeOrderCurrent());
     navigate(-1);
     closeModal();
   };
@@ -113,6 +120,14 @@ const Router = () => {
               </Modal>
             }
           />
+          <Route
+            path="feed/:id"
+            element={
+              <Modal onClose={handleCloseOrderInfoModal}>
+                <OrderInfo />
+              </Modal>
+            }
+          ></Route>
         </Routes>
       )}
     </>
