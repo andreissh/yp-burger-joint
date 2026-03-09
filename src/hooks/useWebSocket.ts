@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../services/store/hooks";
 import { wsConnect, wsDisconnect, wsSend } from "../services/actions/wsActions";
 
-export const useWebSocket = (url: string) => {
+export const useWebSocket = (url: string, withTokenRefresh = false) => {
   const dispatch = useAppDispatch();
 
   const { status, lastMessage, messages, error } = useAppSelector(
@@ -10,12 +10,13 @@ export const useWebSocket = (url: string) => {
   );
 
   useEffect(() => {
-    dispatch(wsConnect({ url }));
+    console.log("WS CONNECT");
+    dispatch(wsConnect({ url, withTokenRefresh }));
 
     return () => {
-      dispatch(wsDisconnect());
+      dispatch(wsDisconnect({ url }));
     };
-  }, [dispatch, url]);
+  }, [dispatch, url, withTokenRefresh]);
 
   const sendMessage = (event: string, data: unknown) => {
     dispatch(wsSend({ event, data }));

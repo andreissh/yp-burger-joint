@@ -15,9 +15,21 @@ export const wsMiddleware: Middleware = (store) => (next) => (action) => {
       url,
       reconnectAttempts: maxAttempts = 5,
       reconnectInterval = 3000,
+      withTokenRefresh,
     } = action.payload;
 
-    socket = new WebSocket(url);
+    let wsUrl = url;
+
+    if (withTokenRefresh) {
+      const token = localStorage.getItem("accessToken")?.replace("Bearer ", "");
+      console.log(token);
+
+      if (token) {
+        wsUrl = `${url}?token=${token}`;
+      }
+    }
+
+    socket = new WebSocket(wsUrl);
 
     dispatch(setStatus(WebSocketStatus.CONNECTING));
 

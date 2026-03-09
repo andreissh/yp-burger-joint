@@ -68,9 +68,36 @@
   gap: 24px;
 }
 
-.orderHistoryIngredientsImg {
+.orderHistoryItemImgWrapper {
+  position: relative;
+  display: inline-block;
   width: 64px;
   height: 64px;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: var(--bg-color-dark-100);
+}
+
+.orderHistoryItemImgWrapper::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 3px;
+  border-radius: 50%;
+  background: linear-gradient(90deg, #801ab2 0%, #4c4cff 100%);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.orderHistoryItemImg {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  transform: scale(1.5);
 }
 
 .orderHistoryPriceBlock {

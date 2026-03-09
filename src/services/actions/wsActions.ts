@@ -3,7 +3,7 @@ import { type WebSocketConfig } from "../../types/ws";
 
 export const wsConnect = createAction<WebSocketConfig>("ws/connect");
 
-export const wsDisconnect = createAction("ws/disconnect");
+export const wsDisconnect = createAction<{ url: string }>("ws/disconnect");
 
 export const wsSend = createAction<{
   event: string;

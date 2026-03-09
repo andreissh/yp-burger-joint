@@ -15,6 +15,7 @@ export type WebSocketConfig = {
   url: string;
   reconnectAttempts?: number;
   reconnectInterval?: number;
+  withTokenRefresh?: boolean;
 };
 
 export type Order = {
@@ -22,7 +23,7 @@ export type Order = {
   ingredients: string[];
   name: string;
   number: number;
-  status: "done";
+  status: "created" | "pending" | "done";
   updatedAt: string;
   _id: string;
 };

@@ -9,12 +9,12 @@ import { wsOrdersUrl } from "../../utils/consts";
 import { useAppSelector } from "../../services/store/hooks";
 
 const OrderFeed = () => {
-  const { messages, lastMessage } = useWebSocket(wsOrdersUrl);
+  const { lastMessage } = useWebSocket(`${wsOrdersUrl}/orders/all`);
   const { ingredients } = useAppSelector((state) => state.ingredients);
   const [ordersTotal, setOrdersTotal] = useState(0);
   const [ordersTotalToday, setOrdersTotalToday] = useState(0);
   const [ordersDone, setOrdersDone] = useState<number[]>([]);
-  const [ordersInProcess, setOrdersInProcess] = useState<number[]>([]);
+  const [ordersPending, setOrdersPending] = useState<number[]>([]);
 
   const getTotalPrice = (orderIngredients: string[]) => {
     return orderIngredients.reduce((a: number, c: string) => {
@@ -29,30 +29,24 @@ const OrderFeed = () => {
   };
 
   useEffect(() => {
-    const done: number[] = [];
-    const inProcess: number[] = [];
-
-    messages.forEach((message) => {
-      if (done.length > 9 && inProcess.length > 9) return;
-      message.orders.forEach((order) => {
-        if (done.length > 9 && inProcess.length > 9) return;
-        if (order.status === "done") {
-          if (done.length <= 9) done.push(order.number);
-        } else {
-          if (inProcess.length <= 9) inProcess.push(order.number);
-        }
-      });
-    });
-
-    setOrdersDone(done);
-    setOrdersInProcess(inProcess);
-  }, [messages]);
-
-  useEffect(() => {
     if (!lastMessage) return;
+
+    const done: number[] = [];
+    const pending: number[] = [];
+
+    lastMessage.orders.forEach((order) => {
+      if (done.length > 9 && pending.length > 9) return;
+      if (order.status === "done") {
+        if (done.length <= 9) done.push(order.number);
+      } else if (order.status === "pending") {
+        if (pending.length <= 9) pending.push(order.number);
+      }
+    });
 
     setOrdersTotal(lastMessage.total);
     setOrdersTotalToday(lastMessage.totalToday);
+    setOrdersDone(done);
+    setOrdersPending(pending);
   }, [lastMessage]);
 
   return (
@@ -64,7 +58,11 @@ const OrderFeed = () => {
             <ul className={styles.feedList}>
               {lastMessage?.orders.map((order) => {
                 return (
-                  <Link className={styles.feedLink} to={`/feed/${order._id}`}>
+                  <Link
+                    className={styles.feedLink}
+                    to={`/feed/${order._id}`}
+                    key={order._id}
+                  >
                     <li className={styles.feedItem}>
                       <div className={styles.feedItemNumberBlock}>
                         <span
@@ -82,7 +80,7 @@ const OrderFeed = () => {
                       <h2 className={styles.feedItemName}>{order.name}</h2>
                       <div className={styles.feedItemIngredientsBlock}>
                         <div className={styles.feedItemIngredients}>
-                          {order.ingredients.map((ingredient) => {
+                          {order.ingredients.map((ingredient, i) => {
                             const currentIngredient = ingredients.find(
                               (item) => item._id === ingredient,
                             );
@@ -94,6 +92,7 @@ const OrderFeed = () => {
                             return (
                               <span
                                 className={styles.feedItemIngredientImgWrapper}
+                                key={`${order._id}-ingredient-${i}`}
                               >
                                 <img
                                   className={styles.feedItemIngredientImg}
@@ -135,6 +134,7 @@ const OrderFeed = () => {
                         styles.feedOrdersReadyItem,
                         "iceland-regular",
                       ])}
+                      key={order}
                     >
                       {order}
                     </li>
@@ -145,13 +145,14 @@ const OrderFeed = () => {
             <div className={styles.feedOrdersInProgress}>
               <h2 className={styles.feedOrdersInProgressTitle}>В работе:</h2>
               <ul className={styles.feedOrdersInProgressList}>
-                {ordersInProcess.map((order) => {
+                {ordersPending.map((order) => {
                   return (
                     <li
                       className={clsx([
                         styles.feedOrdersInProgressItem,
                         "iceland-regular",
                       ])}
+                      key={order}
                     >
                       {order}
                     </li>
