@@ -138,3 +138,9 @@ export type UserInfoUpdateResponse = {
     name: string;
   };
 };
+
+export enum OrderStatus {
+  pending = "Готовится",
+  done = "Выполнено",
+  created = "Создано",
+}

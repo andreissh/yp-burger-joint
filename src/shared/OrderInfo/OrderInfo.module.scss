@@ -31,11 +31,20 @@
 
 .orderStatus {
   margin-bottom: 60px;
-  color: var(--fg-color-success);
+
+  &.orderStatusSuccess {
+    color: var(--fg-color-success);
+  }
 }
 
 .orderListTitle {
   margin-bottom: 24px;
+}
+
+.orderList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .orderItem {
@@ -46,9 +55,36 @@
   gap: 16px;
 }
 
+.orderItemImgWrapper {
+  position: relative;
+  display: inline-block;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: var(--bg-color-dark-100);
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    padding: 3px;
+    border-radius: 50%;
+    background: linear-gradient(90deg, #801ab2 0%, #4c4cff 100%);
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+}
+
 .orderItemImg {
   width: 64px;
   height: 64px;
+  object-fit: contain;
+  transform: scale(1.5);
 }
 
 .orderItemName {

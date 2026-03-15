@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from "../../services/store/hooks";
 import type { Order } from "../../types/ws";
 import { addOrderCurrent } from "../../services/slices/orderCurrentSlice";
 import { useNavigate } from "react-router";
+import { formatOrderDate } from "../../utils/utils";
 
 const OrderFeed = () => {
   const { lastMessage } = useWebSocket(`${wsOrdersUrl}/orders/all`);
@@ -84,21 +85,27 @@ const OrderFeed = () => {
                         #{order.number}
                       </span>
                       <span className={styles.feedItemTime}>
-                        {order.updatedAt}
+                        {formatOrderDate(order.updatedAt)}
                       </span>
                     </div>
                     <h2 className={styles.feedItemName}>{order.name}</h2>
                     <div className={styles.feedItemIngredientsBlock}>
                       <div className={styles.feedItemIngredients}>
-                        {order.ingredients.map((ingredient, i) => {
+                        {order.ingredients.slice(0, 6).map((ingredient, i) => {
                           const currentIngredient = ingredients.find(
                             (item) => item._id === ingredient,
                           );
+
                           if (!currentIngredient) {
                             throw new Error(
                               `Ingredient with id ${ingredient} not found in store`,
                             );
                           }
+
+                          const extraCount = order.ingredients.length - 5;
+                          const isLastVisible =
+                            i === 5 && order.ingredients.length > 6;
+
                           return (
                             <span
                               className={styles.feedItemIngredientImgWrapper}
@@ -109,6 +116,14 @@ const OrderFeed = () => {
                                 src={currentIngredient.image_mobile}
                                 alt="Ингредиент"
                               />
+
+                              {isLastVisible && (
+                                <span
+                                  className={styles.feedItemIngredientOverlay}
+                                >
+                                  +{extraCount}
+                                </span>
+                              )}
                             </span>
                           );
                         })}

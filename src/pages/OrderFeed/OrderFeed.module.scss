@@ -132,6 +132,18 @@
   transform: scale(1.5);
 }
 
+.feedItemIngredientOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 700;
+  background-color: var(--bg-color-blur);
+  border-radius: 50%;
+}
+
 .feedItemPriceBlock {
   display: flex;
   gap: 8px;

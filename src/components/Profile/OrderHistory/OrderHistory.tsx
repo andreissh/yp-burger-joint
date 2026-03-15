@@ -9,6 +9,8 @@ import { wsOrdersUrl } from "../../../utils/consts";
 import { useAppDispatch, useAppSelector } from "../../../services/store/hooks";
 import type { Order } from "../../../types/ws";
 import { addOrderCurrent } from "../../../services/slices/orderCurrentSlice";
+import { OrderStatus } from "../../../types/types";
+import { formatOrderDate } from "../../../utils/utils";
 
 const OrderHistory = () => {
   const { lastMessage } = useWebSocket(`${wsOrdersUrl}/orders`, true);
@@ -61,36 +63,57 @@ const OrderHistory = () => {
                         {order.number}
                       </span>
                       <span className={styles.orderHistoryTime}>
-                        {order.updatedAt}
+                        {formatOrderDate(order.updatedAt)}
                       </span>
                     </div>
                     <div className={styles.orderHistoryNameBlock}>
                       <h2 className={styles.orderHistoryName}>{order.name}</h2>
-                      <span className={styles.orderHistoryStatus}>
-                        {order.status}
+                      <span
+                        className={clsx(
+                          styles.orderHistoryStatus,
+                          order.status === "done"
+                            ? styles.orderHistoryStatusSuccess
+                            : "",
+                        )}
+                      >
+                        {OrderStatus[order.status]}
                       </span>
                     </div>
-                    <div className={styles.orderHistoryIngredientsBlock}>
-                      <div className={styles.orderHistoryIngredients}>
-                        {order.ingredients.map((ingredient, i) => {
+                    <div className={styles.orderHistoryItemsBlock}>
+                      <div className={styles.orderHistoryItems}>
+                        {order.ingredients.slice(0, 6).map((ingredient, i) => {
                           const currentIngredient = ingredients.find(
                             (item) => item._id === ingredient,
                           );
+
                           if (!currentIngredient) {
                             throw new Error(
                               `Ingredient with id ${ingredient} not found in store`,
                             );
                           }
+
+                          const extraCount = order.ingredients.length - 5;
+                          const isLastVisible =
+                            i === 5 && order.ingredients.length > 6;
+
                           return (
                             <span
                               className={styles.orderHistoryItemImgWrapper}
-                              key={`${order._id}-ingredient-${i}`}
+                              key={`${order._id}-item-${i}`}
                             >
                               <img
                                 className={styles.orderHistoryItemImg}
                                 src={currentIngredient.image_mobile}
                                 alt="Ингредиент"
                               />
+
+                              {isLastVisible && (
+                                <span
+                                  className={styles.orderHistoryItemOverlay}
+                                >
+                                  +{extraCount}
+                                </span>
+                              )}
                             </span>
                           );
                         })}

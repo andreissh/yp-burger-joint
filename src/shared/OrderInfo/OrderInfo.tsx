@@ -8,6 +8,8 @@ import { useLocation, useParams } from "react-router";
 import { addOrderCurrent } from "../../services/slices/orderCurrentSlice";
 import { useWebSocket } from "../../hooks/useWebSocket";
 import { wsOrdersUrl } from "../../utils/consts";
+import { OrderStatus } from "../../types/types";
+import { formatOrderDate } from "../../utils/utils";
 
 const getIngredientsCount = (ingredients: string[]) => {
   return ingredients.reduce((a: Record<string, number>, c) => {
@@ -68,22 +70,35 @@ const OrderInfo = ({ withToken = false }: { withToken?: boolean }) => {
   return (
     <div className={isModal ? styles.modalContainer : styles.container}>
       <span className={clsx([styles.orderNumber, "iceland-regular"])}>
-        {number}
+        #{number}
       </span>
       <h2 className={styles.orderName}>{name}</h2>
-      <span className={styles.orderStatus}>{status}</span>
+      <span
+        className={clsx([
+          styles.orderStatus,
+          status === "done" ? styles.orderStatusSuccess : "",
+        ])}
+      >
+        {OrderStatus[status]}
+      </span>
       <h2 className={styles.orderListTitle}>Состав:</h2>
       <Scrollbars style={{ width: "100%", height: 320 }}>
-        <ul>
+        <ul className={styles.orderList}>
           {Object.entries(ingredientsCount).map(([ingredient, count]) => {
             const foundIngredient = allIngredients.find(
               (item) => item._id === ingredient,
             );
             if (!foundIngredient) return;
-            const { name, price } = foundIngredient;
+            const { name, price, image } = foundIngredient;
             return (
               <li className={styles.orderItem} key={ingredient}>
-                <img className={styles.orderItemImg} src="" alt="" />
+                <span className={styles.orderItemImgWrapper}>
+                  <img
+                    className={styles.orderItemImg}
+                    src={image}
+                    alt="Order Ingredient"
+                  />
+                </span>
                 <span className={styles.orderItemName}>{name}</span>
                 <div className={styles.orderItemPriceBlock}>
                   <span
@@ -99,7 +114,7 @@ const OrderInfo = ({ withToken = false }: { withToken?: boolean }) => {
         </ul>
       </Scrollbars>
       <div className={styles.orderInfo}>
-        <span className={styles.orderTime}>{updatedAt}</span>
+        <span className={styles.orderTime}>{formatOrderDate(updatedAt)}</span>
         <div className={styles.orderPriceBlock}>
           <span className={clsx([styles.orderPrice, "iceland-regular"])}>
             {totalPrice()}
