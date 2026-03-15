@@ -1,16 +1,20 @@
 import React from "react";
 import styles from "./OrderHistory.module.scss";
 import Scrollbars from "rc-scrollbars";
-import { Link } from "react-router";
+import { useNavigate } from "react-router";
 import clsx from "clsx";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useWebSocket } from "../../../hooks/useWebSocket";
 import { wsOrdersUrl } from "../../../utils/consts";
-import { useAppSelector } from "../../../services/store/hooks";
+import { useAppDispatch, useAppSelector } from "../../../services/store/hooks";
+import type { Order } from "../../../types/ws";
+import { addOrderCurrent } from "../../../services/slices/orderCurrentSlice";
 
 const OrderHistory = () => {
   const { lastMessage } = useWebSocket(`${wsOrdersUrl}/orders`, true);
   const { ingredients } = useAppSelector((state) => state.ingredients);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const getTotalPrice = (orderIngredients: string[]) => {
     return orderIngredients.reduce((a: number, c: string) => {
@@ -24,6 +28,13 @@ const OrderHistory = () => {
     }, 0);
   };
 
+  const handleOrderItemClick = (order: Order) => {
+    dispatch(addOrderCurrent(order));
+    navigate(`/profile/orders/${order._id}`, {
+      state: { background: window.location.pathname },
+    });
+  };
+
   return (
     <div className={styles.container}>
       <h1 className={styles.orderHistoryTitle}>История заказов</h1>
@@ -34,10 +45,10 @@ const OrderHistory = () => {
             .reverse()
             .map((order) => {
               return (
-                <Link
+                <li
                   className={styles.orderHistoryLink}
-                  to={`/profile/orders/${order._id}`}
                   key={order._id}
+                  onClick={() => handleOrderItemClick(order)}
                 >
                   <li className={styles.orderHistoryItem}>
                     <div className={styles.orderHistoryNumberBlock}>
@@ -97,7 +108,7 @@ const OrderHistory = () => {
                       </div>
                     </div>
                   </li>
-                </Link>
+                </li>
               );
             })}
         </ul>

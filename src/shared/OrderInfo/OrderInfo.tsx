@@ -1,55 +1,95 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./OrderInfo.module.scss";
 import clsx from "clsx";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useAppSelector } from "../../services/store/hooks";
+import { useAppDispatch, useAppSelector } from "../../services/store/hooks";
 import Scrollbars from "rc-scrollbars";
+import { useLocation, useParams } from "react-router";
+import { addOrderCurrent } from "../../services/slices/orderCurrentSlice";
+import { useWebSocket } from "../../hooks/useWebSocket";
+import { wsOrdersUrl } from "../../utils/consts";
 
-const OrderInfo = () => {
+const getIngredientsCount = (ingredients: string[]) => {
+  return ingredients.reduce((a: Record<string, number>, c) => {
+    a[c] = (a[c] || 0) + 1;
+    return a;
+  }, {});
+};
+
+const OrderInfo = ({ withToken = false }: { withToken?: boolean }) => {
   const { orderCurrent } = useAppSelector((state) => state.orderCurrent);
-  const { ingredients } = useAppSelector((state) => state.ingredients);
-  let currentOrderIngredientsMap = new Map();
+  const { id } = useParams();
+  const { lastMessage } = useWebSocket(
+    `${wsOrdersUrl}/orders${withToken ? "" : "/all"}`,
+    withToken,
+  );
+  const dispatch = useAppDispatch();
+  const { ingredients: allIngredients } = useAppSelector(
+    (state) => state.ingredients,
+  );
+  const [ingredientsCount, setIngredientsCount] = useState<
+    Record<string, number>
+  >({});
+  const location = useLocation();
+  const isModal = !!location.state?.background;
+
+  useEffect(() => {
+    if (!lastMessage) return;
+    const order = lastMessage.orders.find((order) => order._id === id);
+    if (!order) return;
+    dispatch(addOrderCurrent(order));
+  }, [dispatch, id, lastMessage]);
 
   useEffect(() => {
     if (!orderCurrent) return;
+    setIngredientsCount(getIngredientsCount(orderCurrent.ingredients));
+  }, [orderCurrent]);
 
-    orderCurrent?.ingredients.forEach((item) => {
-      const ingredient = ingredients.find(
-        (ingredient) => ingredient._id === item,
+  const totalPrice = () => {
+    if (!orderCurrent) return;
+    const ingredientsCount = getIngredientsCount(orderCurrent.ingredients);
+    let sum = 0;
+
+    Object.entries(ingredientsCount).forEach(([ingredient, count]) => {
+      const foundIngredient = allIngredients.find(
+        (item) => item._id === ingredient,
       );
-      currentOrderIngredientsMap.set(ingredient?._id, {
-        count: currentOrderIngredientsMap.get(ingredient?._id)
-          ? currentOrderIngredientsMap.get(ingredient?._id).count++
-          : 1,
-        price: ingredient?.price,
-        name: ingredient?.name,
-      });
+      if (!foundIngredient) return;
+      sum += foundIngredient.price * count;
     });
-  }, [currentOrderIngredientsMap, ingredients, orderCurrent]);
-  console.log(currentOrderIngredientsMap);
+
+    return sum;
+  };
 
   if (!orderCurrent) return null;
 
+  const { number, name, status, updatedAt } = orderCurrent;
+
   return (
-    <div className={styles.container}>
+    <div className={isModal ? styles.modalContainer : styles.container}>
       <span className={clsx([styles.orderNumber, "iceland-regular"])}>
-        {orderCurrent.number}
+        {number}
       </span>
-      <h2 className={styles.orderName}>{orderCurrent.name}</h2>
-      <span className={styles.orderStatus}>{orderCurrent.status}</span>
+      <h2 className={styles.orderName}>{name}</h2>
+      <span className={styles.orderStatus}>{status}</span>
       <h2 className={styles.orderListTitle}>Состав:</h2>
       <Scrollbars style={{ width: "100%", height: 320 }}>
-        <ul className={styles.orderList}>
-          {Array.from(currentOrderIngredientsMap).map((item) => {
+        <ul>
+          {Object.entries(ingredientsCount).map(([ingredient, count]) => {
+            const foundIngredient = allIngredients.find(
+              (item) => item._id === ingredient,
+            );
+            if (!foundIngredient) return;
+            const { name, price } = foundIngredient;
             return (
-              <li className={styles.orderItem}>
+              <li className={styles.orderItem} key={ingredient}>
                 <img className={styles.orderItemImg} src="" alt="" />
-                <span className={styles.orderItemName}>{item.name}</span>
+                <span className={styles.orderItemName}>{name}</span>
                 <div className={styles.orderItemPriceBlock}>
                   <span
                     className={clsx([styles.orderItemPrice, "iceland-regular"])}
                   >
-                    {item.count} x {item.price}
+                    {count} x {price}
                   </span>
                   <CurrencyIcon type="primary" />
                 </div>
@@ -59,10 +99,10 @@ const OrderInfo = () => {
         </ul>
       </Scrollbars>
       <div className={styles.orderInfo}>
-        <span className={styles.orderTime}>Вчера, 13:50</span>
+        <span className={styles.orderTime}>{updatedAt}</span>
         <div className={styles.orderPriceBlock}>
           <span className={clsx([styles.orderPrice, "iceland-regular"])}>
-            510
+            {totalPrice()}
           </span>
           <CurrencyIcon type="primary" />
         </div>

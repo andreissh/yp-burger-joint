@@ -50,11 +50,11 @@ const Router = () => {
 
         <Route
           path="feed"
-          element={<ProtectedRouteElement element={<OrderFeed />} onlyAuth />}
+          element={<ProtectedRouteElement element={<OrderFeed />} />}
         ></Route>
         <Route
           path="feed/:id"
-          element={<ProtectedRouteElement element={<OrderInfo />} onlyAuth />}
+          element={<ProtectedRouteElement element={<OrderInfo />} />}
         ></Route>
 
         <Route
@@ -76,7 +76,9 @@ const Router = () => {
         </Route>
         <Route
           path="profile/orders/:id"
-          element={<ProtectedRouteElement element={<OrderInfo />} onlyAuth />}
+          element={
+            <ProtectedRouteElement element={<OrderInfo withToken />} onlyAuth />
+          }
         ></Route>
 
         <Route
@@ -126,6 +128,19 @@ const Router = () => {
               <Modal onClose={handleCloseOrderInfoModal}>
                 <OrderInfo />
               </Modal>
+            }
+          ></Route>
+          <Route
+            path="profile/orders/:id"
+            element={
+              <ProtectedRouteElement
+                element={
+                  <Modal onClose={handleCloseOrderInfoModal}>
+                    <OrderInfo withToken />
+                  </Modal>
+                }
+                onlyAuth
+              />
             }
           ></Route>
         </Routes>
