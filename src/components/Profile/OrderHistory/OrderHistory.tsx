@@ -1,19 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "./OrderHistory.module.scss";
 import Scrollbars from "rc-scrollbars";
 import { useNavigate } from "react-router";
 import clsx from "clsx";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useWebSocket } from "../../../hooks/useWebSocket";
 import { wsOrdersUrl } from "../../../utils/consts";
 import { useAppDispatch, useAppSelector } from "../../../services/store/hooks";
 import type { Order } from "../../../types/ws";
 import { addOrderCurrent } from "../../../services/slices/orderCurrentSlice";
 import { OrderStatus } from "../../../types/types";
 import { formatOrderDate } from "../../../utils/utils";
+import {
+  connectOrders,
+  disconnectOrders,
+} from "../../../services/actions/ordersActions";
 
 const OrderHistory = () => {
-  const { lastMessage } = useWebSocket(`${wsOrdersUrl}/orders`, true);
+  const { lastMessage } = useAppSelector((state) => state.ordersWS);
   const { ingredients } = useAppSelector((state) => state.ingredients);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -36,6 +39,17 @@ const OrderHistory = () => {
       state: { background: window.location.pathname },
     });
   };
+
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken")?.replace("Bearer ", "");
+    if (!token) return;
+
+    dispatch(connectOrders(`${wsOrdersUrl}/orders?token=${token}`));
+
+    return () => {
+      dispatch(disconnectOrders());
+    };
+  }, [dispatch]);
 
   return (
     <div className={styles.container}>

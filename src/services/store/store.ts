@@ -5,10 +5,11 @@ import ingredientCurrentReducer from "../slices/ingredientCurrentSlice";
 import ingredientsOrderReducer from "../slices/ingredientsOrderSlice";
 import authReducer from "../slices/authSlice";
 import profileReducer from "../slices/profileSlice";
-import wsReducer from "../slices/wsSlice";
 import orderCurrentReducer from "../slices/orderCurrentSlice";
-import { errorLogger } from "../middlewares/errorLogger";
-import { wsMiddleware } from "../middlewares/wsMiddleware";
+import ordersWSReducer from "../slices/ordersWSSlice";
+import ordersAllWSReducer from "../slices/ordersAllWSSlice";
+import { ordersWSMiddleware } from "../middlewares/ordersWSMiddleware";
+import { ordersAllWSMiddleware } from "../middlewares/ordersAllWSMiddleware";
 
 export const store = configureStore({
   reducer: {
@@ -18,11 +19,15 @@ export const store = configureStore({
     ingredientsSelected: ingredientsSelectedReducer,
     auth: authReducer,
     profile: profileReducer,
-    websocket: wsReducer,
     orderCurrent: orderCurrentReducer,
+    ordersWS: ordersWSReducer,
+    ordersAllWS: ordersAllWSReducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(wsMiddleware).concat(errorLogger),
+    getDefaultMiddleware({ serializableCheck: false }).concat(
+      ordersWSMiddleware,
+      ordersAllWSMiddleware,
+    ),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

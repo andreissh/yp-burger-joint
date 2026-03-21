@@ -6,10 +6,17 @@ import { useAppDispatch, useAppSelector } from "../../services/store/hooks";
 import Scrollbars from "rc-scrollbars";
 import { useLocation, useParams } from "react-router";
 import { addOrderCurrent } from "../../services/slices/orderCurrentSlice";
-import { useWebSocket } from "../../hooks/useWebSocket";
 import { wsOrdersUrl } from "../../utils/consts";
 import { OrderStatus } from "../../types/types";
 import { formatOrderDate } from "../../utils/utils";
+import {
+  connectOrders,
+  disconnectOrders,
+} from "../../services/actions/ordersActions";
+import {
+  connectOrdersAll,
+  disconnectOrdersAll,
+} from "../../services/actions/ordersAllActions";
 
 const getIngredientsCount = (ingredients: string[]) => {
   return ingredients.reduce((a: Record<string, number>, c) => {
@@ -21,9 +28,8 @@ const getIngredientsCount = (ingredients: string[]) => {
 const OrderInfo = ({ withToken = false }: { withToken?: boolean }) => {
   const { orderCurrent } = useAppSelector((state) => state.orderCurrent);
   const { id } = useParams();
-  const { lastMessage } = useWebSocket(
-    `${wsOrdersUrl}/orders${withToken ? "" : "/all"}`,
-    withToken,
+  const { lastMessage } = useAppSelector((state) =>
+    withToken ? state.ordersWS : state.ordersAllWS,
   );
   const dispatch = useAppDispatch();
   const { ingredients: allIngredients } = useAppSelector(
@@ -34,6 +40,25 @@ const OrderInfo = ({ withToken = false }: { withToken?: boolean }) => {
   >({});
   const location = useLocation();
   const isModal = !!location.state?.background;
+
+  useEffect(() => {
+    if (withToken) {
+      const token = localStorage.getItem("accessToken")?.replace("Bearer ", "");
+      if (!token) return;
+
+      dispatch(connectOrders(`${wsOrdersUrl}/orders?token=${token}`));
+    } else {
+      dispatch(connectOrdersAll(`${wsOrdersUrl}/orders/all`));
+    }
+
+    return () => {
+      if (withToken) {
+        dispatch(disconnectOrders());
+      } else {
+        dispatch(disconnectOrdersAll());
+      }
+    };
+  }, [dispatch, withToken]);
 
   useEffect(() => {
     if (!lastMessage) return;

@@ -3,16 +3,19 @@ import styles from "./OrderFeed.module.scss";
 import clsx from "clsx";
 import Scrollbars from "rc-scrollbars";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useWebSocket } from "../../hooks/useWebSocket";
-import { wsOrdersUrl } from "../../utils/consts";
 import { useAppDispatch, useAppSelector } from "../../services/store/hooks";
 import type { Order } from "../../types/ws";
 import { addOrderCurrent } from "../../services/slices/orderCurrentSlice";
 import { useNavigate } from "react-router";
 import { formatOrderDate } from "../../utils/utils";
+import {
+  connectOrdersAll,
+  disconnectOrdersAll,
+} from "../../services/actions/ordersAllActions";
+import { wsOrdersUrl } from "../../utils/consts";
 
 const OrderFeed = () => {
-  const { lastMessage } = useWebSocket(`${wsOrdersUrl}/orders/all`);
+  const { lastMessage, status } = useAppSelector((state) => state.ordersAllWS);
   const { ingredients } = useAppSelector((state) => state.ingredients);
   const [ordersTotal, setOrdersTotal] = useState(0);
   const [ordersTotalToday, setOrdersTotalToday] = useState(0);
@@ -20,6 +23,7 @@ const OrderFeed = () => {
   const [ordersPending, setOrdersPending] = useState<number[]>([]);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  console.log(status);
 
   const getTotalPrice = (orderIngredients: string[]) => {
     return orderIngredients.reduce((a: number, c: string) => {
@@ -39,6 +43,14 @@ const OrderFeed = () => {
       state: { background: window.location.pathname },
     });
   };
+
+  useEffect(() => {
+    dispatch(connectOrdersAll(`${wsOrdersUrl}/orders/all`));
+
+    return () => {
+      dispatch(disconnectOrdersAll());
+    };
+  }, [dispatch]);
 
   useEffect(() => {
     if (!lastMessage) return;
