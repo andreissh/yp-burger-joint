@@ -106,6 +106,7 @@ const BurgerIngredients = ({ onIngredientsSelectedChange }: Props) => {
                 key={section.id}
                 ref={(el) => (sectionRefs.current[section.id] = el)}
                 data-tab-id={section.id}
+                data-testid={`ingredients-section-${section.id}`}
               >
                 <BurgerIngredientsList
                   title={section.title}

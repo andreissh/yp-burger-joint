@@ -9,10 +9,11 @@ import { useMediaQuery } from "usehooks-ts";
 type Props = {
   id: string;
   moveItem: (dragIndex: number, hoverIndex: number) => void;
+  testId: string;
   children: React.ReactNode;
 };
 
-function SortableItem({ id, moveItem, children }: Props) {
+function SortableItem({ id, moveItem, testId, children }: Props) {
   const ref = useRef<HTMLLIElement>(null);
   const { ingredientsSelected } = useAppSelector(
     (store) => store.ingredientsSelected,
@@ -89,7 +90,12 @@ function SortableItem({ id, moveItem, children }: Props) {
   }, [isMobile]);
 
   return (
-    <li ref={ref} className={styles.item} style={{ opacity }}>
+    <li
+      ref={ref}
+      className={styles.item}
+      style={{ opacity }}
+      data-testid={testId}
+    >
       <span className={styles.dragHandle}>
         <DragIcon type="primary" />
       </span>
