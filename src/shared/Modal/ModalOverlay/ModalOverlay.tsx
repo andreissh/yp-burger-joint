@@ -8,7 +8,11 @@ type Props = {
 
 const ModalOverlay = ({ onClick, children }: Props) => {
   return (
-    <div className={styles.modalOverlay} onClick={onClick}>
+    <div
+      className={styles.modalOverlay}
+      onClick={onClick}
+      data-testid="modal-overlay"
+    >
       <div onClick={(e) => e.stopPropagation()}>{children}</div>
     </div>
   );

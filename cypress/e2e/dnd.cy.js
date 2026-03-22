@@ -13,7 +13,6 @@ describe("Constructor drag & drop", () => {
     cy.get('[data-testid="constructor-item-bun-1"]')
       .should("exist")
       .and("contain.text", "булка");
-
     cy.get('[data-testid="constructor-item-bun-2"]')
       .should("exist")
       .and("contain.text", "булка");
@@ -23,7 +22,6 @@ describe("Constructor drag & drop", () => {
     cy.get('[data-testid="ingredients-section-1"] li')
       .first()
       .drag('[data-testid="constructor-list"]');
-
     cy.get('[data-testid="ingredients-section-2"] li')
       .first()
       .drag('[data-testid="constructor-list"]');
@@ -31,7 +29,6 @@ describe("Constructor drag & drop", () => {
     cy.get(`[data-testid^="constructor-item-ingredient-"]`)
       .last()
       .as("lastIngredient");
-
     cy.get("@lastIngredient").should("exist");
   });
 });

@@ -54,8 +54,12 @@ const IngredientDetails = () => {
       </div>
       <h2 className={styles.detailsTitle}>{name}</h2>
       <div className={styles.detailsInfoBlock}>
-        {Object.entries(nutritionValueMap).map(([key, value]) => (
-          <div key={key} className={styles.detailsInfo}>
+        {Object.entries(nutritionValueMap).map(([key, value], i) => (
+          <div
+            key={key}
+            className={styles.detailsInfo}
+            data-testid={`details-info-${i}`}
+          >
             <span className={styles.detailsInfoText}>{key}</span>
             <span className={`${styles.detailsInfoValue} iceland-regular`}>
               {value}
