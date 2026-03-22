@@ -25,10 +25,15 @@ const OrderDetails = () => {
 
   return (
     <div className={styles.orderContainer}>
-      <span className={`${styles.orderId} iceland-regular`}>
+      <span
+        className={`${styles.orderId} iceland-regular`}
+        data-testid="order-number"
+      >
         {ingredientsOrder?.order.number}
       </span>
-      <span className={styles.orderIdText}>{ingredientsOrder?.name}</span>
+      <span className={styles.orderIdText} data-testid="order-text">
+        {ingredientsOrder?.name}
+      </span>
       <img
         className={styles.orderAccepted}
         src={orderAccepted}
