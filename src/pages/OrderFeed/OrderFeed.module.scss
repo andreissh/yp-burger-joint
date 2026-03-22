@@ -96,12 +96,52 @@
 .feedItemIngredientsBlock {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 24px;
 }
 
-.feedItemIngredientsImg {
+.feedItemIngredientImgWrapper {
+  position: relative;
+  display: inline-block;
   width: 64px;
   height: 64px;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: var(--bg-color-dark-100);
+}
+
+.feedItemIngredientImgWrapper::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 3px;
+  border-radius: 50%;
+  background: linear-gradient(90deg, #801ab2 0%, #4c4cff 100%);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.feedItemIngredientImg {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  transform: scale(1.5);
+}
+
+.feedItemIngredientOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 700;
+  background-color: var(--bg-color-blur);
+  border-radius: 50%;
 }
 
 .feedItemPriceBlock {
@@ -138,6 +178,12 @@
   .feedOrdersInProgress {
     min-width: 140px;
   }
+}
+
+.feedOrdersReadyList,
+.feedOrdersInProgressList {
+  display: flex;
+  flex-direction: column;
 }
 
 .feedOrdersReadyItem,

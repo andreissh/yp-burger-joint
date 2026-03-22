@@ -18,6 +18,7 @@ import { useModal } from "../hooks/useModal";
 import OrderFeed from "../pages/OrderFeed/OrderFeed";
 import ProfileForm from "../components/Profile/ProfileForm/ProfileForm";
 import OrderInfo from "../shared/OrderInfo/OrderInfo";
+import { removeOrderCurrent } from "../services/slices/orderCurrentSlice";
 
 const Router = () => {
   const location = useLocation();
@@ -28,6 +29,12 @@ const Router = () => {
 
   const handleCloseIngredientDetailsModal = () => {
     dispatch(removeCurrentIngredient());
+    navigate(-1);
+    closeModal();
+  };
+
+  const handleCloseOrderInfoModal = () => {
+    dispatch(removeOrderCurrent());
     navigate(-1);
     closeModal();
   };
@@ -43,11 +50,11 @@ const Router = () => {
 
         <Route
           path="feed"
-          element={<ProtectedRouteElement element={<OrderFeed />} onlyAuth />}
+          element={<ProtectedRouteElement element={<OrderFeed />} />}
         ></Route>
         <Route
           path="feed/:id"
-          element={<ProtectedRouteElement element={<OrderInfo />} onlyAuth />}
+          element={<ProtectedRouteElement element={<OrderInfo />} />}
         ></Route>
 
         <Route
@@ -69,7 +76,9 @@ const Router = () => {
         </Route>
         <Route
           path="profile/orders/:id"
-          element={<ProtectedRouteElement element={<OrderInfo />} onlyAuth />}
+          element={
+            <ProtectedRouteElement element={<OrderInfo withToken />} onlyAuth />
+          }
         ></Route>
 
         <Route
@@ -113,6 +122,27 @@ const Router = () => {
               </Modal>
             }
           />
+          <Route
+            path="feed/:id"
+            element={
+              <Modal onClose={handleCloseOrderInfoModal}>
+                <OrderInfo />
+              </Modal>
+            }
+          ></Route>
+          <Route
+            path="profile/orders/:id"
+            element={
+              <ProtectedRouteElement
+                element={
+                  <Modal onClose={handleCloseOrderInfoModal}>
+                    <OrderInfo withToken />
+                  </Modal>
+                }
+                onlyAuth
+              />
+            }
+          ></Route>
         </Routes>
       )}
     </>

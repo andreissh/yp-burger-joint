@@ -139,27 +139,8 @@ export type UserInfoUpdateResponse = {
   };
 };
 
-export enum WebSocketStatus {
-  CONNECTING = "CONNECTING",
-  ONLINE = "ONLINE",
-  OFFLINE = "OFFLINE",
+export enum OrderStatus {
+  pending = "Готовится",
+  done = "Выполнено",
+  created = "Создано",
 }
-
-export enum WebSocketEvents {
-  CONNECT = "connect",
-  DISCONNECT = "disconnect",
-  ERROR = "error",
-  MESSAGE = "message",
-}
-
-export type WebSocketMessage<T = unknown> = {
-  event: string;
-  data: T;
-  timestamp: number;
-};
-
-export type WebSocketConfig = {
-  url: string;
-  reconnectAttempts?: number;
-  reconnectInterval?: number;
-};
