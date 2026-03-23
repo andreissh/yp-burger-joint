@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import styles from "./Profile.module.scss";
 import { useAppDispatch, useAppSelector } from "../../services/store/hooks";
 import { NavLink, Outlet } from "react-router";

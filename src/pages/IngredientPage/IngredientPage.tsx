@@ -1,4 +1,3 @@
-import React from "react";
 import styles from "./IngredientPage.module.scss";
 import IngredientDetails from "../../shared/IngredientDetails/IngredientDetails";
 

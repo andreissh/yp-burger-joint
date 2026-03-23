@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./OrderFeed.module.scss";
 import clsx from "clsx";
 import Scrollbars from "rc-scrollbars";

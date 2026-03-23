@@ -54,7 +54,7 @@ function SortableItem({ id, moveItem, testId, children }: Props) {
     const element = ref.current;
     if (!isMobile || !element) return;
 
-    const handleMouseEnterEvent = (e: MouseEvent) => {
+    const handleMouseEnterEvent = () => {
       const deleteIcon = element.querySelector<HTMLElement>(
         ".constructor-element__action",
       );
@@ -67,7 +67,7 @@ function SortableItem({ id, moveItem, testId, children }: Props) {
       priceIcon.classList.add("hidden");
     };
 
-    const handleMouseLeaveEvent = (e: MouseEvent) => {
+    const handleMouseLeaveEvent = () => {
       const deleteIcon = element.querySelector<HTMLElement>(
         ".constructor-element__action",
       );

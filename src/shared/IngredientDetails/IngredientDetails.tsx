@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import styles from "./IngredientDetails.module.scss";
 import { useMediaQuery } from "usehooks-ts";
 import { useAppDispatch, useAppSelector } from "../../services/store/hooks";
