@@ -15,7 +15,7 @@ import {
 import { wsOrdersUrl } from "../../utils/consts";
 
 const OrderFeed = () => {
-  const { lastMessage, status } = useAppSelector((state) => state.ordersAllWS);
+  const { lastMessage } = useAppSelector((state) => state.ordersAllWS);
   const { ingredients } = useAppSelector((state) => state.ingredients);
   const [ordersTotal, setOrdersTotal] = useState(0);
   const [ordersTotalToday, setOrdersTotalToday] = useState(0);
@@ -23,7 +23,6 @@ const OrderFeed = () => {
   const [ordersPending, setOrdersPending] = useState<number[]>([]);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  console.log(status);
 
   const getTotalPrice = (orderIngredients: string[]) => {
     return orderIngredients.reduce((a: number, c: string) => {
