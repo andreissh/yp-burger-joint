@@ -1,5 +1,6 @@
-import reducer from "../../src/services/slices/profileSlice";
-import { getUserInfo } from "../../src/services/thunks/getUserInfoThunk";
+import { describe, it, expect } from "vitest";
+import reducer from "./profileSlice";
+import { getUserInfo } from "../thunks/getUserInfoThunk";
 
 describe("profileSlice reducer", () => {
   const mockUser = {
@@ -11,7 +12,7 @@ describe("profileSlice reducer", () => {
     const action = { type: "" };
     const state = reducer(undefined, action);
 
-    expect(state).to.deep.equal({
+    expect(state).toEqual({
       user: null,
       loading: true,
       error: null,
@@ -22,9 +23,9 @@ describe("profileSlice reducer", () => {
     const action = { type: getUserInfo.pending.type };
     const state = reducer(undefined, action);
 
-    expect(state.loading).to.equal(true);
-    expect(state.error).to.equal(null);
-    expect(state.user).to.equal(null);
+    expect(state.loading).toBe(true);
+    expect(state.error).toBe(null);
+    expect(state.user).toBe(null);
   });
 
   it("should handle getUserInfo.fulfilled", () => {
@@ -34,9 +35,9 @@ describe("profileSlice reducer", () => {
     };
     const state = reducer(undefined, action);
 
-    expect(state.loading).to.equal(false);
-    expect(state.user).to.deep.equal(mockUser);
-    expect(state.error).to.equal(null);
+    expect(state.loading).toBe(false);
+    expect(state.user).toEqual(mockUser);
+    expect(state.error).toBe(null);
   });
 
   it("should handle getUserInfo.rejected with payload", () => {
@@ -47,9 +48,9 @@ describe("profileSlice reducer", () => {
     };
     const state = reducer(undefined, action);
 
-    expect(state.loading).to.equal(false);
-    expect(state.error).to.deep.equal(error);
-    expect(state.user).to.equal(null);
+    expect(state.loading).toBe(false);
+    expect(state.error).toEqual(error);
+    expect(state.user).toBe(null);
   });
 
   it("should handle getUserInfo.rejected without payload", () => {
@@ -58,8 +59,8 @@ describe("profileSlice reducer", () => {
     };
     const state = reducer(undefined, action);
 
-    expect(state.loading).to.equal(false);
-    expect(state.error).to.deep.equal({ message: "Unknown error" });
-    expect(state.user).to.equal(null);
+    expect(state.loading).toBe(false);
+    expect(state.error).toEqual({ message: "Unknown error" });
+    expect(state.user).toBe(null);
   });
 });

@@ -1,25 +1,27 @@
 describe("Modal", () => {
   beforeEach(() => {
+    cy.intercept("GET", "*/ingredients").as("getIngredients");
     cy.visit("/");
+    cy.wait("@getIngredients");
   });
 
   it("should close modal on clicking close button", () => {
-    cy.get('[data-testid="ingredients-section-1"] li').first().click();
+    cy.openIngredientModal();
 
-    cy.get('[data-testid="modal"]').should("exist").and("be.visible");
+    cy.modalShouldBeVisible();
 
-    cy.get('[data-testid="modal"] [data-testid="modal-close"]').click();
+    cy.closeModalByButton();
 
-    cy.get('[data-testid="modal"]').should("not.exist");
+    cy.modalShouldNotExist();
   });
 
   it("should close modal on clicking outside (overlay)", () => {
-    cy.get('[data-testid="ingredients-section-1"] li').first().click();
+    cy.openIngredientModal();
 
-    cy.get('[data-testid="modal"]').should("exist").and("be.visible");
+    cy.modalShouldBeVisible();
 
-    cy.get('[data-testid="modal-overlay"]').click({ force: true });
+    cy.closeModalByOverlay();
 
-    cy.get('[data-testid="modal"]').should("not.exist");
+    cy.modalShouldNotExist();
   });
 });

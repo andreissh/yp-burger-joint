@@ -1,10 +1,10 @@
-import reducer, {
-  setIngredients,
-} from "../../src/services/slices/ingredientsSlice";
-import { getIngredients } from "../../src/services/thunks/getIngredientsThunk";
+import { describe, it, expect } from "vitest";
+import reducer, { setIngredients } from "./ingredientsSlice";
+import { getIngredients } from "../thunks/getIngredientsThunk";
+import type { Ingredient } from "../../types/types";
 
 describe("ingredientsSlice reducer", () => {
-  const mockIngredients = [
+  const mockIngredients: Ingredient[] = [
     {
       _id: "1",
       name: "Ingredient 1",
@@ -17,6 +17,7 @@ describe("ingredientsSlice reducer", () => {
       image: "image.png",
       image_mobile: "image-mobile.png",
       image_large: "image-large.png",
+      __v: 0,
     },
     {
       _id: "2",
@@ -30,6 +31,7 @@ describe("ingredientsSlice reducer", () => {
       image: "image2.png",
       image_mobile: "image2-mobile.png",
       image_large: "image2-large.png",
+      __v: 0,
     },
   ];
 
@@ -37,7 +39,7 @@ describe("ingredientsSlice reducer", () => {
     const action = { type: "" };
     const state = reducer(undefined, action);
 
-    expect(state).to.deep.equal({
+    expect(state).toEqual({
       ingredients: [],
       loading: false,
       error: null,
@@ -48,18 +50,18 @@ describe("ingredientsSlice reducer", () => {
     const action = setIngredients(mockIngredients);
     const state = reducer(undefined, action);
 
-    expect(state.ingredients).to.deep.equal(mockIngredients);
-    expect(state.loading).to.equal(false);
-    expect(state.error).to.equal(null);
+    expect(state.ingredients).toEqual(mockIngredients);
+    expect(state.loading).toBe(false);
+    expect(state.error).toBe(null);
   });
 
   it("should handle getIngredients.pending", () => {
     const action = { type: getIngredients.pending.type };
     const state = reducer(undefined, action);
 
-    expect(state.loading).to.equal(true);
-    expect(state.error).to.equal(null);
-    expect(state.ingredients).to.deep.equal([]);
+    expect(state.loading).toBe(true);
+    expect(state.error).toBe(null);
+    expect(state.ingredients).toEqual([]);
   });
 
   it("should handle getIngredients.fulfilled", () => {
@@ -70,9 +72,9 @@ describe("ingredientsSlice reducer", () => {
 
     const state = reducer(undefined, action);
 
-    expect(state.loading).to.equal(false);
-    expect(state.ingredients).to.deep.equal(mockIngredients);
-    expect(state.error).to.equal(null);
+    expect(state.loading).toBe(false);
+    expect(state.ingredients).toEqual(mockIngredients);
+    expect(state.error).toBe(null);
   });
 
   it("should handle getIngredients.rejected with payload", () => {
@@ -85,9 +87,9 @@ describe("ingredientsSlice reducer", () => {
 
     const state = reducer(undefined, action);
 
-    expect(state.loading).to.equal(false);
-    expect(state.error).to.deep.equal(error);
-    expect(state.ingredients).to.deep.equal([]);
+    expect(state.loading).toBe(false);
+    expect(state.error).toEqual(error);
+    expect(state.ingredients).toEqual([]);
   });
 
   it("should handle getIngredients.rejected without payload", () => {
@@ -97,8 +99,8 @@ describe("ingredientsSlice reducer", () => {
 
     const state = reducer(undefined, action);
 
-    expect(state.loading).to.equal(false);
-    expect(state.error).to.deep.equal({ message: "Unknown error" });
-    expect(state.ingredients).to.deep.equal([]);
+    expect(state.loading).toBe(false);
+    expect(state.error).toEqual({ message: "Unknown error" });
+    expect(state.ingredients).toEqual([]);
   });
 });

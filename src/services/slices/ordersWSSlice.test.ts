@@ -1,11 +1,12 @@
-import reducer from "../../src/services/slices/ordersWSSlice";
+import { describe, it, expect } from "vitest";
+import reducer from "./ordersWSSlice";
 import {
   onOrdersConnected,
   onOrdersDisconnected,
   onOrdersMessageReceived,
   onOrdersError,
-} from "../../src/services/actions/ordersActions";
-import { WebSocketStatus } from "../../src/types/ws";
+} from "../actions/ordersActions";
+import { WebSocketStatus } from "../../types/ws";
 
 describe("ordersWSSlice reducer", () => {
   const mockMessage = {
@@ -18,7 +19,7 @@ describe("ordersWSSlice reducer", () => {
     const action = { type: "" };
     const state = reducer(undefined, action);
 
-    expect(state).to.deep.equal({
+    expect(state).toEqual({
       status: WebSocketStatus.OFFLINE,
       messages: [],
       error: null,
@@ -30,30 +31,30 @@ describe("ordersWSSlice reducer", () => {
     const action = { type: onOrdersConnected.type, payload: new Event("open") };
     const state = reducer(undefined, action);
 
-    expect(state.status).to.equal(WebSocketStatus.ONLINE);
-    expect(state.messages).to.deep.equal([]);
-    expect(state.error).to.equal(null);
-    expect(state.lastMessage).to.equal(null);
+    expect(state.status).toBe(WebSocketStatus.ONLINE);
+    expect(state.messages).toEqual([]);
+    expect(state.error).toBe(null);
+    expect(state.lastMessage).toBe(null);
   });
 
   it("should handle onOrdersMessageReceived", () => {
     const action = { type: onOrdersMessageReceived.type, payload: mockMessage };
     const state = reducer(undefined, action);
 
-    expect(state.messages).to.deep.equal([mockMessage]);
-    expect(state.lastMessage).to.deep.equal(mockMessage);
-    expect(state.status).to.equal(WebSocketStatus.OFFLINE);
-    expect(state.error).to.equal(null);
+    expect(state.messages).toEqual([mockMessage]);
+    expect(state.lastMessage).toEqual(mockMessage);
+    expect(state.status).toBe(WebSocketStatus.OFFLINE);
+    expect(state.error).toBe(null);
   });
 
   it("should handle onOrdersError", () => {
     const action = { type: onOrdersError.type, payload: mockError };
     const state = reducer(undefined, action);
 
-    expect(state.status).to.equal(WebSocketStatus.OFFLINE);
-    expect(state.error).to.equal(mockError);
-    expect(state.messages).to.deep.equal([]);
-    expect(state.lastMessage).to.equal(null);
+    expect(state.status).toBe(WebSocketStatus.OFFLINE);
+    expect(state.error).toBe(mockError);
+    expect(state.messages).toEqual([]);
+    expect(state.lastMessage).toBe(null);
   });
 
   it("should handle onOrdersDisconnected", () => {
@@ -71,9 +72,9 @@ describe("ordersWSSlice reducer", () => {
       action,
     );
 
-    expect(state.status).to.equal(WebSocketStatus.OFFLINE);
-    expect(state.messages).to.deep.equal([]);
-    expect(state.error).to.equal(null);
-    expect(state.lastMessage).to.equal(null);
+    expect(state.status).toBe(WebSocketStatus.OFFLINE);
+    expect(state.messages).toEqual([]);
+    expect(state.error).toBe(null);
+    expect(state.lastMessage).toBe(null);
   });
 });

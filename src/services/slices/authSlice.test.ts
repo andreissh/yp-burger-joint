@@ -1,8 +1,6 @@
-import reducer, {
-  setLoginState,
-  setLogoutState,
-} from "../../src/services/slices/authSlice";
-import { checkAuth } from "../../src/services/thunks/checkAuthThunk";
+import { describe, it, expect, beforeEach } from "vitest";
+import reducer, { setLoginState, setLogoutState } from "./authSlice";
+import { checkAuth } from "../thunks/checkAuthThunk";
 
 describe("authSlice reducer", () => {
   beforeEach(() => {
@@ -13,7 +11,7 @@ describe("authSlice reducer", () => {
     const action = { type: "" };
     const state = reducer(undefined, action);
 
-    expect(state).to.deep.equal({
+    expect(state).toEqual({
       isAuth: false,
       loading: true,
       error: null,
@@ -27,13 +25,13 @@ describe("authSlice reducer", () => {
     });
     const state = reducer(undefined, action);
 
-    expect(state).to.deep.equal({
+    expect(state).toEqual({
       isAuth: true,
       loading: false,
       error: null,
     });
-    expect(localStorage.getItem("accessToken")).to.equal("accessTokenValue");
-    expect(localStorage.getItem("refreshToken")).to.equal("refreshTokenValue");
+    expect(localStorage.getItem("accessToken")).toBe("accessTokenValue");
+    expect(localStorage.getItem("refreshToken")).toBe("refreshTokenValue");
   });
 
   it("should handle setLogoutState and remove tokens from localStorage", () => {
@@ -41,30 +39,30 @@ describe("authSlice reducer", () => {
     localStorage.setItem("refreshToken", "refreshTokenValue");
     const state = reducer(undefined, setLogoutState());
 
-    expect(state).to.deep.equal({
+    expect(state).toEqual({
       isAuth: false,
       loading: false,
       error: null,
     });
-    expect(localStorage.getItem("accessToken")).to.equal(null);
-    expect(localStorage.getItem("refreshToken")).to.equal(null);
+    expect(localStorage.getItem("accessToken")).toBe(null);
+    expect(localStorage.getItem("refreshToken")).toBe(null);
   });
 
   it("should handle checkAuth.pending", () => {
     const action = { type: checkAuth.pending.type };
     const state = reducer(undefined, action);
 
-    expect(state.loading).to.equal(true);
-    expect(state.error).to.equal(null);
+    expect(state.loading).toBe(true);
+    expect(state.error).toBe(null);
   });
 
   it("should handle checkAuth.fulfilled", () => {
     const action = { type: checkAuth.fulfilled.type };
     const state = reducer(undefined, action);
 
-    expect(state.isAuth).to.equal(true);
-    expect(state.loading).to.equal(false);
-    expect(state.error).to.equal(null);
+    expect(state.isAuth).toBe(true);
+    expect(state.loading).toBe(false);
+    expect(state.error).toBe(null);
   });
 
   it("should handle checkAuth.rejected with payload", () => {
@@ -75,9 +73,9 @@ describe("authSlice reducer", () => {
     };
     const state = reducer(undefined, action);
 
-    expect(state.isAuth).to.equal(false);
-    expect(state.loading).to.equal(false);
-    expect(state.error).to.deep.equal(error);
+    expect(state.isAuth).toBe(false);
+    expect(state.loading).toBe(false);
+    expect(state.error).toEqual(error);
   });
 
   it("should handle checkAuth.rejected without payload", () => {
@@ -86,8 +84,8 @@ describe("authSlice reducer", () => {
     };
     const state = reducer(undefined, action);
 
-    expect(state.isAuth).to.equal(false);
-    expect(state.loading).to.equal(false);
-    expect(state.error).to.deep.equal({ message: "Auth check failed" });
+    expect(state.isAuth).toBe(false);
+    expect(state.loading).toBe(false);
+    expect(state.error).toEqual({ message: "Auth check failed" });
   });
 });

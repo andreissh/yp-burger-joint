@@ -1,10 +1,12 @@
+import { describe, it, expect } from "vitest";
 import reducer, {
   addCurrentIngredient,
   removeCurrentIngredient,
-} from "../../src/services/slices/ingredientCurrentSlice";
+} from "./ingredientCurrentSlice";
+import type { Ingredient } from "../../types/types";
 
 describe("ingredientCurrentSlice reducer", () => {
-  const mockIngredient = {
+  const mockIngredient: Ingredient = {
     _id: "1",
     name: "Test Ingredient",
     type: "main",
@@ -16,13 +18,14 @@ describe("ingredientCurrentSlice reducer", () => {
     image: "image.png",
     image_mobile: "image-mobile.png",
     image_large: "image-large.png",
+    __v: 0,
   };
 
   it("should return the initial state", () => {
     const action = { type: "" };
     const state = reducer(undefined, action);
 
-    expect(state).to.deep.equal({
+    expect(state).toEqual({
       ingredientCurrent: null,
     });
   });
@@ -31,7 +34,7 @@ describe("ingredientCurrentSlice reducer", () => {
     const action = addCurrentIngredient(mockIngredient);
     const state = reducer(undefined, action);
 
-    expect(state).to.deep.equal({
+    expect(state).toEqual({
       ingredientCurrent: mockIngredient,
     });
   });
@@ -46,7 +49,7 @@ describe("ingredientCurrentSlice reducer", () => {
       removeCurrentIngredient(),
     );
 
-    expect(state).to.deep.equal({
+    expect(state).toEqual({
       ingredientCurrent: null,
     });
   });

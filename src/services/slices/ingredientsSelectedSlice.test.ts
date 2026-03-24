@@ -1,28 +1,50 @@
+import { describe, it, expect } from "vitest";
 import reducer, {
   addIngredient,
   removeIngredient,
   shuffleIngredients,
   removeAllIngredients,
-} from "../../src/services/slices/ingredientsSelectedSlice";
+} from "./ingredientsSelectedSlice";
+import type { IngredientSelected } from "../../types/types";
 
 describe("ingredientsSelectedSlice reducer", () => {
-  const ingredient1 = {
+  const ingredient1: IngredientSelected = {
     uuid: "1",
     _id: "a",
     name: "Ingredient 1",
+    type: "main",
+    proteins: 10,
+    fat: 5,
+    carbohydrates: 20,
+    calories: 100,
+    price: 50,
+    image: "image.png",
+    image_mobile: "image-mobile.png",
+    image_large: "image-large.png",
+    __v: 0,
   };
 
-  const ingredient2 = {
+  const ingredient2: IngredientSelected = {
     uuid: "2",
     _id: "b",
     name: "Ingredient 2",
+    type: "sauce",
+    proteins: 5,
+    fat: 2,
+    carbohydrates: 10,
+    calories: 50,
+    price: 30,
+    image: "image2.png",
+    image_mobile: "image2-mobile.png",
+    image_large: "image2-large.png",
+    __v: 0,
   };
 
   it("should return the initial state", () => {
     const action = { type: "" };
     const state = reducer(undefined, action);
 
-    expect(state).to.deep.equal({
+    expect(state).toEqual({
       ingredientsSelected: [],
     });
   });
@@ -31,7 +53,7 @@ describe("ingredientsSelectedSlice reducer", () => {
     const action = addIngredient(ingredient1);
     const state = reducer(undefined, action);
 
-    expect(state.ingredientsSelected).to.deep.equal([ingredient1]);
+    expect(state.ingredientsSelected).toEqual([ingredient1]);
   });
 
   it("should handle removeIngredient", () => {
@@ -41,7 +63,7 @@ describe("ingredientsSelectedSlice reducer", () => {
 
     const state = reducer(initialStateWithItems, removeIngredient("1"));
 
-    expect(state.ingredientsSelected).to.deep.equal([ingredient2]);
+    expect(state.ingredientsSelected).toEqual([ingredient2]);
   });
 
   it("should handle shuffleIngredients", () => {
@@ -49,7 +71,7 @@ describe("ingredientsSelectedSlice reducer", () => {
 
     const state = reducer(undefined, shuffleIngredients(newOrder));
 
-    expect(state.ingredientsSelected).to.deep.equal(newOrder);
+    expect(state.ingredientsSelected).toEqual(newOrder);
   });
 
   it("should handle removeAllIngredients", () => {
@@ -59,6 +81,6 @@ describe("ingredientsSelectedSlice reducer", () => {
 
     const state = reducer(initialStateWithItems, removeAllIngredients());
 
-    expect(state.ingredientsSelected).to.deep.equal([]);
+    expect(state.ingredientsSelected).toEqual([]);
   });
 });

@@ -172,6 +172,7 @@ const BurgerConstructor = ({ onIngredientsSelectedChange }: Props) => {
               size={isMobile ? "small" : "large"}
               onClick={handleSendOrder}
               disabled={!ingredientsSelected.length}
+              data-cy="order-submit"
             >
               Оформить заказ
             </Button>

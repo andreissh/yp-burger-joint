@@ -1,5 +1,6 @@
-import reducer from "../../src/services/slices/ingredientsOrderSlice";
-import { getIngredientsOrder } from "../../src/services/thunks/getIngredientsOrderThunk";
+import { describe, it, expect } from "vitest";
+import reducer from "./ingredientsOrderSlice";
+import { getIngredientsOrder } from "../thunks/getIngredientsOrderThunk";
 
 describe("ingredientsOrderSlice reducer", () => {
   const mockOrder = {
@@ -14,7 +15,7 @@ describe("ingredientsOrderSlice reducer", () => {
     const action = { type: "" };
     const state = reducer(undefined, action);
 
-    expect(state).to.deep.equal({
+    expect(state).toEqual({
       ingredientsOrder: null,
       loading: false,
       error: null,
@@ -25,9 +26,9 @@ describe("ingredientsOrderSlice reducer", () => {
     const action = { type: getIngredientsOrder.pending.type };
     const state = reducer(undefined, action);
 
-    expect(state.loading).to.equal(true);
-    expect(state.error).to.equal(null);
-    expect(state.ingredientsOrder).to.equal(null);
+    expect(state.loading).toBe(true);
+    expect(state.error).toBe(null);
+    expect(state.ingredientsOrder).toBe(null);
   });
 
   it("should handle getIngredientsOrder.fulfilled", () => {
@@ -38,9 +39,9 @@ describe("ingredientsOrderSlice reducer", () => {
 
     const state = reducer(undefined, action);
 
-    expect(state.loading).to.equal(false);
-    expect(state.ingredientsOrder).to.deep.equal(mockOrder);
-    expect(state.error).to.equal(null);
+    expect(state.loading).toBe(false);
+    expect(state.ingredientsOrder).toEqual(mockOrder);
+    expect(state.error).toBe(null);
   });
 
   it("should handle getIngredientsOrder.rejected with payload", () => {
@@ -53,9 +54,9 @@ describe("ingredientsOrderSlice reducer", () => {
 
     const state = reducer(undefined, action);
 
-    expect(state.loading).to.equal(false);
-    expect(state.error).to.deep.equal(error);
-    expect(state.ingredientsOrder).to.equal(null);
+    expect(state.loading).toBe(false);
+    expect(state.error).toEqual(error);
+    expect(state.ingredientsOrder).toBe(null);
   });
 
   it("should handle getIngredientsOrder.rejected without payload", () => {
@@ -65,8 +66,8 @@ describe("ingredientsOrderSlice reducer", () => {
 
     const state = reducer(undefined, action);
 
-    expect(state.loading).to.equal(false);
-    expect(state.error).to.deep.equal({ message: "Unknown error" });
-    expect(state.ingredientsOrder).to.equal(null);
+    expect(state.loading).toBe(false);
+    expect(state.error).toEqual({ message: "Unknown error" });
+    expect(state.ingredientsOrder).toBe(null);
   });
 });
