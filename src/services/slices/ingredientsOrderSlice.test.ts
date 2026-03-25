@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import reducer from "./ingredientsOrderSlice";
+import reducer, { initialState } from "./ingredientsOrderSlice";
 import { getIngredientsOrder } from "../thunks/getIngredientsOrderThunk";
 
 describe("ingredientsOrderSlice reducer", () => {
@@ -15,20 +15,17 @@ describe("ingredientsOrderSlice reducer", () => {
     const action = { type: "" };
     const state = reducer(undefined, action);
 
-    expect(state).toEqual({
-      ingredientsOrder: null,
-      loading: false,
-      error: null,
-    });
+    expect(state).toEqual(initialState);
   });
 
   it("should handle getIngredientsOrder.pending", () => {
     const action = { type: getIngredientsOrder.pending.type };
     const state = reducer(undefined, action);
 
-    expect(state.loading).toBe(true);
-    expect(state.error).toBe(null);
-    expect(state.ingredientsOrder).toBe(null);
+    expect(state).toEqual({
+      ...initialState,
+      loading: true,
+    });
   });
 
   it("should handle getIngredientsOrder.fulfilled", () => {
@@ -36,38 +33,37 @@ describe("ingredientsOrderSlice reducer", () => {
       type: getIngredientsOrder.fulfilled.type,
       payload: mockOrder,
     };
-
     const state = reducer(undefined, action);
 
-    expect(state.loading).toBe(false);
-    expect(state.ingredientsOrder).toEqual(mockOrder);
-    expect(state.error).toBe(null);
+    expect(state).toEqual({
+      ...initialState,
+      ingredientsOrder: mockOrder,
+    });
   });
 
   it("should handle getIngredientsOrder.rejected with payload", () => {
     const error = { message: "Order failed" };
-
     const action = {
       type: getIngredientsOrder.rejected.type,
       payload: error,
     };
-
     const state = reducer(undefined, action);
 
-    expect(state.loading).toBe(false);
-    expect(state.error).toEqual(error);
-    expect(state.ingredientsOrder).toBe(null);
+    expect(state).toEqual({
+      ...initialState,
+      error,
+    });
   });
 
   it("should handle getIngredientsOrder.rejected without payload", () => {
     const action = {
       type: getIngredientsOrder.rejected.type,
     };
-
     const state = reducer(undefined, action);
 
-    expect(state.loading).toBe(false);
-    expect(state.error).toEqual({ message: "Unknown error" });
-    expect(state.ingredientsOrder).toBe(null);
+    expect(state).toEqual({
+      ...initialState,
+      error: { message: "Unknown error" },
+    });
   });
 });

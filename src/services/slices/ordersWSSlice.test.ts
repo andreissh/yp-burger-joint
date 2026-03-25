@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import reducer from "./ordersWSSlice";
+import reducer, { initialState } from "./ordersWSSlice";
 import {
   onOrdersConnected,
   onOrdersDisconnected,
@@ -19,42 +19,38 @@ describe("ordersWSSlice reducer", () => {
     const action = { type: "" };
     const state = reducer(undefined, action);
 
-    expect(state).toEqual({
-      status: WebSocketStatus.OFFLINE,
-      messages: [],
-      error: null,
-      lastMessage: null,
-    });
+    expect(state).toEqual(initialState);
   });
 
   it("should handle onOrdersConnected", () => {
     const action = { type: onOrdersConnected.type, payload: new Event("open") };
     const state = reducer(undefined, action);
 
-    expect(state.status).toBe(WebSocketStatus.ONLINE);
-    expect(state.messages).toEqual([]);
-    expect(state.error).toBe(null);
-    expect(state.lastMessage).toBe(null);
+    expect(state).toEqual({
+      ...initialState,
+      status: WebSocketStatus.ONLINE,
+    });
   });
 
   it("should handle onOrdersMessageReceived", () => {
     const action = { type: onOrdersMessageReceived.type, payload: mockMessage };
     const state = reducer(undefined, action);
 
-    expect(state.messages).toEqual([mockMessage]);
-    expect(state.lastMessage).toEqual(mockMessage);
-    expect(state.status).toBe(WebSocketStatus.OFFLINE);
-    expect(state.error).toBe(null);
+    expect(state).toEqual({
+      ...initialState,
+      messages: [mockMessage],
+      lastMessage: mockMessage,
+    });
   });
 
   it("should handle onOrdersError", () => {
     const action = { type: onOrdersError.type, payload: mockError };
     const state = reducer(undefined, action);
 
-    expect(state.status).toBe(WebSocketStatus.OFFLINE);
-    expect(state.error).toBe(mockError);
-    expect(state.messages).toEqual([]);
-    expect(state.lastMessage).toBe(null);
+    expect(state).toEqual({
+      ...initialState,
+      error: mockError,
+    });
   });
 
   it("should handle onOrdersDisconnected", () => {
@@ -64,17 +60,12 @@ describe("ordersWSSlice reducer", () => {
     };
     const state = reducer(
       {
+        ...initialState,
         status: WebSocketStatus.ONLINE,
-        messages: [],
-        error: null,
-        lastMessage: null,
       },
       action,
     );
 
-    expect(state.status).toBe(WebSocketStatus.OFFLINE);
-    expect(state.messages).toEqual([]);
-    expect(state.error).toBe(null);
-    expect(state.lastMessage).toBe(null);
+    expect(state).toEqual(initialState);
   });
 });

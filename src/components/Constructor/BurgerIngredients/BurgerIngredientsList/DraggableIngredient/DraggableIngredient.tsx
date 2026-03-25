@@ -27,9 +27,13 @@ const DraggableIngredient = ({
       ref={drag}
       className={styles.productTypeItem}
       style={{ opacity: isDragging ? 0.5 : 1 }}
-      onClick={() => onIngredientClick(ingredient)}
     >
-      {children}
+      <div
+        data-testid="ingredient-clickable"
+        onClick={() => onIngredientClick(ingredient)}
+      >
+        {children}
+      </div>
     </li>
   );
 };

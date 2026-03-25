@@ -6,7 +6,7 @@ type orderCurrentState = {
   orderCurrent: Order | null;
 };
 
-const initialState: orderCurrentState = {
+export const initialState: orderCurrentState = {
   orderCurrent: null,
 };
 

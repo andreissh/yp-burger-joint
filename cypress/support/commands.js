@@ -27,7 +27,9 @@ Cypress.Commands.add("shouldHaveBun", () => {
 });
 
 Cypress.Commands.add("openIngredientModal", () => {
-  cy.get(`${SELECTORS.INGREDIENTS_SECTION(1)} li`)
+  cy.get(
+    `${SELECTORS.INGREDIENTS_SECTION(1)} ${SELECTORS.INGREDIENT_CLICKABLE}`,
+  )
     .first()
     .click();
 });

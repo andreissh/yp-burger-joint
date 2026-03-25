@@ -8,7 +8,7 @@ type IngredientsOrderState = {
   error: ApiError | null;
 };
 
-const initialState: IngredientsOrderState = {
+export const initialState: IngredientsOrderState = {
   ingredientsOrder: null,
   loading: false,
   error: null,

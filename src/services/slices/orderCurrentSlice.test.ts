@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import reducer, {
+  initialState,
   addOrderCurrent,
   removeOrderCurrent,
 } from "./orderCurrentSlice";
@@ -20,9 +21,7 @@ describe("orderCurrentSlice reducer", () => {
     const action = { type: "" };
     const state = reducer(undefined, action);
 
-    expect(state).toEqual({
-      orderCurrent: null,
-    });
+    expect(state).toEqual(initialState);
   });
 
   it("should handle addOrderCurrent", () => {
@@ -36,10 +35,9 @@ describe("orderCurrentSlice reducer", () => {
     const initialStateWithOrder = {
       orderCurrent: mockOrder,
     };
-
     const state = reducer(initialStateWithOrder, removeOrderCurrent());
 
-    expect(state.orderCurrent).toBe(null);
+    expect(state).toEqual(initialState);
   });
 
   it("should replace existing order when adding new order", () => {
@@ -48,14 +46,13 @@ describe("orderCurrentSlice reducer", () => {
       number: 11111,
       name: "First Order",
     };
-
     const secondOrder = {
       ...mockOrder,
       number: 22222,
       name: "Second Order",
     };
-
     let state = reducer(undefined, addOrderCurrent(firstOrder));
+
     expect(state.orderCurrent).toEqual(firstOrder);
 
     state = reducer(state, addOrderCurrent(secondOrder));

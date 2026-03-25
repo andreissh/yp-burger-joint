@@ -6,6 +6,7 @@ export const SELECTORS = {
 
   INGREDIENTS_SECTION: (section) =>
     `[data-testid="ingredients-section-${section}"]`,
+  INGREDIENT_CLICKABLE: `[data-testid="ingredient-clickable"]`,
 
   MODAL: '[data-testid="modal"]',
   MODAL_CLOSE: '[data-testid="modal-close"]',

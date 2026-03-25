@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import reducer from "./profileSlice";
+import reducer, { initialState } from "./profileSlice";
 import { getUserInfo } from "../thunks/getUserInfoThunk";
 
 describe("profileSlice reducer", () => {
@@ -12,20 +12,14 @@ describe("profileSlice reducer", () => {
     const action = { type: "" };
     const state = reducer(undefined, action);
 
-    expect(state).toEqual({
-      user: null,
-      loading: true,
-      error: null,
-    });
+    expect(state).toEqual(initialState);
   });
 
   it("should handle getUserInfo.pending", () => {
     const action = { type: getUserInfo.pending.type };
     const state = reducer(undefined, action);
 
-    expect(state.loading).toBe(true);
-    expect(state.error).toBe(null);
-    expect(state.user).toBe(null);
+    expect(state).toEqual(initialState);
   });
 
   it("should handle getUserInfo.fulfilled", () => {
@@ -35,9 +29,11 @@ describe("profileSlice reducer", () => {
     };
     const state = reducer(undefined, action);
 
-    expect(state.loading).toBe(false);
-    expect(state.user).toEqual(mockUser);
-    expect(state.error).toBe(null);
+    expect(state).toEqual({
+      ...initialState,
+      user: mockUser,
+      loading: false,
+    });
   });
 
   it("should handle getUserInfo.rejected with payload", () => {
@@ -48,9 +44,11 @@ describe("profileSlice reducer", () => {
     };
     const state = reducer(undefined, action);
 
-    expect(state.loading).toBe(false);
-    expect(state.error).toEqual(error);
-    expect(state.user).toBe(null);
+    expect(state).toEqual({
+      ...initialState,
+      loading: false,
+      error,
+    });
   });
 
   it("should handle getUserInfo.rejected without payload", () => {
@@ -59,8 +57,10 @@ describe("profileSlice reducer", () => {
     };
     const state = reducer(undefined, action);
 
-    expect(state.loading).toBe(false);
-    expect(state.error).toEqual({ message: "Unknown error" });
-    expect(state.user).toBe(null);
+    expect(state).toEqual({
+      ...initialState,
+      loading: false,
+      error: { message: "Unknown error" },
+    });
   });
 });

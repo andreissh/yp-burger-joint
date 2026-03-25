@@ -8,7 +8,7 @@ type AuthState = {
   error: ApiError | null;
 };
 
-const initialState: AuthState = {
+export const initialState: AuthState = {
   isAuth: false,
   loading: true,
   error: null,

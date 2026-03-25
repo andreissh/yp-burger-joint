@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import reducer, {
+  initialState,
   addCurrentIngredient,
   removeCurrentIngredient,
 } from "./ingredientCurrentSlice";
@@ -25,9 +26,7 @@ describe("ingredientCurrentSlice reducer", () => {
     const action = { type: "" };
     const state = reducer(undefined, action);
 
-    expect(state).toEqual({
-      ingredientCurrent: null,
-    });
+    expect(state).toEqual(initialState);
   });
 
   it("should handle addCurrentIngredient", () => {
@@ -49,8 +48,6 @@ describe("ingredientCurrentSlice reducer", () => {
       removeCurrentIngredient(),
     );
 
-    expect(state).toEqual({
-      ingredientCurrent: null,
-    });
+    expect(state).toEqual(initialState);
   });
 });

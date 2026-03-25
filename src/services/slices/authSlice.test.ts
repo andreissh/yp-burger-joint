@@ -1,5 +1,9 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import reducer, { setLoginState, setLogoutState } from "./authSlice";
+import reducer, {
+  initialState,
+  setLoginState,
+  setLogoutState,
+} from "./authSlice";
 import { checkAuth } from "../thunks/checkAuthThunk";
 
 describe("authSlice reducer", () => {
@@ -11,11 +15,7 @@ describe("authSlice reducer", () => {
     const action = { type: "" };
     const state = reducer(undefined, action);
 
-    expect(state).toEqual({
-      isAuth: false,
-      loading: true,
-      error: null,
-    });
+    expect(state).toEqual(initialState);
   });
 
   it("should handle setLoginState and set tokens in localStorage", () => {
@@ -26,9 +26,9 @@ describe("authSlice reducer", () => {
     const state = reducer(undefined, action);
 
     expect(state).toEqual({
+      ...initialState,
       isAuth: true,
       loading: false,
-      error: null,
     });
     expect(localStorage.getItem("accessToken")).toBe("accessTokenValue");
     expect(localStorage.getItem("refreshToken")).toBe("refreshTokenValue");
@@ -40,9 +40,8 @@ describe("authSlice reducer", () => {
     const state = reducer(undefined, setLogoutState());
 
     expect(state).toEqual({
-      isAuth: false,
+      ...initialState,
       loading: false,
-      error: null,
     });
     expect(localStorage.getItem("accessToken")).toBe(null);
     expect(localStorage.getItem("refreshToken")).toBe(null);
@@ -52,17 +51,18 @@ describe("authSlice reducer", () => {
     const action = { type: checkAuth.pending.type };
     const state = reducer(undefined, action);
 
-    expect(state.loading).toBe(true);
-    expect(state.error).toBe(null);
+    expect(state).toEqual(initialState);
   });
 
   it("should handle checkAuth.fulfilled", () => {
     const action = { type: checkAuth.fulfilled.type };
     const state = reducer(undefined, action);
 
-    expect(state.isAuth).toBe(true);
-    expect(state.loading).toBe(false);
-    expect(state.error).toBe(null);
+    expect(state).toEqual({
+      ...initialState,
+      isAuth: true,
+      loading: false,
+    });
   });
 
   it("should handle checkAuth.rejected with payload", () => {
@@ -73,9 +73,11 @@ describe("authSlice reducer", () => {
     };
     const state = reducer(undefined, action);
 
-    expect(state.isAuth).toBe(false);
-    expect(state.loading).toBe(false);
-    expect(state.error).toEqual(error);
+    expect(state).toEqual({
+      ...initialState,
+      loading: false,
+      error,
+    });
   });
 
   it("should handle checkAuth.rejected without payload", () => {
@@ -84,8 +86,10 @@ describe("authSlice reducer", () => {
     };
     const state = reducer(undefined, action);
 
-    expect(state.isAuth).toBe(false);
-    expect(state.loading).toBe(false);
-    expect(state.error).toEqual({ message: "Auth check failed" });
+    expect(state).toEqual({
+      ...initialState,
+      loading: false,
+      error: { message: "Auth check failed" },
+    });
   });
 });
