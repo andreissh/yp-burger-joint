@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "./BurgerIngredients.module.scss";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import Scrollbars from "rc-scrollbars";
@@ -106,6 +106,7 @@ const BurgerIngredients = ({ onIngredientsSelectedChange }: Props) => {
                 key={section.id}
                 ref={(el) => (sectionRefs.current[section.id] = el)}
                 data-tab-id={section.id}
+                data-testid={`ingredients-section-${section.id}`}
               >
                 <BurgerIngredientsList
                   title={section.title}

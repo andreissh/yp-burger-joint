@@ -46,12 +46,12 @@ const Modal = ({ title, children, onClose, loading }: Props) => {
 
   const modalContent = (
     <ModalOverlay onClick={loading ? undefined : onClose}>
-      <div className={styles.modalWrapper}>
+      <div className={styles.modalWrapper} data-testid="modal">
         <div className={styles.modalContainer}>
           <div className={styles.modalHeader}>
             {title && <h2 className={styles.title}>{title}</h2>}
             {!loading && (
-              <span className={styles.closeIcon}>
+              <span className={styles.closeIcon} data-testid="modal-close">
                 <CloseIcon type="primary" onClick={onClose} />
               </span>
             )}

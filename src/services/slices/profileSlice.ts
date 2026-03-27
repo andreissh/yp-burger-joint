@@ -8,7 +8,7 @@ type ProfileState = {
   error: ApiError | null;
 };
 
-const initialState: ProfileState = {
+export const initialState: ProfileState = {
   user: null,
   loading: true,
   error: null,

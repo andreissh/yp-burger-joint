@@ -10,15 +10,15 @@ import { WebSocketStatus, type WebSocketMessage } from "../../types/ws";
 type WebSocketState = {
   status: WebSocketStatus;
   messages: WebSocketMessage[];
-  error: Event | null;
   lastMessage: WebSocketMessage | null;
+  error: Event | null;
 };
 
-const initialState: WebSocketState = {
+export const initialState: WebSocketState = {
   status: WebSocketStatus.OFFLINE,
   messages: [],
-  error: null,
   lastMessage: null,
+  error: null,
 };
 
 export const ordersWSSlice = createSlice({
@@ -35,8 +35,8 @@ export const ordersWSSlice = createSlice({
         state.lastMessage = action.payload;
       })
       .addCase(onOrdersError, (state, action) => {
-        state.error = action.payload;
         state.status = WebSocketStatus.OFFLINE;
+        state.error = action.payload;
       })
       .addCase(onOrdersDisconnected, (state) => {
         state.status = WebSocketStatus.OFFLINE;

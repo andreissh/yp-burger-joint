@@ -6,7 +6,7 @@ type ingredientsSelectedState = {
   ingredientsSelected: IngredientSelected[];
 };
 
-const initialState: ingredientsSelectedState = {
+export const initialState: ingredientsSelectedState = {
   ingredientsSelected: [],
 };
 

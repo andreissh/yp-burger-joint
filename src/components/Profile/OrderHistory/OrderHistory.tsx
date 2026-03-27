@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import styles from "./OrderHistory.module.scss";
 import Scrollbars from "rc-scrollbars";
 import { useNavigate } from "react-router";

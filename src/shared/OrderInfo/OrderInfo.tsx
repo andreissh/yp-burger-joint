@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./OrderInfo.module.scss";
 import clsx from "clsx";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";

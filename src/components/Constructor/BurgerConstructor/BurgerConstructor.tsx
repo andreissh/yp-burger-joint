@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import styles from "./BurgerConstructor.module.scss";
 import {
   Button,
@@ -98,10 +98,17 @@ const BurgerConstructor = ({ onIngredientsSelectedChange }: Props) => {
     <>
       <div className={styles.constructorContainer}>
         <div className={styles.constructorInnerContainer}>
-          <div className={styles.constructorList} ref={drop}>
+          <div
+            className={styles.constructorList}
+            ref={drop}
+            data-testid="constructor-list"
+          >
             {ingredientsSelected.length ? (
               <>
-                <div className={styles.constructorItem}>
+                <div
+                  className={styles.constructorItem}
+                  data-testid="constructor-item-bun-1"
+                >
                   {constructorBun && (
                     <ConstructorElement
                       type="top"
@@ -114,11 +121,12 @@ const BurgerConstructor = ({ onIngredientsSelectedChange }: Props) => {
                 </div>
                 <Scrollbars style={{ width: "100%", height: 384 }}>
                   <ul className={styles.constructorListScrollable}>
-                    {constructorIngredients.map((el) => (
+                    {constructorIngredients.map((el, i) => (
                       <SortableItem
                         key={el.uuid}
                         id={el.uuid}
                         moveItem={moveItem}
+                        testId={`constructor-item-ingredient-${i}`}
                       >
                         <ConstructorElement
                           text={el.name}
@@ -130,7 +138,10 @@ const BurgerConstructor = ({ onIngredientsSelectedChange }: Props) => {
                     ))}
                   </ul>
                 </Scrollbars>
-                <div className={styles.constructorItem}>
+                <div
+                  className={styles.constructorItem}
+                  data-testid="constructor-item-bun-2"
+                >
                   {constructorBun && (
                     <ConstructorElement
                       type="bottom"
@@ -161,6 +172,7 @@ const BurgerConstructor = ({ onIngredientsSelectedChange }: Props) => {
               size={isMobile ? "small" : "large"}
               onClick={handleSendOrder}
               disabled={!ingredientsSelected.length}
+              data-cy="order-submit"
             >
               Оформить заказ
             </Button>
